@@ -4,7 +4,7 @@ NAME	=bomberman
 
 UNPACK	= tar
 
-PFLAGS	= -kxvzf
+PFLAGS	= -kxzf
 
 CXXFLAG	= -Wall -Wextra -W -Werror
 
