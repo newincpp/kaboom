@@ -12,12 +12,14 @@ namespace newin {
 	    virtual ~Mesh();
 	    void setShader(ShadeProgram*);
 	    void render();
+	    void toogleWireframe();
 	private:
+	    ShadeProgram* _s;
+	    bool _wireframe;
+	    unsigned int _vertexCount;
 	    GLfloat* _verts;
 	    GLuint _vboID;
 	    GLuint _vaoID;
-	    ShadeProgram* _s;
-	    unsigned int _vertexCount;
     };
 }
 

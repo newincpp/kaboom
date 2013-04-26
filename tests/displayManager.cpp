@@ -67,12 +67,6 @@ void newin::Display::run() {
     bool runing = true;
     std::vector< Vector3D<GLfloat> > l;
     // v1
-    //l.push_back(Vector3D<GLfloat>( 100,  100, 100, 0));
-    //l.push_back(Vector3D<GLfloat>(-100,  100, -100, 0));
-    //l.push_back(Vector3D<GLfloat>(-100, -100, -100, 0));
-
-    // v1
-    //l.push_back(Vector3D<GLfloat>(-0.5,  0.5, 0, 0));
     l.push_back(Vector3D<GLfloat>(0.5, 0.5, 0, 0));
     l.push_back(Vector3D<GLfloat>(0.5, -0.5, 0, 0));
     l.push_back(Vector3D<GLfloat>(-0.5, -0.5, 0, 0));
@@ -81,28 +75,23 @@ void newin::Display::run() {
     l.push_back(Vector3D<GLfloat>(-0.5, 0.5, 0, 0));
     l.push_back(Vector3D<GLfloat>(-0.5, -0.5, 0, 0));
 
-
-
-    /*
-    // tri 1 
-    100, 100, 0,
-    -100, 100, 0,
-    -100, -100, 0,
-    //tri 2 
-    100, -100, 0
-    */
     Mesh m(l);
-
     Shader v(new std::fstream("test_vs.glsl"), GL_VERTEX_SHADER);
     v.compile();
     Shader f(new std::fstream("test_fs.glsl"), GL_FRAGMENT_SHADER);
     f.compile();
     ShadeProgram* prgm = new ShadeProgram(v, f);
-
     m.setShader(prgm);
+
+
+    glfwEnable(GLFW_STICKY_KEYS);
+
+    bool toggled = false;
+    bool wiretoogle = false;
     while (runing) {
 	esc_pressed = glfwGetKey(GLFW_KEY_ESC);
-	glClearColor(0.0, 0.0, 0.5, 1.0f); // dark blue
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.0, 0.01, 0.1, 1.0f); // dark blue
 	glEnable(GL_DEPTH_TEST); // enable depth-testing
 	glDepthFunc(GL_LESS); // depth-testing is to use a "less than" function
 	glEnable(GL_CULL_FACE); // enable culling of faces
@@ -112,6 +101,11 @@ void newin::Display::run() {
 	m.render();
 	if ((!glfwGetWindowParam(GLFW_OPENED)) || (esc_pressed == true)) {
 	    runing = false;
+	}
+	wiretoogle = glfwGetKey(GLFW_KEY_SPACE);
+	if (wiretoogle != toggled){
+	    toggled = wiretoogle;
+	    m.toogleWireframe();
 	}
 	glfwSwapBuffers();
     }

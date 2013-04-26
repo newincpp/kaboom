@@ -1,7 +1,7 @@
 #include <iostream>
 #include "mesh.hh"
 
-newin::Mesh::Mesh(const std::vector<Vector3D<GLfloat> >& m) : _s(NULL) {
+newin::Mesh::Mesh(const std::vector<Vector3D<GLfloat> >& m) : _s(NULL) , _wireframe(false) {
     _verts = Vector3D<GLfloat>::toGLfloatArray(m);
     int j = 0;
     for (int i = m.size() - 1; i != -1 ; --i) {
@@ -36,6 +36,11 @@ void newin::Mesh::setShader(ShadeProgram* s) {
     _s = s;
 }
 
+void newin::Mesh::toogleWireframe() {
+    _wireframe = !_wireframe;
+    std::cout << "wire " << _wireframe << std::endl;
+}
+
 void newin::Mesh::render() {
     // enable shader
     if (_s)
@@ -52,8 +57,11 @@ void newin::Mesh::render() {
     // bind VAO
     glBindVertexArray(_vaoID);
     // draw
-    //glDrawArrays(GL_TRIANGLE_FAN, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
+    //glDrawArrays(GL_TRIANGLE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
+    if (_wireframe == true)
+	glDrawArrays(GL_LINE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
+    else
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
     // unbind VAO
     glBindVertexArray(0); // '0' is a reserved index in GL meaning "none"
 }
