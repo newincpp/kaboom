@@ -72,10 +72,15 @@ void newin::Display::run() {
     //l.push_back(Vector3D<GLfloat>(-100, -100, -100, 0));
 
     // v1
-    l.push_back(Vector3D<GLfloat>(-0.5,  0.5, 0, 0));
+    //l.push_back(Vector3D<GLfloat>(-0.5,  0.5, 0, 0));
     l.push_back(Vector3D<GLfloat>(0.5, 0.5, 0, 0));
     l.push_back(Vector3D<GLfloat>(0.5, -0.5, 0, 0));
     l.push_back(Vector3D<GLfloat>(-0.5, -0.5, 0, 0));
+    //v2
+    l.push_back(Vector3D<GLfloat>(0.5, 0.5, 0, 0));
+    l.push_back(Vector3D<GLfloat>(-0.5, 0.5, 0, 0));
+    l.push_back(Vector3D<GLfloat>(-0.5, -0.5, 0, 0));
+
 
 
     /*

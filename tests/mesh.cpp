@@ -52,7 +52,8 @@ void newin::Mesh::render() {
     // bind VAO
     glBindVertexArray(_vaoID);
     // draw
-    glDrawArrays(GL_TRIANGLES, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
+    //glDrawArrays(GL_TRIANGLE_FAN, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
     // unbind VAO
     glBindVertexArray(0); // '0' is a reserved index in GL meaning "none"
 }
