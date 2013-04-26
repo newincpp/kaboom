@@ -13,7 +13,7 @@ namespace newin {
 	    void setShader(ShadeProgram*);
 	    void render();
 	private:
-	    std::vector< GLvector3f >* _verts;
+	    GLfloat* _verts;
 	    GLuint _vboID;
 	    GLuint _vaoID;
 	    ShadeProgram* _s;

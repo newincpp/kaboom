@@ -21,19 +21,34 @@ namespace newin {
 		Vector3D& operator*(const Vector3D& in) {_x *= in._x; _y *= in._y; _z *= in._z; _w *= in._w; return *this; }
 		Vector3D& operator/(const Vector3D& in) {_x /= in._x; _y /= in._y; _z /= in._z; _w /= in._w; return *this; }
 		GLvector3f toStruct() const { GLvector3f x; x.x = _x; x.y = _y; x.z = _z; return x; }
-		std::vector<GLvector3f>* toGLvector3f(const std::vector< Vector3D<T> >& in) {
-		    std::vector<GLvector3f>* out = new std::vector<GLvector3f>();
-		    for (unsigned int i = 0; i < in.size() ; ++i) {
-			out->push_back(in[i].toStruct());
-		    }
-		    return out;
-		}
 		void normalize() {
 		    float mag = sqrt(_x*_x + _y*_y + _z*_z);
 		    _x /= mag;
 		    _y /= mag;
 		    _z /= mag;
 		}
+
+		static std::vector<GLvector3f>* toGLvector3f(const std::vector< Vector3D<T> >& in) {
+		    std::vector<GLvector3f>* out = new std::vector<GLvector3f>();
+		    for (unsigned int i = 0; i < in.size() ; ++i) {
+			out->push_back(in[i].toStruct());
+		    }
+		    return out;
+		}
+
+		static GLfloat* toGLfloatArray(const std::vector< Vector3D<T> >& in) {
+		    GLfloat* out = new float [in.size() * 3];
+		    int j = 0;
+		    for (int i = in.size() -1; i != -1 ; --i) {
+			out[j + 0] = in.at(i).getX();
+			out[j + 1] = in.at(i).getY();
+			out[j + 2] = in.at(i).getZ();
+			j += 3;
+		    }
+		    return out;
+		}
+
+
 		T getX() const { return _x; }
 		T getY() const { return _y; }
 		T getZ() const { return _z; }
@@ -49,38 +64,47 @@ namespace newin {
 		T _z;
 		T _w;
 	};
-/*
-    void setIdentityMatrix(float *mat, int size) {
-	// fill matrix with 0s
-	for (int i = 0; i < size * size; ++i)
-	    mat[i] = 0.0f;
-	// fill diagonal with 1s
-	for (int i = 0; i < size; ++i)
-	    mat[i + i * size] = 1.0f;
-    }
 
-    void setTranslationMatrix(float *mat, float x, float y, float z) {
-	setIdentityMatrix(mat,4);
-	mat[12] = x;
-	mat[13] = y;
-	mat[14] = z;
-    }
-
-    void multMatrix(float *a, float *b) {
-	float res[16];
-	for (int i = 0; i < 4; ++i) {
-	    for (int j = 0; j < 4; ++j) {
-		res[j*4 + i] = 0.0f;
-		for (int k = 0; k < 4; ++k) {
-		    res[j*4 + i] += a[k*4 + i] * b[j*4 + k];
-		}
+    template <typename T>
+    class mat4 {
+	public:
+	    explicit mat4() {}
+	    virtual ~mat4() {}
+	    void setIdentityMatrix() {
+		// fill matrix with 0s
+		for (int i = 0; i < 4 * 4 ; ++i)
+		    mat[i] = 0.0f;
+		// fill diagonal with 1s
+		for (int i = 0; i < 4 ; ++i)
+		    mat[i + i * 4] = 1.0f;
 	    }
-	}
-	for (unsigned int i = 16 * sizeof(float); i != 0 ; --i) {
-	   a[i] = res[i];
-	}
-	//memcpy(a, res, 16 * sizeof(float));
-    }*/
+
+	    void setTranslationMatrix(/*float x, float y, float z,*/ Vector3D<T> v) {
+		setIdentityMatrix();
+		mat[12] = v.getX();//x;
+		mat[13] = v.getY();//y;
+		mat[14] = v.getZ();//z;
+	    }
+
+	    //void multMatrix(float *a, float *b) {
+	    mat4& operator*(mat4& in){
+		T res[16];
+		for (int i = 0; i < 4; ++i) {
+		    for (int j = 0; j < 4; ++j) {
+			res[j*4 + i] = 0.0f;
+			for (int k = 0; k < 4; ++k) {
+			    res[j*4 + i] += mat[k*4 + i] * in[j*4 + k];
+			}
+		    }
+		}
+		for (unsigned int i = 16 * sizeof(float); i != 0 ; --i) {
+		    mat[i] = res[i];
+		}
+		return *this;
+	    }
+	private:
+	    T mat[16];
+    };
 }
 
 #endif /* !TYPES3D_H_ */

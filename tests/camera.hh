@@ -11,8 +11,10 @@ namespace newin {
 	private:
 	    Vector3D<GLfloat> _pos;
 	    Vector3D<GLfloat> _rot;
-	    float projMatrix[16];
-	    float viewMatrix[16];
+	    mat4<GLfloat> projMatrix;
+	    mat4<GLfloat> viewMatrix;
+	    //float projMatrix[16];
+	    //float viewMatrix[16];
     };
 }
 

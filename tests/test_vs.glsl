@@ -5,5 +5,6 @@ uniform mat4 viewMatrix, projMatrix;
 in vec3 vertexPosition_local;
 
 void main() {
-    gl_Position = projMatrix * viewMatrix * vec4(vertexPosition_local, 1);
+//    gl_Position = projMatrix * viewMatrix * vec4(vertexPosition_local, 1);
+    gl_Position = vec4 (vertexPosition_local, 1.0);
 }

@@ -10,7 +10,6 @@
 #include "mesh.hh"
 
 newin::Display::Display(const int w, const int h) : _w(w), _h(h) , _depth(0) {
-    int major, minor, rev;
     if (glfwInit() != GL_TRUE)
 	throw DisplayEx();
     /* Create a windowed mode window and its OpenGL context */
@@ -19,18 +18,27 @@ newin::Display::Display(const int w, const int h) : _w(w), _h(h) , _depth(0) {
 	throw DisplayEx();
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+
     //float aspect_ratio = ((float)_w) / _h;
     //glFrustum(.5, -.5, -.5 * aspect_ratio, .5 * aspect_ratio, 1, 50);
-    glGetIntegerv(GL_MAJOR_VERSION, &major);
-    glGetIntegerv(GL_MINOR_VERSION, &minor);
-    std::cout << "openGL version" << major << "." << minor << std::endl;
-    glfwSetWindowTitle("demo");
-    glfwGetGLVersion(&major, &minor, &rev);
-    std::cout << "glfw version : " << major << "."<< minor << "-r" << rev << std::endl;
     GLenum err = glewInit();
     if (err != GLEW_OK)
 	throw DisplayEx();
 
+
+    //glGetIntegerv(GL_MAJOR_VERSION, &major);
+    //glGetIntegerv(GL_MINOR_VERSION, &minor);
+    //std::cout << "openGL version : " << major << "." << minor << std::endl;
+    const GLubyte* renderer = glGetString (GL_RENDERER); // get renderer string
+    const GLubyte* version = glGetString (GL_VERSION); // version as a string
+    std::cout << "render device : " << renderer << std::endl;
+    std::cout << "openGL version : " << version << std::endl;
+
+    int major, minor, rev;
+    glfwGetGLVersion(&major, &minor, &rev);
+    std::cout << "glfw version : " << major << "."<< minor << "-r" << rev << std::endl;
+
+    glfwSetWindowTitle("demo");
 }
 
 //
@@ -58,9 +66,26 @@ void newin::Display::run() {
 
     bool runing = true;
     std::vector< Vector3D<GLfloat> > l;
-    l.push_back(Vector3D<GLfloat>( 10,  10, -10, 0));
-    l.push_back(Vector3D<GLfloat>(-10,  10, -10, 0));
-    l.push_back(Vector3D<GLfloat>( 10, -10, -10, 0));
+    // v1
+    //l.push_back(Vector3D<GLfloat>( 100,  100, 100, 0));
+    //l.push_back(Vector3D<GLfloat>(-100,  100, -100, 0));
+    //l.push_back(Vector3D<GLfloat>(-100, -100, -100, 0));
+
+    // v1
+    l.push_back(Vector3D<GLfloat>(-0.5,  0.5, 0, 0));
+    l.push_back(Vector3D<GLfloat>(0.5, 0.5, 0, 0));
+    l.push_back(Vector3D<GLfloat>(0.5, -0.5, 0, 0));
+    l.push_back(Vector3D<GLfloat>(-0.5, -0.5, 0, 0));
+
+
+    /*
+    // tri 1 
+    100, 100, 0,
+    -100, 100, 0,
+    -100, -100, 0,
+    //tri 2 
+    100, -100, 0
+    */
     Mesh m(l);
 
     Shader v(new std::fstream("test_vs.glsl"), GL_VERTEX_SHADER);
