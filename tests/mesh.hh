@@ -8,18 +8,23 @@
 namespace newin {
     class Mesh {
 	public:
-	    explicit Mesh(const std::vector<Vector3D<GLfloat> >&);
+	    explicit Mesh(const std::vector<Vector3D<GLfloat> >*);
 	    virtual ~Mesh();
+	    void addVertex(const Vector3D<GLfloat>&);
 	    void setShader(ShadeProgram*);
 	    void render();
 	    void toogleWireframe();
+	    void update() const;
+	    void setColor(const Vector3D<GLfloat>&);
 	private:
+	    explicit Mesh();
+	    void checkVertex() const;
 	    ShadeProgram* _s;
 	    bool _wireframe;
 	    unsigned int _vertexCount;
 	    GLfloat* _verts;
 	    GLuint _vboID;
-	    GLuint _vaoID;
+	    Vector3D<GLfloat> _col;
     };
 }
 

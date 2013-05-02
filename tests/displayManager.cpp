@@ -2,7 +2,10 @@
 #include <fstream>
 #include "glinclude.h"
 #include <GL/glfw.h>
+#include "camera.hh"
+#include "light.hh"
 #include "displayManager.hh"
+#include "loader.hh"
 
 #ifndef GL_ARB_multitexture
 #error "openGL need an update =/"
@@ -24,11 +27,6 @@ newin::Display::Display(const int w, const int h) : _w(w), _h(h) , _depth(0) {
     GLenum err = glewInit();
     if (err != GLEW_OK)
 	throw DisplayEx();
-
-
-    //glGetIntegerv(GL_MAJOR_VERSION, &major);
-    //glGetIntegerv(GL_MINOR_VERSION, &minor);
-    //std::cout << "openGL version : " << major << "." << minor << std::endl;
     const GLubyte* renderer = glGetString (GL_RENDERER); // get renderer string
     const GLubyte* version = glGetString (GL_VERSION); // version as a string
     std::cout << "render device : " << renderer << std::endl;
@@ -63,29 +61,22 @@ newin::Display::Display(const int w, const int h) : _w(w), _h(h) , _depth(0) {
 
 void newin::Display::run() {
     int esc_pressed = glfwGetKey( GLFW_KEY_ESC );
-
     bool runing = true;
-    std::vector< Vector3D<GLfloat> > l;
-    // v1
-    l.push_back(Vector3D<GLfloat>(0.5, 0.5, 0, 0));
-    l.push_back(Vector3D<GLfloat>(0.5, -0.5, 0, 0));
-    l.push_back(Vector3D<GLfloat>(-0.5, -0.5, 0, 0));
-    //v2
-    l.push_back(Vector3D<GLfloat>(0.5, 0.5, 0, 0));
-    l.push_back(Vector3D<GLfloat>(-0.5, 0.5, 0, 0));
-    l.push_back(Vector3D<GLfloat>(-0.5, -0.5, 0, 0));
 
-    Mesh m(l);
-    Shader v(new std::fstream("test_vs.glsl"), GL_VERTEX_SHADER);
+    Mesh m(Loader().genQuad());
+    Shader v(new std::fstream("defuse_vs.glsl"), GL_VERTEX_SHADER);
     v.compile();
-    Shader f(new std::fstream("test_fs.glsl"), GL_FRAGMENT_SHADER);
+    Shader f(new std::fstream("defuse_fs.glsl"), GL_FRAGMENT_SHADER);
     f.compile();
     ShadeProgram* prgm = new ShadeProgram(v, f);
     m.setShader(prgm);
+    m.setColor(Vector3D<GLfloat>(0.0, 0.4, 0.25, 1.0));
 
-
-    glfwEnable(GLFW_STICKY_KEYS);
-
+    Light l(prgm, Vector3D<GLfloat>(0.25,0,0,0), Vector3D<GLfloat>(1,1,1,0));
+    Camera c(prgm, Vector3D<GLfloat>(0,0,0), Vector3D<GLfloat>(0,0,0));
+    float z = 0;
+    float y = 0;
+    c.setPos(Vector3D<GLfloat>(0,0,0));
     bool toggled = false;
     bool wiretoogle = false;
     while (runing) {
@@ -107,6 +98,20 @@ void newin::Display::run() {
 	    toggled = wiretoogle;
 	    m.toogleWireframe();
 	}
+	if (glfwGetKey('W')) {
+	    z += 0.25;
+	    c.setPos(Vector3D<GLfloat>(y,0,z));
+	} if (glfwGetKey('S')) {
+	    z -= 0.25;
+	    c.setPos(Vector3D<GLfloat>(y,0,z));
+	} if (glfwGetKey('A')) {
+	    y -= 0.25;
+	    c.setPos(Vector3D<GLfloat>(y,0,z));
+	} if (glfwGetKey('D')) {
+	    y += 0.25;
+	    c.setPos(Vector3D<GLfloat>(y,0,z));
+	}
+
 	glfwSwapBuffers();
     }
 }

@@ -2,7 +2,7 @@
 # define SHADER_H_
 #include <fstream>
 #include "glinclude.h"
-#include "types3D.hh"
+#include "Types3D.hh"
 
 namespace newin {
     class Shader {

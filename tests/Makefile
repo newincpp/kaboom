@@ -2,7 +2,9 @@ SRC		= main.cpp \
 		  displayManager.cpp \
 		  shader.cpp \
 		  mesh.cpp \
-		  camera.cpp
+		  camera.cpp \
+		  loader.cpp \
+		  light.cpp
 
 RASM		= start.o
 ASM		= #$(RASM)

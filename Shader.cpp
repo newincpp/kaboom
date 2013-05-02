@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include "shader.hh"
-#include "types3D.hh"
+#include "Shader.hh"
+#include "Types3D.hh"
 
 ////////////////////////////////////////////////////////////////////////////////
 //				    SHADER

@@ -1,4 +1,4 @@
-#include "camera.hh"
+#include "Camera.hh"
 
 newin::Camera::Camera(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& r) : _pos(p), _rot(r) , _prgm(prgm) {
     _prgm->setVariable("transCam", _pos.getX(), _pos.getY(), _pos.getW(), _pos.getZ());
@@ -7,6 +7,12 @@ newin::Camera::Camera(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vect
 
 newin::Camera::~Camera() {
 }
+
+void newin::Camera::initialize() {
+}
+
+//void newin::Camera::update(gdl::GameClock const & gameClock, gdl::Input & input) {
+//}
 
 newin::Vector3D<GLfloat> newin::Camera::getPos() const {
     return _pos;
