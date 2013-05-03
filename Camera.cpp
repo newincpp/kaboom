@@ -5,14 +5,25 @@ newin::Camera::Camera(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vect
     _prgm->setVariable("rotCam", _rot);
 }
 
+newin::Camera::Camera() {
+}
+
 newin::Camera::~Camera() {
 }
 
-void newin::Camera::initialize() {
+void newin::Camera::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& r) {
+    _pos = p;
+    _rot = r;
+    _prgm = prgm;
+    _prgm->setVariable("transCam", _pos.getX(), _pos.getY(), _pos.getW(), _pos.getZ());
+    _prgm->setVariable("rotCam", _rot);
 }
 
-//void newin::Camera::update(gdl::GameClock const & gameClock, gdl::Input & input) {
-//}
+void newin::Camera::update(/*gdl::GameClock const & gameClock,*/ gdl::Input & input) {
+    (void) input;
+    _prgm->setVariable("transCam", _pos.getX(), _pos.getY(), _pos.getW(), _pos.getZ());
+    _prgm->setVariable("rotCam", _rot);
+}
 
 newin::Vector3D<GLfloat> newin::Camera::getPos() const {
     return _pos;

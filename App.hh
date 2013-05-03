@@ -4,6 +4,7 @@
 #include "AObject.hh"
 #include "Camera.hh"
 #include "libgdl_gl-2012.4/include/Game.hpp"
+#include "Shader.hh"
 
 class App : public gdl::Game {
     public :
@@ -16,6 +17,7 @@ class App : public gdl::Game {
     private:
 	newin::Camera camera_;
 	std::list<AObject*> objects_;
+	newin::ShadeProgram* _defaultShader;
 };
 
 #endif /* !APP_H_ */

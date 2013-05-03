@@ -65,6 +65,7 @@ newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment) 
     if (GL_FALSE == status) {
 	std::cout << "ERROR: failed to link shader programme" << std::endl;
     }
+    _enabled = false;
 }
 
 void newin::ShadeProgram::setVariable(const std::string& variableName, const Vector3D<float>& v) {
