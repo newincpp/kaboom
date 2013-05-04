@@ -15,6 +15,9 @@ void newin::Camera::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, c
     _pos = p;
     _rot = r;
     _prgm = prgm;
+    if (_prgm == NULL) {
+	throw ShaderException("progam is not set...");
+    }
     _prgm->setVariable("transCam", _pos.getX(), _pos.getY(), _pos.getW(), _pos.getZ());
     _prgm->setVariable("rotCam", _rot);
 }
@@ -22,7 +25,7 @@ void newin::Camera::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, c
 void newin::Camera::update(/*gdl::GameClock const & gameClock,*/ gdl::Input & input) {
     (void) input;
     _prgm->setVariable("transCam", _pos.getX(), _pos.getY(), _pos.getW(), _pos.getZ());
-    _prgm->setVariable("rotCam", _rot);
+//    _prgm->setVariable("rotCam", _rot);
 }
 
 newin::Vector3D<GLfloat> newin::Camera::getPos() const {
