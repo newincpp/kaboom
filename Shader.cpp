@@ -42,8 +42,11 @@ void newin::Shader::compile() {
 	    glGetShaderInfoLog(_shaderID, length, &written, errorLog);
 	    errorLog[written] = 0;
 	    std::cerr << "Shader error log;" << std::endl << "\"" << errorLog << "\"" << std::endl;
+	    throw ShaderException(errorLog);
 	    delete [] errorLog;
 	}
+    } else {
+	std::cout << "\033[1;32m" << "shader compiled !" << "\033[0m" << std::endl;
     }
 }
 
@@ -55,7 +58,7 @@ GLuint newin::Shader::getID() const {
 //  				    PROGRAM
 /////////////////////////////////////////////////////////////////////////////
 
-newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment) {
+newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment) : _enabled(false) {
     _prgmID = glCreateProgram();
     glAttachShader(_prgmID, vertex.getID());
     glAttachShader(_prgmID, fragment.getID());
@@ -63,9 +66,19 @@ newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment) 
     GLint status;
     glGetProgramiv(_prgmID, GL_LINK_STATUS, &status);
     if (GL_FALSE == status) {
-	std::cout << "ERROR: failed to link shader programme" << std::endl;
+//	std::cout << "ERROR: failed to link shader programme" << std::endl;
+	throw ShaderException("ERROR: failed to link shader programme");
     }
-    _enabled = false;
+}
+
+void newin::ShadeProgram::setVariable(const std::string& variableName, const GLfloat* v) {
+    enable();
+    GLint loc = glGetUniformLocation(_prgmID, variableName.c_str());
+    if (loc < 0) {
+	std::cout << "ERROR getting variable named '" << variableName << "' from shader" << std::endl;
+	return ;
+    }
+    glUniformMatrix4fv(loc, 1, false, v);
 }
 
 void newin::ShadeProgram::setVariable(const std::string& variableName, const Vector3D<float>& v) {
@@ -106,4 +119,19 @@ void newin::ShadeProgram::disenable() {
 
 GLuint newin::ShadeProgram::getID () const {
     return _prgmID;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+//  				    EXCEPTION
+/////////////////////////////////////////////////////////////////////////////
+
+newin::ShaderException::ShaderException(const std::string& m) throw() {
+    _msg = m;
+}
+
+newin::ShaderException::~ShaderException() throw() {
+}
+
+const char* newin::ShaderException::what() const throw() {
+    return _msg.c_str();
 }

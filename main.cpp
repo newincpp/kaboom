@@ -1,3 +1,5 @@
+#include <iostream>
+#include <exception>
 #include <cstdlib>
 
 //#include "libgdl_gl-2012.4/include/Clock.hpp"
@@ -14,7 +16,11 @@
 int main() {
     App bbman;
 
-    bbman.run();
+    try {
+	bbman.run();
+    } catch (const std::exception& e) {
+	std::cerr << "\033[1;31m FATAL ERROR : " << std::endl << e.what() << std::endl;
+    }
     return EXIT_SUCCESS;
 
 }

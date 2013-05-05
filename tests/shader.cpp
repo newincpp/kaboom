@@ -67,6 +67,16 @@ newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment) 
     }
 }
 
+void newin::ShadeProgram::setVariable(const std::string& variableName, const GLfloat* v) {
+    enable();
+    GLint loc = glGetUniformLocation(_prgmID, variableName.c_str());
+    if (loc < 0) {
+	std::cout << "ERROR getting variable named '" << variableName << "' from shader" << std::endl;
+	return ;
+    }
+    glUniformMatrix4fv(loc, 1, false, v);
+}
+
 void newin::ShadeProgram::setVariable(const std::string& variableName, const Vector3D<float>& v) {
     setVariable(variableName, v.getX(), v.getY(), v.getZ(), v.getW());
 }

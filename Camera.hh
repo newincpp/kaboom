@@ -19,9 +19,11 @@ namespace newin {
 	    void setRot(const Vector3D<GLfloat>&);
 	    virtual ~Camera();
 	private:
+	    bool _changed;
 	    Vector3D<GLfloat> _pos;
 	    Vector3D<GLfloat> _rot;
 	    ShadeProgram* _prgm;
+	    GLfloat _modelView[16];
     };
 }
 

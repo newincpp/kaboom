@@ -1,14 +1,16 @@
 #version 330
 
-uniform vec4 transCam;
-//uniform vec4  rotCam;
+uniform mat4 modelViewMatrix;
+uniform mat3 normalMatrix;
+//uniform mat4 projectionMatrix;
 
 in vec3 vertexPosition;
-out vec3 TNormal;
-out vec3 TVertex;
+in vec3 vertexNormal;
+out vec4 TNormal;
+out vec4 TVertex;
 
 void main() {
-    TVertex = vec3(transCam.x, transCam.y, transCam.z) - vertexPosition; 
-    TNormal = normalize(vertexPosition);
-    gl_Position = vec4(vertexPosition, 1.0) - transCam;
+    TVertex = modelViewMatrix * vec4(vertexPosition, 1.0);
+    TNormal = vec4(/*normalMatrix * */vertexNormal, 0);
+    gl_Position = modelViewMatrix * vec4(vertexPosition, 1.0);
 }

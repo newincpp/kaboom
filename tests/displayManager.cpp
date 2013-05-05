@@ -74,8 +74,9 @@ void newin::Display::run() {
 
     Light l(prgm, Vector3D<GLfloat>(0.25,0,0,0), Vector3D<GLfloat>(1,1,1,0));
     Camera c(prgm, Vector3D<GLfloat>(0,0,0), Vector3D<GLfloat>(0,0,0));
-    float z = 0;
+    float x = 0;
     float y = 0;
+    float z = 0;
     c.setPos(Vector3D<GLfloat>(0,0,0));
     bool toggled = false;
     bool wiretoogle = false;
@@ -98,20 +99,26 @@ void newin::Display::run() {
 	    toggled = wiretoogle;
 	    m.toogleWireframe();
 	}
-	if (glfwGetKey('W')) {
-	    z += 0.25;
-	    c.setPos(Vector3D<GLfloat>(y,0,z));
-	} if (glfwGetKey('S')) {
-	    z -= 0.25;
-	    c.setPos(Vector3D<GLfloat>(y,0,z));
-	} if (glfwGetKey('A')) {
-	    y -= 0.25;
-	    c.setPos(Vector3D<GLfloat>(y,0,z));
-	} if (glfwGetKey('D')) {
-	    y += 0.25;
-	    c.setPos(Vector3D<GLfloat>(y,0,z));
-	}
 
+	if (glfwGetKey('W')) {
+	    y += 0.25;
+	    c.setPos(Vector3D<GLfloat>(x,y,z));
+	} if (glfwGetKey('S')) {
+	    y -= 0.25;
+	    c.setPos(Vector3D<GLfloat>(x,y,z));
+	} if (glfwGetKey('A')) {
+	    x += 0.25;
+	    c.setPos(Vector3D<GLfloat>(x,y,z));
+	} if (glfwGetKey('D')) {
+	    x -= 0.25;
+	    c.setPos(Vector3D<GLfloat>(x,y,z));
+	} if (glfwGetKey('Q')) {
+	    z -= 0.25;
+	    c.setPos(Vector3D<GLfloat>(x,y,z));
+	} if (glfwGetKey('E')) {
+	    z += 0.25;
+	    c.setPos(Vector3D<GLfloat>(x,y,z));
+	}
 	glfwSwapBuffers();
     }
 }

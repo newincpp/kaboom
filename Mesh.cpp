@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Mesh.hh"
 
-newin::Mesh::Mesh(const std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _s(s) , _wireframe(false) {
+newin::Mesh::Mesh(const std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.0, 0.4, 0.25, 1.0)) {
     if (m) {
 	_verts = Vector3D<GLfloat>::toGLfloatArray(*m);
 	int j = 0;
@@ -81,7 +81,6 @@ void newin::Mesh::toogleWireframe() {
 }
 
 void newin::Mesh::render() {
-    // enable shader
     if (_s)
 	_s->enable();
     else

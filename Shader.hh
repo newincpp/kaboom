@@ -1,6 +1,8 @@
 #ifndef SHADER_H_
 # define SHADER_H_
 #include <fstream>
+#include <string>
+#include <exception>
 #include "glinclude.h"
 #include "Types3D.hh"
 
@@ -18,6 +20,7 @@ namespace newin {
     class ShadeProgram {
 	public:
 	    ShadeProgram(const Shader& vertex, const Shader& fragment);
+	    void setVariable(const std::string&, const GLfloat*);
 	    void setVariable(const std::string&, const Vector3D<GLfloat>&);
 	    void setVariable(const std::string&, const float, const float, const float, const float);
 	    void setVariable(const std::string&, const float, const float, const float);
@@ -28,6 +31,17 @@ namespace newin {
 	    GLuint _prgmID;
 	    GLboolean _enabled;
     };
+
+    class ShaderException : public std::exception {
+	public:
+	    explicit ShaderException(const std::string&) throw();
+	    virtual ~ShaderException() throw();
+	    virtual const char* what() const throw();
+	private:
+	    ShaderException();
+	    std::string _msg;
+    };
+
 }
 
 #endif /* !SHADER_H_ */

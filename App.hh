@@ -3,6 +3,7 @@
 
 #include "AObject.hh"
 #include "Camera.hh"
+#include "Light.hh"
 #include "libgdl_gl-2012.4/include/Game.hpp"
 #include "Shader.hh"
 
@@ -15,8 +16,10 @@ class App : public gdl::Game {
 	virtual void	draw(void);
 	virtual void	unload(void);
     private:
-	newin::Camera camera_;
-	std::list<AObject*> objects_;
+	float _old_time;
+	newin::Camera _camera;
+	newin::Light _defaultLight;
+	std::list<AObject*> _objects;
 	newin::ShadeProgram* _defaultShader;
 };
 

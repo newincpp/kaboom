@@ -18,6 +18,7 @@ namespace newin {
     class ShadeProgram {
 	public:
 	    ShadeProgram(const Shader& vertex, const Shader& fragment);
+	    void setVariable(const std::string&, const GLfloat*);
 	    void setVariable(const std::string&, const Vector3D<GLfloat>&);
 	    void setVariable(const std::string&, const float, const float, const float, const float);
 	    void setVariable(const std::string&, const float, const float, const float);
