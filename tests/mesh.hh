@@ -12,11 +12,11 @@ namespace newin {
 	    virtual ~Mesh();
 	    void addVertex(const Vector3D<GLfloat>&);
 	    void setShader(ShadeProgram*);
-	    void render();
-	    void toogleWireframe();
+	    void render(bool changed = false);
 	    void update() const;
 	    void setColor(const Vector3D<GLfloat>&);
 	private:
+	    void toogleWireframe();
 	    explicit Mesh();
 	    void checkVertex() const;
 	    ShadeProgram* _s;
@@ -25,6 +25,8 @@ namespace newin {
 	    GLfloat* _verts;
 	    GLuint _vboID;
 	    Vector3D<GLfloat> _col;
+	    GLuint _callList;
+	    bool _compiled;
     };
 }
 

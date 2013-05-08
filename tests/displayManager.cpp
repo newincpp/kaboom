@@ -97,7 +97,7 @@ void newin::Display::run() {
 	wiretoogle = glfwGetKey(GLFW_KEY_SPACE);
 	if (wiretoogle != toggled){
 	    toggled = wiretoogle;
-	    m.toogleWireframe();
+	    //m.toogleWireframe(true);
 	}
 
 	if (glfwGetKey('W')) {

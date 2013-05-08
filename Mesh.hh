@@ -30,6 +30,8 @@ namespace newin {
 	    GLfloat* _verts;
 	    GLuint _vboID;
 	    Vector3D<GLfloat> _col;
+	    GLuint _callList;
+	    bool _compiled;
     };
 }
 

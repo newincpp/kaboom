@@ -1,7 +1,7 @@
 #include <iostream>
 #include "mesh.hh"
 
-newin::Mesh::Mesh(const std::vector<Vector3D<GLfloat> >* m) : _s(NULL) , _wireframe(false) {
+newin::Mesh::Mesh(const std::vector<Vector3D<GLfloat> >* m) : _s(NULL) , _wireframe(false) , _compiled(false) {
     if (m) {
 	_verts = Vector3D<GLfloat>::toGLfloatArray(*m);
 	int j = 0;
@@ -18,6 +18,7 @@ newin::Mesh::Mesh(const std::vector<Vector3D<GLfloat> >* m) : _s(NULL) , _wirefr
     }
     glGenBuffers(1, &_vboID);
     update();
+    _callList = glGenLists(1);
     //checkVertex();
 }
 
@@ -80,7 +81,7 @@ void newin::Mesh::toogleWireframe() {
     //checkVertex();
 }
 
-void newin::Mesh::render() {
+void newin::Mesh::render(bool changed) {
     // enable shader
     if (_s)
 	_s->enable();
@@ -88,18 +89,27 @@ void newin::Mesh::render() {
 	glUseProgram(0);
     _s->setVariable("inputColour", Vector3D<GLfloat>(_col.getX(),_col.getY(), _col.getZ(), 1.0));
     // enable a range of gl rendering options specific to our object
-    glEnable(GL_DEPTH_TEST); // enable depth-testing
-    glDepthMask(GL_TRUE); // turn back on
-    glDepthFunc(GL_LESS);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    glFrontFace(GL_CCW);
-    glBindBuffer(GL_ARRAY_BUFFER, _vboID); // bind (enable) buffer
-    if (_wireframe == true)
-	glDrawArrays(GL_LINE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
-    else
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    if (_compiled && !changed) {
+	glCallList(_callList);
+    } else {
+	glNewList(_callList, GL_COMPILE);
+	glEnable(GL_DEPTH_TEST); // enable depth-testing
+	glDepthMask(GL_TRUE); // turn back on
+	glDepthFunc(GL_LESS);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
+	glBindBuffer(GL_ARRAY_BUFFER, _vboID); // bind (enable) buffer
+	if (_wireframe == true)
+	  glDrawArrays(GL_LINE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
+	else
+	    glDrawArrays(GL_TRIANGLE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glEndList();
+	_compiled = true;
+    }
+
     _s->disenable();
 }
 

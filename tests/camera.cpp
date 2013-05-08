@@ -2,8 +2,6 @@
 
 newin::Camera::Camera(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& r) : _changed(true), _pos(p), _rot(r) , _prgm(prgm) {
     update();
-        //_prgm->setVariable("transCam", _pos.getX(), _pos.getY(), _pos.getW(), _pos.getZ());
-    //_prgm->setVariable("rotCam", _rot);
 }
 
 newin::Camera::~Camera() {
@@ -36,10 +34,12 @@ void newin::Camera::update() {
 
 void newin::Camera::setPos(const Vector3D<GLfloat>& p) {
     _pos = p;
+    _changed = true;
     update();
 }
 
 void newin::Camera::setRot(const Vector3D<GLfloat>& r) {
     _rot = r;
+    _changed = true;
     update();
 }
