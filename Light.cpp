@@ -47,7 +47,6 @@ void newin::Light::update(/*gdl::GameClock const &, */gdl::Input & i) {
 	return;
     else {
 	_changed = false;
-	std::cout << "light changed !!" << std::endl;
 	_prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
 	_prgm->setVariable("lightDiff", _diff.getX(), _diff.getY(), _diff.getZ());
     }

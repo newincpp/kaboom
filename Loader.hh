@@ -13,6 +13,7 @@ namespace newin {
 	    std::vector< Vector3D<GLfloat> >* genMesh();
 	    std::vector< Vector3D<GLfloat> >* genTri();
 	    std::vector< Vector3D<GLfloat> >* genQuad();
+	    std::vector< Vector3D<GLfloat> >* loadOBJ(const std::string&);
 	private:
 	    std::string _filename;
     };

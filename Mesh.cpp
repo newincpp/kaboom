@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Mesh.hh"
 
-newin::Mesh::Mesh(const std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.0, 0.4, 0.25, 1.0)), _compiled(false) {
+newin::Mesh::Mesh(const std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.0, 0.4, 0.25, 1.0)), _pos(), _compiled(false) {
     if (m) {
 	_verts = Vector3D<GLfloat>::toGLfloatArray(*m);
 	int j = 0;
@@ -27,6 +27,10 @@ newin::Mesh::Mesh() : _s(NULL), _wireframe(false) {
 
 void newin::Mesh::setColor(const Vector3D<GLfloat>& color) {
     _col = color;
+}
+
+void newin::Mesh::setPos(const Vector3D<GLfloat>& pos ) {
+    _pos = pos;
 }
 
 void newin::Mesh::checkVertex() const {
@@ -86,6 +90,7 @@ void newin::Mesh::render() {
 	_s->enable();
     else
 	glUseProgram(0);
+    _s->setVariable("objTranslation", _pos);
     _s->setVariable("inputColour", Vector3D<GLfloat>(_col.getX(),_col.getY(), _col.getZ(), 1.0));
     // enable a range of gl rendering options specific to our object
 

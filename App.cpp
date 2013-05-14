@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
+#include <cstdlib>
 #include "Mesh.hh"
 #include "Loader.hh"
 #include "glinclude.h"
@@ -28,6 +29,7 @@ void App::initialize(void) {
     _camera.initialize(_defaultShader,  newin::Vector3D<GLfloat>(0,0,0), newin::Vector3D<GLfloat>(0,0,0));
     _defaultLight.initialize(_defaultShader, newin::Vector3D<GLfloat>(0.25,0.25,0), newin::Vector3D<GLfloat>(1,1,1));
     _objects.push_back(new newin::Mesh(newin::Loader().genQuad(), _defaultShader));
+    //_objects.push_back(new newin::Mesh(newin::Loader().loadOBJ("test.obj"), _defaultShader));
     _objects.push_back(&_defaultLight);
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
@@ -35,6 +37,9 @@ void App::initialize(void) {
 }
 
 void App::update(void) {
+    if (input_.isKeyDown(gdl::Keys::Escape)) {
+	exit(0);
+    }
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
 	(*itb)->update(/*gameClock_,*/input_);

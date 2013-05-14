@@ -17,6 +17,7 @@ namespace newin {
 	    void toogleWireframe();
 	    void update() const;
 	    void setColor(const Vector3D<GLfloat>&);
+	    void setPos(const Vector3D<GLfloat>&);
 	    // for gdl.......
 	    void initialize();
 	    void update(/*gdl::GameClock const &,*/ gdl::Input &);
@@ -30,6 +31,7 @@ namespace newin {
 	    GLfloat* _verts;
 	    GLuint _vboID;
 	    Vector3D<GLfloat> _col;
+	    Vector3D<GLfloat> _pos;
 	    GLuint _callList;
 	    bool _compiled;
     };
