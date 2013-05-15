@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Mesh.hh"
 
-newin::Mesh::Mesh(const std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.0, 0.4, 0.25, 1.0)), _pos(), _compiled(false) {
+newin::Mesh::Mesh(const std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.2, 0.6, 0.45, 1.0)), _pos(), _compiled(false) {
     if (m) {
 	_verts = Vector3D<GLfloat>::toGLfloatArray(*m);
 	int j = 0;
@@ -94,24 +94,24 @@ void newin::Mesh::render() {
     _s->setVariable("inputColour", Vector3D<GLfloat>(_col.getX(),_col.getY(), _col.getZ(), 1.0));
     // enable a range of gl rendering options specific to our object
 
-    if (_compiled) {
-	glCallList(_callList);
-    } else {
-	glNewList(_callList, GL_COMPILE);
-	glEnable(GL_DEPTH_TEST); // enable depth-testing
-	glDepthMask(GL_TRUE); // turn back on
-	glDepthFunc(GL_LESS);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CCW);
-	glBindBuffer(GL_ARRAY_BUFFER, _vboID); // bind (enable) buffer
-	if (_wireframe == true)
-	    glDrawArrays(GL_LINE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
-	else
-	    glDrawArrays(GL_TRIANGLE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glEndList();
-    }
+    //if (_compiled) {
+    //    glCallList(_callList);
+    //} else {
+    //	glNewList(_callList, GL_COMPILE);
+    glEnable(GL_DEPTH_TEST); // enable depth-testing
+    glDepthMask(GL_TRUE); // turn back on
+    glDepthFunc(GL_LESS);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CCW);
+    glBindBuffer(GL_ARRAY_BUFFER, _vboID); // bind (enable) buffer
+    if (_wireframe == true)
+	glDrawArrays(GL_LINE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
+    else
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    //	glEndList();
+    //  }
     _compiled = true;
     _s->disenable();
 }
@@ -130,7 +130,12 @@ void newin::Mesh::initialize() {
 }
 
 void newin::Mesh::update(/*gdl::GameClock const &, */ gdl::Input & i) {
-    (void)i;
+    if (i.isKeyDown(gdl::Keys::Add) == true) {
+	_pos.setY( _pos.getY() - 0.01);
+    }
+    if (i.isKeyDown(gdl::Keys::Subtract) == true) {
+	_pos.setY( _pos.getY() + 0.01);
+    }
 }
 
 void newin::Mesh::draw(void) {

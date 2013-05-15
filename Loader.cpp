@@ -22,7 +22,6 @@ std::vector< newin::Vector3D<GLfloat> >* newin::Loader::genTri() {
     l->push_back(Vector3D<GLfloat>(0.5, 0.5, 0, 0));
     l->push_back(Vector3D<GLfloat>(0.5, -0.5, 0, 0));
     l->push_back(Vector3D<GLfloat>(-0.5, -0.5, 0, 0));
-
     return l;
 }
 

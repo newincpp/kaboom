@@ -19,11 +19,14 @@ namespace newin {
 	    void setRot(const Vector3D<GLfloat>&);
 	    virtual ~Camera();
 	private:
+	    void loadProjectionMatrix(float fov = 1.046666640, float aspect = 1.33333f, float znear = 0.1f, float zfar = 1000.f);
+	    void calculate();
 	    bool _changed;
 	    Vector3D<GLfloat> _pos;
 	    Vector3D<GLfloat> _rot;
 	    ShadeProgram* _prgm;
 	    GLfloat _modelView[16];
+	    GLfloat _projection[16];
     };
 }
 

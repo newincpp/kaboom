@@ -10,7 +10,7 @@ out vec4 outputColour;
 
 void main ()
 {
-    vec4 amb = vec4(0.2,0.2,0.2, 0);
+    vec4 amb = vec4(0.3,0.3,0.3, 0);
     vec4 ld = vec4(lightDiff, 0);
     vec4 L = normalize(lightPos - TVertex);
     vec4 Idiff = ld * max(dot(TNormal,L), 0.0);
