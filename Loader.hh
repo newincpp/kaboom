@@ -2,6 +2,7 @@
 # define LOADER_H_
 
 #include <string>
+#include "Mesh.hh"
 #include "Types3D.hh"
 
 namespace newin {
@@ -10,10 +11,9 @@ namespace newin {
 	    explicit Loader();
 	    explicit Loader(const std::string&);
 	    virtual ~Loader();
-	    std::vector< Vector3D<GLfloat> >* genMesh();
-	    std::vector< Vector3D<GLfloat> >* genTri();
-	    std::vector< Vector3D<GLfloat> >* genQuad();
-	    std::vector< Vector3D<GLfloat> >* loadOBJ(const std::string&);
+	    Mesh* genTri(ShadeProgram*);
+	    Mesh* genQuad(ShadeProgram*);
+	    Mesh* loadOBJ(ShadeProgram*, const std::string&);
 	private:
 	    std::string _filename;
     };

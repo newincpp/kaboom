@@ -23,6 +23,7 @@ namespace newin {
 	    void update(/*gdl::GameClock const &,*/ gdl::Input &);
 	    void draw(void);
 	private:
+	    void transform();
 	    explicit Mesh();
 	    void checkVertex() const;
 	    ShadeProgram* _s;
@@ -32,6 +33,8 @@ namespace newin {
 	    GLuint _vboID;
 	    Vector3D<GLfloat> _col;
 	    Vector3D<GLfloat> _pos;
+	    Vector3D<GLfloat> _rot;
+	    GLfloat _matrixTransform[16];
 	    GLuint _callList;
 	    bool _compiled;
     };

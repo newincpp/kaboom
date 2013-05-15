@@ -12,20 +12,15 @@ newin::Loader::Loader() : _filename() {
 newin::Loader::~Loader() {
 }
 
-std::vector< newin::Vector3D<GLfloat> >* newin::Loader::genMesh() {
-    std::vector< Vector3D<GLfloat> >* l = new std::vector< Vector3D<GLfloat> >();
-    return l;
-}
-
-std::vector< newin::Vector3D<GLfloat> >* newin::Loader::genTri() {
+newin::Mesh* newin::Loader::genTri(ShadeProgram* p) {
     std::vector< Vector3D<GLfloat> >* l = new std::vector< Vector3D<GLfloat> >();
     l->push_back(Vector3D<GLfloat>(0.5, 0.5, 0, 0));
     l->push_back(Vector3D<GLfloat>(0.5, -0.5, 0, 0));
     l->push_back(Vector3D<GLfloat>(-0.5, -0.5, 0, 0));
-    return l;
+    return new Mesh(l, p);
 }
 
-std::vector< newin::Vector3D<GLfloat> >* newin::Loader::genQuad() {
+newin::Mesh* newin::Loader::genQuad(ShadeProgram* p) {
     std::vector< Vector3D<GLfloat> >* l = new std::vector< Vector3D<GLfloat> >();
     // v1
     l->push_back(Vector3D<GLfloat>(0.5, 0.5, 0, 0));
@@ -35,10 +30,10 @@ std::vector< newin::Vector3D<GLfloat> >* newin::Loader::genQuad() {
     l->push_back(Vector3D<GLfloat>(0.5, 0.5, 0, 0));
     l->push_back(Vector3D<GLfloat>(-0.5, 0.5, 0, 0));
     l->push_back(Vector3D<GLfloat>(-0.5, -0.5, 0, 0));
-    return l;
+    return new Mesh(l, p);
 }
 
-std::vector< newin::Vector3D<GLfloat> >* newin::Loader::loadOBJ(const std::string& fName) {
+newin::Mesh* newin::Loader::loadOBJ(ShadeProgram* p, const std::string& fName) {
     std::fstream f(fName.c_str());
     std::vector< Vector3D<GLfloat> >* l = new std::vector< Vector3D<GLfloat> >();
     std::vector< Vector3D<GLfloat> >* pure = new std::vector< Vector3D<GLfloat> >();
@@ -70,20 +65,20 @@ std::vector< newin::Vector3D<GLfloat> >* newin::Loader::loadOBJ(const std::strin
     std::cout << "size : " << pure->size() << std::endl;
     while (tmp == "f") {
 	f >> index;
-	std::cout << index << " ";
+	//std::cout << index << " ";
 	l->push_back(pure->at(index - 1));
 	f >> index;
-	std::cout << index << " ";
+	//std::cout << index << " ";
 	l->push_back(pure->at(index - 1));
 	f >> index;
-	std::cout << index << " ";
+	//std::cout << index << " ";
 	l->push_back(pure->at(index - 1));
-	std::cout << std::endl;
+	//std::cout << std::endl;
 	f >> tmp;
 	if (tmp == "usemtl") {
 	    f >> tmp;
 	    f >> tmp;
 	}
     }
-    return l;
+    return new Mesh(l, p);
 }

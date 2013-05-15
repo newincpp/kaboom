@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Mesh.hh"
 
-newin::Mesh::Mesh(const std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.2, 0.6, 0.45, 1.0)), _pos(), _compiled(false) {
+newin::Mesh::Mesh(const std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.2, 0.6, 0.45, 1.0)), _pos(), _rot(), _compiled(false) {
     if (m) {
 	_verts = Vector3D<GLfloat>::toGLfloatArray(*m);
 	int j = 0;
@@ -90,7 +90,7 @@ void newin::Mesh::render() {
 	_s->enable();
     else
 	glUseProgram(0);
-    _s->setVariable("objTranslation", _pos);
+    _s->setVariable("objTransform", _matrixTransform);
     _s->setVariable("inputColour", Vector3D<GLfloat>(_col.getX(),_col.getY(), _col.getZ(), 1.0));
     // enable a range of gl rendering options specific to our object
 
@@ -123,6 +123,16 @@ newin::Mesh::~Mesh() {
     delete _verts;
 }
 
+void newin::Mesh::transform() {
+    glPushMatrix();
+    glLoadIdentity();
+    glRotatef(_rot.getZ(), 0, 0, 1);
+    glRotatef(_rot.getY(), 0, 1, 0);
+    glRotatef(_rot.getX(), 1, 0, 0);
+    glTranslatef(- _pos.getX(), - _pos.getY(), - _pos.getZ());
+    glGetFloatv(GL_MODELVIEW_MATRIX, _matrixTransform);
+    glPopMatrix();
+}
 
 //for gdl.....
 
@@ -130,12 +140,25 @@ void newin::Mesh::initialize() {
 }
 
 void newin::Mesh::update(/*gdl::GameClock const &, */ gdl::Input & i) {
-    if (i.isKeyDown(gdl::Keys::Add) == true) {
+    if (i.isKeyDown(gdl::Keys::W) == true) {
+	_pos.setZ( _pos.getZ() - 0.01);
+    }
+    if (i.isKeyDown(gdl::Keys::S) == true) {
+	_pos.setZ( _pos.getZ() + 0.01);
+    }
+    if (i.isKeyDown(gdl::Keys::A) == true) {
 	_pos.setY( _pos.getY() - 0.01);
     }
-    if (i.isKeyDown(gdl::Keys::Subtract) == true) {
+    if (i.isKeyDown(gdl::Keys::D) == true) {
 	_pos.setY( _pos.getY() + 0.01);
     }
+    if (i.isKeyDown(gdl::Keys::Q) == true) {
+	_rot.setY( _rot.getY() + 0.1);
+    }
+    if (i.isKeyDown(gdl::Keys::E) == true) {
+	_rot.setY( _rot.getY() + 0.1);
+    }
+    transform();
 }
 
 void newin::Mesh::draw(void) {

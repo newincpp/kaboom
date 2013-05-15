@@ -7,7 +7,7 @@ newin::Camera::Camera(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vect
     for (unsigned int i = 0; i < 16; ++i) {
 	_projection[i] = 0;
     }
-    loadProjectionMatrix();
+   loadProjectionMatrix();
     _prgm->setVariable("modelViewMatrix", _modelView);
     _prgm->setVariable("projectionMatrix", _projection);
 }
@@ -41,41 +41,40 @@ void newin::Camera::calculate() {
     glTranslatef(- _pos.getX(), - _pos.getY(), - _pos.getZ());
     glGetFloatv(GL_MODELVIEW_MATRIX, _modelView);
     glPopMatrix();
-
 }
 
 void newin::Camera::update(/*gdl::GameClock const & gameClock,*/ gdl::Input & i) {
-    if (i.isKeyDown(gdl::Keys::A) == true) {
+    if (i.isKeyDown(gdl::Keys::Numpad4) == true) {
 	_pos.setX( _pos.getX() + 0.01);
 	_changed = true;
     }
-    if (i.isKeyDown(gdl::Keys::D) == true) {
+    if (i.isKeyDown(gdl::Keys::Numpad6) == true) {
 	_pos.setX( _pos.getX() - 0.01);
 	_changed = true;
     }
-    if (i.isKeyDown(gdl::Keys::W) == true) {
+    if (i.isKeyDown(gdl::Keys::Numpad8) == true) {
 	_pos.setY( _pos.getY() - 0.01);
 	_changed = true;
     }
-    if (i.isKeyDown(gdl::Keys::S) == true) {
+    if (i.isKeyDown(gdl::Keys::Numpad5) == true) {
 	_pos.setY( _pos.getY() + 0.01);
 	_changed = true;
     }
-    if (i.isKeyDown(gdl::Keys::Up) == true) {
+    if (i.isKeyDown(gdl::Keys::Add) == true) {
 	_pos.setZ( _pos.getZ() - 0.01);
 	_changed = true;
     }
-    if (i.isKeyDown(gdl::Keys::Down) == true) {
+    if (i.isKeyDown(gdl::Keys::Subtract) == true) {
 	_pos.setZ( _pos.getZ() + 0.01);
 	_changed = true;
     }
 
     if (i.isKeyDown(gdl::Keys::Q) == true) {
-	_rot.setX( _rot.getX() + 0.01);
+	_rot.setX( _rot.getX() + 0.1);
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::E) == true) {
-	_rot.setX( _rot.getX() - 0.01);
+	_rot.setX( _rot.getX() - 0.1);
 	_changed = true;
     }
     if (!_changed)
@@ -109,7 +108,7 @@ void newin::Camera::setRot(const Vector3D<GLfloat>& r) {
 
 void newin::Camera::loadProjectionMatrix(float fov, float aspect, float znear, float zfar)
 {
-    float xymax = znear * tan(fov /** 360.0f * 3.14159f*/);
+    float xymax = znear * tan(fov);
     float ymin = -xymax;
     float xmin = -xymax;
     float width = xymax - xmin;
