@@ -42,9 +42,7 @@ void newin::Light::update(/*gdl::GameClock const &, */gdl::Input & i) {
     if (!_prgm) {
 	throw newin::ShaderException("cannot use light without shader");
     }
-    if (!_changed)
-	return;
-    else {
+    if (_changed){
 	_changed = false;
 	_prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
 	_prgm->setVariable("lightDiff", _diff.getX(), _diff.getY(), _diff.getZ());

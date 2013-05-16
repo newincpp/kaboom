@@ -84,6 +84,7 @@ newin::Mesh* newin::Loader::loadOBJ(ShadeProgram* p, const std::string& fName) {
 	    f >> tmp;
 	}
     }
+    delete pure;
     Mesh * m = new Mesh(l, p);
     loadMTL(m, mtlfile);
     return m;

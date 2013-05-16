@@ -22,6 +22,7 @@ void newin::Camera::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, c
     _pos = p;
     _rot = r;
     _prgm = prgm;
+    //_changed = true;
     if (_prgm == NULL) {
 	throw ShaderException("progam is not set...");
     }
@@ -68,10 +69,7 @@ void newin::Camera::update(/*gdl::GameClock const & gameClock,*/ gdl::Input & i)
 	_pos.setZ( _pos.getZ() + 0.01);
 	_changed = true;
     }
-
-    if (!_changed)
-	return;
-    else {
+    if (_changed){
 	_changed = false;
 	calculate();
 	loadProjectionMatrix();

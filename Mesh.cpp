@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Mesh.hh"
 
-newin::Mesh::Mesh(const std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.1, 0.1, 0.1, 1.0)), _pos(), _rot(), _compiled(false) {
+newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.1, 0.1, 0.1, 1.0)), _pos(), _rot(), _compiled(false) {
     if (m) {
 	_verts = Vector3D<GLfloat>::toGLfloatArray(*m);
 	int j = 0;
@@ -16,6 +16,7 @@ newin::Mesh::Mesh(const std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _
 	_verts = NULL;
 	_vertexCount = 0;
     }
+    delete m;
     glGenBuffers(1, &_vboID);
     update();
     _callList = glGenLists(1);

@@ -9,7 +9,7 @@
 namespace newin {
     class Mesh : public AObject {
 	public:
-	    explicit Mesh(const std::vector<Vector3D<GLfloat> >*, ShadeProgram*);
+	    explicit Mesh(std::vector<Vector3D<GLfloat> >*, ShadeProgram*);
 	    virtual ~Mesh();
 	    void addVertex(const Vector3D<GLfloat>&);
 	    void setShader(ShadeProgram*);
