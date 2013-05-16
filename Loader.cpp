@@ -33,8 +33,13 @@ newin::Mesh* newin::Loader::genQuad(ShadeProgram* p) {
     return new Mesh(l, p);
 }
 
+void newin::Loader::loadMTL(Mesh* m, const std::string& fName) {
+    std::fstream f(("resources/" + fName).c_str());
+    m->setColor(Vector3D<GLfloat>(0.0, 0.1, 0.1, 1.0));
+}
+
 newin::Mesh* newin::Loader::loadOBJ(ShadeProgram* p, const std::string& fName) {
-    std::fstream f(fName.c_str());
+    std::fstream f(("resources/" + fName).c_str());
     std::vector< Vector3D<GLfloat> >* l = new std::vector< Vector3D<GLfloat> >();
     std::vector< Vector3D<GLfloat> >* pure = new std::vector< Vector3D<GLfloat> >();
     std::string tmp;
@@ -79,5 +84,7 @@ newin::Mesh* newin::Loader::loadOBJ(ShadeProgram* p, const std::string& fName) {
 	    f >> tmp;
 	}
     }
-    return new Mesh(l, p);
+    Mesh * m = new Mesh(l, p);
+    loadMTL(m, mtlfile);
+    return m;
 }

@@ -14,6 +14,7 @@ namespace newin {
 	    Mesh* genTri(ShadeProgram*);
 	    Mesh* genQuad(ShadeProgram*);
 	    Mesh* loadOBJ(ShadeProgram*, const std::string&);
+	    void loadMTL(Mesh*, const std::string&);
 	private:
 	    std::string _filename;
     };

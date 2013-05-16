@@ -28,7 +28,6 @@ void App::initialize(void) {
     }
     _camera.initialize(_defaultShader,  newin::Vector3D<GLfloat>(0,0,0), newin::Vector3D<GLfloat>(0,0,0));
     _defaultLight.initialize(_defaultShader, newin::Vector3D<GLfloat>(0.25,0.25,0), newin::Vector3D<GLfloat>(1,1,1));
-    //_objects.push_back(newin::Loader().genQuad(_defaultShader));
     _objects.push_back(newin::Loader().loadOBJ(_defaultShader, "test.obj"));
     _objects.push_back(&_defaultLight);
     std::list<AObject*>::iterator itb = _objects.begin();

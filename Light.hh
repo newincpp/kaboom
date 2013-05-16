@@ -16,13 +16,16 @@ namespace newin {
 	    void draw();
 	    void setPos(const Vector3D<GLfloat>&);
 	    void setDiff(const Vector3D<GLfloat>&);
+	    void setSpecular(const newin::Vector3D<GLfloat>&);
 	    Vector3D<GLfloat> getPos();
 	    Vector3D<GLfloat> getDiff();
+	    Vector3D<GLfloat> getSpecular();
 	    virtual ~Light();
 	private:
 	    bool _changed;
 	    Vector3D<GLfloat> _pos;
 	    Vector3D<GLfloat> _diff;
+	    Vector3D<GLfloat> _spec;
 	    ShadeProgram* _prgm;
     };
 }
