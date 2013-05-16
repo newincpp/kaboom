@@ -50,6 +50,10 @@ void newin::Shader::compile() {
     }
 }
 
+newin::Shader::~Shader() {
+    glDeleteShader(_shaderID);
+}
+
 GLuint newin::Shader::getID() const {
     return _shaderID;
 }
@@ -58,7 +62,7 @@ GLuint newin::Shader::getID() const {
 //  				    PROGRAM
 /////////////////////////////////////////////////////////////////////////////
 
-newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment) : _enabled(false) {
+newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment) : _vID(vertex.getID()), _fID(fragment.getID()), _enabled(false) {
     _prgmID = glCreateProgram();
     glAttachShader(_prgmID, vertex.getID());
     glAttachShader(_prgmID, fragment.getID());
@@ -119,6 +123,12 @@ void newin::ShadeProgram::disenable() {
 
 GLuint newin::ShadeProgram::getID () const {
     return _prgmID;
+}
+
+newin::ShadeProgram::~ShadeProgram() {
+    glDetachShader(_prgmID, _vID);
+    glDetachShader(_prgmID, _fID);
+    glDeleteProgram(_prgmID);
 }
 
 /////////////////////////////////////////////////////////////////////////////

@@ -14,6 +14,7 @@ App::~App() {
 
 void App::initialize(void) {
     window_.create();
+    window_.setTitle("bomberman !");
     GLenum err = glewInit();
     if (err != GLEW_OK)
 	std::cerr << "FAIL !" << std::endl;
@@ -49,7 +50,7 @@ void App::draw(void) {
     _old_time = gameClock_.getElapsedTime();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.74f, 0.84f, 95.0f, 1.0f);
+    glClearColor(0.0f, 0.0, 0.0f, 1.0f);
     glClearDepth(1.0f);
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
@@ -60,4 +61,5 @@ void App::draw(void) {
 }
 
 void App::unload(void) {
+    delete _defaultShader;
 }

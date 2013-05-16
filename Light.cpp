@@ -18,7 +18,7 @@ void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, co
     }
     _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
     _prgm->setVariable("lightDiff", _diff.getX(), _diff.getY(), _diff.getZ());
-    _prgm->setVariable("specular", _spec.getX(), _spec.getY(), _spec.getZ());
+    //_prgm->setVariable("specular", _spec.getX(), _spec.getY(), _spec.getZ());
 }
 
 void newin::Light::setShader(ShadeProgram* p) {
@@ -28,7 +28,7 @@ void newin::Light::setShader(ShadeProgram* p) {
     }
     _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
     _prgm->setVariable("lightDiff", _diff.getX(), _diff.getY(), _diff.getZ());
-    _prgm->setVariable("specular", _spec.getX(), _spec.getY(), _spec.getZ());
+    //_prgm->setVariable("specular", _spec.getX(), _spec.getY(), _spec.getZ());
 }
 
 void newin::Light::initialize() {
@@ -46,7 +46,7 @@ void newin::Light::update(/*gdl::GameClock const &, */gdl::Input & i) {
 	_changed = false;
 	_prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
 	_prgm->setVariable("lightDiff", _diff.getX(), _diff.getY(), _diff.getZ());
-	_prgm->setVariable("specular", _spec.getX(), _spec.getY(), _spec.getZ());
+	//_prgm->setVariable("specular", _spec.getX(), _spec.getY(), _spec.getZ());
     }
 }
 

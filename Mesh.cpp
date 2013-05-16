@@ -108,7 +108,7 @@ void newin::Mesh::render() {
 	if (_wireframe == true)
 	    glDrawArrays(GL_LINE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
 	else
-	    glDrawArrays(GL_TRIANGLE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
+	    glDrawArrays(GL_TRIANGLES, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glEndList();
     }

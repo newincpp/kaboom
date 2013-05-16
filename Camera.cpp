@@ -22,7 +22,6 @@ void newin::Camera::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, c
     _pos = p;
     _rot = r;
     _prgm = prgm;
-    //_changed = true;
     if (_prgm == NULL) {
 	throw ShaderException("progam is not set...");
     }
