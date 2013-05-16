@@ -13,5 +13,5 @@ out vec4 TVertex;
 void main() {
     TVertex = projectionMatrix * modelViewMatrix * objTransform * vec4(vertexPosition, 1.0);
     TNormal = vec4(/*normalMatrix * */vertexNormal, 0);
-    gl_Position = /*projectionMatrix */ modelViewMatrix * objTransform vec4(vertexPosition, 1.0);
+    gl_Position = projectionMatrix * modelViewMatrix * objTransform * vec4(vertexPosition, 1.0);
 }

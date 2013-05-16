@@ -69,14 +69,14 @@ void newin::Camera::update(/*gdl::GameClock const & gameClock,*/ gdl::Input & i)
 	_changed = true;
     }
 
-    if (i.isKeyDown(gdl::Keys::Q) == true) {
-	_rot.setX( _rot.getX() + 0.1);
-	_changed = true;
-    }
-    if (i.isKeyDown(gdl::Keys::E) == true) {
-	_rot.setX( _rot.getX() - 0.1);
-	_changed = true;
-    }
+//    if (i.isKeyDown(gdl::Keys::Q) == true) {
+//	_rot.setX( _rot.getX() + 0.1);
+//	_changed = true;
+//    }
+//    if (i.isKeyDown(gdl::Keys::E) == true) {
+//	_rot.setX( _rot.getX() - 0.1);
+//	_changed = true;
+//    }
     if (!_changed)
 	return;
     else {

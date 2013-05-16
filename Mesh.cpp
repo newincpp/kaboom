@@ -156,7 +156,7 @@ void newin::Mesh::update(/*gdl::GameClock const &, */ gdl::Input & i) {
 	_rot.setY( _rot.getY() + 0.1);
     }
     if (i.isKeyDown(gdl::Keys::E) == true) {
-	_rot.setY( _rot.getY() + 0.1);
+	_rot.setY( _rot.getY() - 0.1);
     }
     transform();
 }

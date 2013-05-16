@@ -62,7 +62,6 @@ newin::Mesh* newin::Loader::loadOBJ(ShadeProgram* p, const std::string& fName) {
     while (tmp != "f") {
 	f >> tmp;
     }
-    std::cout << "size : " << pure->size() << std::endl;
     while (tmp == "f") {
 	f >> index;
 	//std::cout << index << " ";
