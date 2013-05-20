@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Mesh.hh"
 
-newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.1, 0.1, 0.1, 1.0)), _pos(), _rot(), _compiled(false) {
+newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _tset(false), _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.1, 0.1, 0.1, 1.0)), _pos(), _rot(), _compiled(false) {
     if (m) {
 	_verts = Vector3D<GLfloat>::toGLfloatArray(*m);
 	int j = 0;
@@ -32,6 +32,11 @@ void newin::Mesh::setColor(const Vector3D<GLfloat>& color) {
 
 void newin::Mesh::setPos(const Vector3D<GLfloat>& pos ) {
     _pos = pos;
+}
+
+void newin::Mesh::setTex(const std::string& name) {
+    _tex.load("resources/" + name);
+    _tset = true;
 }
 
 void newin::Mesh::checkVertex() const {
@@ -93,7 +98,8 @@ void newin::Mesh::render() {
     _s->setVariable("objTransform", _matrixTransform);
     _s->setVariable("inputColour", Vector3D<GLfloat>(_col.getX(),_col.getY(), _col.getZ(), 1.0));
     // enable a range of gl rendering options specific to our object
-
+//    if (_tset)
+//	_tex.bind();
     if (_compiled) {
 	glCallList(_callList);
     } else {
@@ -119,10 +125,10 @@ void newin::Mesh::render() {
 void newin::Mesh::transform() {
     glPushMatrix();
     glLoadIdentity();
+    glTranslatef(- _pos.getX(), - _pos.getY(), - _pos.getZ());
     glRotatef(_rot.getZ(), 0, 0, 1);
     glRotatef(_rot.getY(), 0, 1, 0);
     glRotatef(_rot.getX(), 1, 0, 0);
-    glTranslatef(- _pos.getX(), - _pos.getY(), - _pos.getZ());
     glGetFloatv(GL_MODELVIEW_MATRIX, _matrixTransform);
     glPopMatrix();
 }

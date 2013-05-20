@@ -1,9 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <cstdlib>
-#include "Mesh.hh"
 #include "Loader.hh"
-#include "glinclude.h"
 #include "App.hh"
 
 App::App() : _camera(), _defaultLight() {
@@ -28,7 +26,7 @@ void App::initialize(void) {
 	std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
     }
     _camera.initialize(_defaultShader,  newin::Vector3D<GLfloat>(0,0,0), newin::Vector3D<GLfloat>(0,0,0));
-    _defaultLight.initialize(_defaultShader, newin::Vector3D<GLfloat>(0.25,0.25,0), newin::Vector3D<GLfloat>(1,1,1));
+    _defaultLight.initialize(_defaultShader, newin::Vector3D<GLfloat>(0.25,0.25,0), newin::Vector3D<GLfloat>(0.5,0.5,0.5));
     _objects.push_back(newin::Loader().loadOBJ(_defaultShader, "test.obj"));
     _objects.push_back(&_defaultLight);
     std::list<AObject*>::iterator itb = _objects.begin();
@@ -50,8 +48,8 @@ void App::draw(void) {
     _old_time = gameClock_.getElapsedTime();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.0f, 0.0, 0.0f, 1.0f);
-    glClearDepth(1.0f);
+    //glClearColor(0.0f, 0.0, 0.0f, 1.0f);
+    //glClearDepth(1.0f);
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
 	(*itb)->draw();

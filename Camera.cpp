@@ -71,9 +71,7 @@ void newin::Camera::update(/*gdl::GameClock const & gameClock,*/ gdl::Input & i)
     if (_changed){
 	_changed = false;
 	calculate();
-	loadProjectionMatrix();
 	_prgm->setVariable("modelViewMatrix", _modelView);
-	_prgm->setVariable("projectionMatrix", _projection);
     }
 }
 

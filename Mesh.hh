@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "AObject.hh"
+#include "libgdl_gl-2012.4/include/Image.hpp"
 #include "Shader.hh"
 #include "Types3D.hh"
 
@@ -18,6 +19,7 @@ namespace newin {
 	    void update() const;
 	    void setColor(const Vector3D<GLfloat>&);
 	    void setPos(const Vector3D<GLfloat>&);
+	    void setTex(const std::string&);
 	    // for gdl.......
 	    void initialize();
 	    void update(/*gdl::GameClock const &,*/ gdl::Input &);
@@ -26,6 +28,8 @@ namespace newin {
 	    void transform();
 	    explicit Mesh();
 	    void checkVertex() const;
+	    gdl::Image _tex;
+	    GLboolean _tset;
 	    ShadeProgram* _s;
 	    bool _wireframe;
 	    unsigned int _vertexCount;

@@ -36,6 +36,7 @@ newin::Mesh* newin::Loader::genQuad(ShadeProgram* p) {
 void newin::Loader::loadMTL(Mesh* m, const std::string& fName) {
     std::fstream f(("resources/" + fName).c_str());
     m->setColor(Vector3D<GLfloat>(0.0, 0.1, 0.1, 1.0));
+    m->setTex("defaultTex.png");
 }
 
 newin::Mesh* newin::Loader::loadOBJ(ShadeProgram* p, const std::string& fName) {
