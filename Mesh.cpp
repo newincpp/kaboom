@@ -19,7 +19,6 @@ newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _tset(f
     delete m;
     glGenBuffers(1, &_vboID);
     update();
-    _callList = glGenLists(1);
     //checkVertex();
 }
 
@@ -98,12 +97,12 @@ void newin::Mesh::render() {
     _s->setVariable("objTransform", _matrixTransform);
     _s->setVariable("inputColour", Vector3D<GLfloat>(_col.getX(),_col.getY(), _col.getZ(), 1.0));
     // enable a range of gl rendering options specific to our object
-//    if (_tset)
-//	_tex.bind();
+    //if (_tset)
+    //_tex.bind();
     if (_compiled) {
 	glCallList(_callList);
     } else {
-	glNewList(_callList, GL_COMPILE);
+	//glNewList(_callList, GL_COMPILE);
 	glEnable(GL_DEPTH_TEST); // enable depth-testing
 	glDepthMask(GL_TRUE); // turn back on
 	glDepthFunc(GL_LESS);
@@ -116,11 +115,18 @@ void newin::Mesh::render() {
 	else
 	    glDrawArrays(GL_TRIANGLES, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glEndList();
+	//glEndList();
+	//_compiled = true;
     }
-    _compiled = true;
-    _s->disenable(); } newin::Mesh::~Mesh() { if(glIsBufferARB(_vboID)) { glDeleteBuffersARB(1, &_vboID); } delete _verts;
+    _s->disenable();
+}
+
+newin::Mesh::~Mesh() {
+    if(glIsBufferARB(_vboID)) {
+	glDeleteBuffersARB(1, &_vboID);
     }
+    delete _verts;
+}
 
 void newin::Mesh::transform() {
     glPushMatrix();
@@ -136,6 +142,8 @@ void newin::Mesh::transform() {
 //for gdl.....
 
 void newin::Mesh::initialize() {
+    _callList = glGenLists(1);
+    _compiled = false;
 }
 
 void newin::Mesh::update(/*gdl::GameClock const &, */ gdl::Input & i) {

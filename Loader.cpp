@@ -62,13 +62,14 @@ newin::Mesh* newin::Loader::loadOBJ(ShadeProgram* p, const std::string& fName) {
 	f >> value.x;
 	f >> value.y;
 	f >> value.z;
+	//std::cout << "v : " << value.x << " " << value.y << " "<< value.z << std::endl;
 	pure->push_back(Vector3D<GLfloat>(value.x, value.y, value.z));
 	f >> tmp;
     }
     while (tmp != "f") {
 	f >> tmp;
     }
-    while (tmp == "f") {
+    while ((tmp == "f") && (!f.eof())) {
 	f >> index;
 	//std::cout << index << " ";
 	l->push_back(pure->at(index - 1));
