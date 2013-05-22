@@ -16,6 +16,7 @@ void	BFactory::createMap()
   this->extra["roller"] = &BFactory::rolling;
   this->extra["skate"] = &BFactory::backflip;
   this->extra["heart"] = &BFactory::life;
+  this->extra["Wall"] = &BFactory::Wall;
 }
 
 IBonus *BFactory::burn()
@@ -43,10 +44,15 @@ IBonus *BFactory::life()
   return (new Heart);
 }
 
+IBonus *BFactory::Wall()
+{
+  return (new Wall);
+}
+
 void	BFactory::whichOne(std::string bonus)
 {
   IBonus	*(*func)();
-  
+
   func = extra[bonus]();
   func();
 }

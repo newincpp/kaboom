@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include "Loader.hh"
 #include "App.hh"
+#include <unistd.h>
 
 App::App() : _camera(), _defaultLight() {
 }

@@ -7,7 +7,7 @@
 #include <list>
 #include "IBonus.hh"
 
-class HEART : public IBonus {
+class Heart : public IBonus {
 
 private:
 
@@ -20,8 +20,7 @@ private:
 public:
 
   Heart();
-  ~Heart();
-
+  virtual ~Heart();
   int getRange() const;
   int getBombe() const;
   int getPush() const;

@@ -6,6 +6,7 @@
 #include "Fire.hpp"
 #include "Bombe.hpp"
 #include "Heart.hpp"
+#include "Wall.hpp"
 #include "Roller.hpp"
 #include "Skate.hpp"
 
@@ -26,6 +27,7 @@ public:
   IBonus	*rolling();
   IBonus	*backflip();
   IBonus	*life();
+  IBonus	*Wall();
   void	createMap();
   void	whichOne(std::string);
 };
