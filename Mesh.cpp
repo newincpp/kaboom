@@ -19,7 +19,6 @@ newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _tset(f
     delete m;
     glGenBuffers(1, &_vboID);
     update();
-    std::cout << "vbo ID : " << _vboID << std::endl;
     //checkVertex();
 }
 
