@@ -56,13 +56,14 @@ void newin::Mesh::update() const {
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboID); // bind (enable) buffer
     // Put data in currently bound buffer
-    glBufferData(GL_ARRAY_BUFFER, (_vertexCount) * 3 * sizeof(GLfloat), &_verts[0], GL_STATIC_DRAW_ARB);
+    glBufferData(GL_ARRAY_BUFFER, (_vertexCount) * 3 * sizeof(GLfloat), &_verts[0], GL_STATIC_DRAW);
 
     glBindVertexArray(_vboID); // make our VAO the current bound VAO
     glEnableVertexAttribArray(0); // add a new variable for position as location 0 to our VAO
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboID); // make our VBO the currently bound VBO
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL); // map memory for the 0th variable that is the size of 3 floats
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void newin::Mesh::addVertex(const Vector3D<GLfloat>& n) {
@@ -132,6 +133,8 @@ void newin::Mesh::render() {
     //if (_tset)
     //_tex.bind();
     glBindBuffer(GL_ARRAY_BUFFER, _vboID);
+    glBindVertexArray(_vboID); // make our VAO the current bound VAO
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL); // map memory for the 0th variable that is the size of 3 floats
     if (_wireframe == true)
 	glDrawArrays(GL_LINE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
     else
