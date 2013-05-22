@@ -96,7 +96,7 @@ void newin::Camera::setRot(const Vector3D<GLfloat>& r) {
 
 void newin::Camera::loadProjectionMatrix(float fov, float aspect, float znear, float zfar)
 {
-    float xymax = znear * tan(fov);
+    float xymax = znear * tan(fov/2);
     float ymin = -xymax;
     float xmin = -xymax;
     float width = xymax - xmin;
