@@ -15,6 +15,7 @@ namespace newin {
 	    void update(/*gdl::GameClock const &, */gdl::Input &);
 	    void draw();
 	    void setPos(const Vector3D<GLfloat>&);
+	    void setRot(const Vector3D<GLfloat>&);
 	    void setDiff(const Vector3D<GLfloat>&);
 	    void setSpecular(const newin::Vector3D<GLfloat>&);
 	    Vector3D<GLfloat> getPos();

@@ -33,6 +33,10 @@ void newin::Mesh::setPos(const Vector3D<GLfloat>& pos ) {
     _pos = pos;
 }
 
+void newin::Mesh::setRot(const Vector3D<GLfloat>& rot) {
+    _rot = rot;
+}
+
 void newin::Mesh::setTex(const std::string& name) {
     _tex.load("resources/" + name);
     _tset = true;
@@ -51,13 +55,14 @@ void newin::Mesh::update() const {
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboID); // bind (enable) buffer
     // Put data in currently bound buffer
-    glBufferData(GL_ARRAY_BUFFER, (_vertexCount) * 3 * sizeof(GLfloat), &_verts[0], GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, (_vertexCount) * 3 * sizeof(GLfloat), &_verts[0], GL_STATIC_DRAW);
 
     glBindVertexArray(_vboID); // make our VAO the current bound VAO
     glEnableVertexAttribArray(0); // add a new variable for position as location 0 to our VAO
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboID); // make our VBO the currently bound VBO
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL); // map memory for the 0th variable that is the size of 3 floats
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void newin::Mesh::addVertex(const Vector3D<GLfloat>& n) {
@@ -89,36 +94,52 @@ void newin::Mesh::toogleWireframe() {
     _wireframe = !_wireframe;
 }
 
+void newin::Mesh::shadows() {
+    //The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
+    GLuint FramebufferName = 0;
+    glGenFramebuffers(1, &FramebufferName);
+    glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
+
+    // Depth texture. Slower than a depth buffer, but you can sample it later in your shader
+    GLuint depthTexture;
+    glGenTextures(1, &depthTexture);
+    glBindTexture(GL_TEXTURE_2D, depthTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT16, 1024, 1024, 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture, 0);
+
+    glDrawBuffer(GL_NONE); // No color buffer is drawn to.
+
+    // Always check that our framebuffer is ok
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	std::cout << "fuck" << std::endl;
+}
+
 void newin::Mesh::render() {
+    //shadows();
     if (_s)
 	_s->enable();
     else
 	glUseProgram(0);
+    //update();
     _s->setVariable("objTransform", _matrixTransform);
     _s->setVariable("inputColour", Vector3D<GLfloat>(_col.getX(),_col.getY(), _col.getZ(), 1.0));
     // enable a range of gl rendering options specific to our object
     //if (_tset)
     //_tex.bind();
-    if (_compiled) {
-	glCallList(_callList);
-    } else {
-	//glNewList(_callList, GL_COMPILE);
-	glEnable(GL_DEPTH_TEST); // enable depth-testing
-	glDepthMask(GL_TRUE); // turn back on
-	glDepthFunc(GL_LESS);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CCW);
-	glBindBuffer(GL_ARRAY_BUFFER, _vboID); // bind (enable) buffer
-	if (_wireframe == true)
-	    glDrawArrays(GL_LINE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
-	else
-	    glDrawArrays(GL_TRIANGLES, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//glEndList();
-	//_compiled = true;
-    }
-    _s->disenable();
+    glBindBuffer(GL_ARRAY_BUFFER, _vboID);
+    glBindVertexArray(_vboID); // make our VAO the current bound VAO
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL); // map memory for the 0th variable that is the size of 3 floats
+    if (_wireframe == true)
+	glDrawArrays(GL_LINE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
+    else
+	glDrawArrays(GL_TRIANGLES, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
+    //glBindBuffer(GL_ARRAY_BUFFER, 0);
+    //_s->disenable();
 }
 
 newin::Mesh::~Mesh() {

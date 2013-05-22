@@ -54,6 +54,10 @@ void newin::Light::setPos(const newin::Vector3D<GLfloat>& p) {
     _pos = p;
 }
 
+void newin::Light::setRot(const newin::Vector3D<GLfloat>& r) {
+    (void) r;
+}
+
 void newin::Light::setDiff(const newin::Vector3D<GLfloat>& d) {
     _diff = d;
 }

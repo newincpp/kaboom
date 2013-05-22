@@ -19,12 +19,14 @@ namespace newin {
 	    void update() const;
 	    void setColor(const Vector3D<GLfloat>&);
 	    void setPos(const Vector3D<GLfloat>&);
+	    void setRot(const Vector3D<GLfloat>&);
 	    void setTex(const std::string&);
 	    // for gdl.......
 	    void initialize();
 	    void update(/*gdl::GameClock const &,*/ gdl::Input &);
 	    void draw(void);
 	private:
+	    void shadows();
 	    void transform();
 	    explicit Mesh();
 	    void checkVertex() const;

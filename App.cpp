@@ -25,10 +25,13 @@ void App::initialize(void) {
     } catch (newin::ShaderException& e) {
 	std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
     }
-    _camera.initialize(_defaultShader,  newin::Vector3D<GLfloat>(0,0,0), newin::Vector3D<GLfloat>(0,0,0));
+    _camera.initialize(_defaultShader,  newin::Vector3D<GLfloat>(0,1,5), newin::Vector3D<GLfloat>(0,0,0));
     _defaultLight.initialize(_defaultShader, newin::Vector3D<GLfloat>(0.25,0.25,0), newin::Vector3D<GLfloat>(0.5,0.5,0.5));
+    _objects.push_back(newin::Loader().loadOBJ(_defaultShader, "plane.obj"));
+    ((newin::Mesh*)_objects.back())->setColor(newin::Vector3D<GLfloat>(0,0.5,0));
     _objects.push_back(newin::Loader().loadOBJ(_defaultShader, "test.obj"));
-    // _objects.push_back(newin::Loader().loadOBJ(_defaultShader, "plane.obj"));
+    _objects.back()->setPos(newin::Vector3D<GLfloat>(0,-1,0));
+    _objects.back()->setRot(newin::Vector3D<GLfloat>(0,30,0));
     _objects.push_back(&_defaultLight);
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
@@ -47,12 +50,14 @@ void App::update(void) {
 
 void App::draw(void) {
     _old_time = gameClock_.getElapsedTime();
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glClearColor(0.0f, 0.0, 0.0f, 1.0f);
-    //glClearDepth(1.0f);
+    glClearColor(0.05f, 0.05, 0.0f, 1.0f);
+    glEnable(GL_DEPTH_TEST); // enable depth-testing
+    glDepthMask(GL_TRUE); // turn back on
+    glDepthFunc(GL_LESS);
+    glClearDepth(1.0f);
     std::list<AObject*>::iterator itb = _objects.begin();
-    for (; itb != _objects.end(); ++itb)
+for (; itb != _objects.end(); ++itb)
 	(*itb)->draw();
     window_.display();
     if ((_old_time = (1666.666666 - ((gameClock_.getElapsedTime() - _old_time) * 100000))) > 0)
