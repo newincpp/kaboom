@@ -27,11 +27,11 @@ public:
   int getPush() const;
   int getSpeed() const;
   int getLife() const;
-  void setRange(int);
-  void setBombe(int);
-  void setPush(int);
-  void setSpeed(int);
-  void setLife(int);
+  void setRange();
+  void setBombe();
+  void setPush();
+  void setSpeed();
+  void setLife();
 };
 
-#endif /* __FIRE__HH__ */
+#endif /* __ROLLER__HH__ */

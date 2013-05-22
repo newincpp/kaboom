@@ -14,27 +14,27 @@ Bombe::~Bombe()
 {
 }
 
-int Bombe::getRange()
+int Bombe::getRange() const
 {
   return (range);
 }
 
-int Bombe::getBombe()
+int Bombe::getBombe() const
 {
   return (bombe);
 }
 
-int Bombe::getPush()
+int Bombe::getPush() const
 {
   return (push);
 }
 
-int Bombe::getSpeed()
+int Bombe::getSpeed() const
 {
   return (speed);
 }
 
-int Bombe::getLife()
+int Bombe::getLife() const
 {
   return (life);
 }
