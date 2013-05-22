@@ -53,6 +53,5 @@ void	BFactory::whichOne(std::string bonus)
 {
   IBonus	*(*func)();
 
-  func = extra[bonus]();
-  func();
+  extra[bonus]();
 }
