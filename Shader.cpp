@@ -75,14 +75,18 @@ newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment) 
     }
 }
 
-void newin::ShadeProgram::setVariable(const std::string& variableName, const GLfloat* v) {
+inline GLint newin::ShadeProgram::getVariableLocation(const std::string& variableName) {
     enable();
     GLint loc = glGetUniformLocation(_prgmID, variableName.c_str());
     if (loc < 0) {
 	std::cout << "ERROR getting variable named '" << variableName << "' from shader" << std::endl;
-	return ;
+	return 0;
     }
-    glUniformMatrix4fv(loc, 1, false, v);
+    return loc;
+}
+
+void newin::ShadeProgram::setVariable(const std::string& variableName, const GLfloat* v) {
+    glUniformMatrix4fv(getVariableLocation(variableName), 1, false, v);
 }
 
 void newin::ShadeProgram::setVariable(const std::string& variableName, const Vector3D<float>& v) {
@@ -90,23 +94,15 @@ void newin::ShadeProgram::setVariable(const std::string& variableName, const Vec
 }
 
 void newin::ShadeProgram::setVariable(const std::string& variableName, const float x, const float y, const float z, const float w) {
-    enable();
-    GLint loc = glGetUniformLocation(_prgmID, variableName.c_str());
-    if (loc < 0) {
-	std::cout << "ERROR getting variable named '" << variableName << "' from shader" << std::endl;
-	return ;
-    }
-    glUniform4f(loc, x, y, z, w);
+    glUniform4f(getVariableLocation(variableName), x, y, z, w);
 }
 
 void newin::ShadeProgram::setVariable(const std::string& variableName, const float x, const float y, const float z) {
-    enable();
-    GLint loc = glGetUniformLocation(_prgmID, variableName.c_str());
-    if (loc < 0) {
-	std::cout << "ERROR getting variable named '" << variableName << "' from shader" << std::endl;
-	return ;
-    }
-    glUniform3f(loc, x, y, z);
+    glUniform3f(getVariableLocation(variableName), x, y, z);
+}
+
+void newin::ShadeProgram::setVariable(const std::string& variableName, const int i) {
+    glUniform1i(getVariableLocation(variableName), i);
 }
 
 void newin::ShadeProgram::enable() {

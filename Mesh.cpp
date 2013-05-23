@@ -2,7 +2,8 @@
 #include "Mesh.hh"
 #define GLEW_STATIC
 
-newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _tset(false), _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.1, 0.1, 0.1, 1.0)), _pos(), _rot(), _compiled(false) {
+newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _tset(false), _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.1, 0.1, 0.1, 1.0)), _pos(), _rot(), _cam(NULL) {
+    _vboID = 0;
     if (m) {
 	_verts = Vector3D<GLfloat>::toGLfloatArray(*m);
 	int j = 0;
@@ -17,8 +18,8 @@ newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _tset(f
 	_verts = NULL;
 	_vertexCount = 0;
     }
-    delete m;
     glGenBuffers(1, &_vboID);
+    std::cout << "HERE !" << std::endl;
     update();
     //checkVertex();
 }
@@ -41,6 +42,10 @@ void newin::Mesh::setRot(const Vector3D<GLfloat>& rot) {
 void newin::Mesh::setTex(const std::string& name) {
     _tex.load("resources/" + name);
     _tset = true;
+}
+
+void newin::Mesh::setWorlCam(Camera* c) {
+    _cam = c;
 }
 
 void newin::Mesh::checkVertex() const {
@@ -95,33 +100,40 @@ void newin::Mesh::toogleWireframe() {
     _wireframe = !_wireframe;
 }
 
-void newin::Mesh::shadows() {
-    //The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
-    GLuint FramebufferName = 0;
-    glGenFramebuffers(1, &FramebufferName);
-    glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
+void newin::Mesh::generateShadowFBO() {
+    // Try to use a texture depth component
+}
 
-    // Depth texture. Slower than a depth buffer, but you can sample it later in your shader
-    GLuint depthTexture;
-    glGenTextures(1, &depthTexture);
-    glBindTexture(GL_TEXTURE_2D, depthTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT16, 1024, 1024, 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+void newin::Mesh::setTextureMatrix() {
+    static double modelView[16];
+    static double projection[16];
 
-    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture, 0);
+    //Moving from unit cube [-1,1] to [0,1]
+    const GLdouble bias[16] = {
+	0.5, 0.0, 0.0, 0.0,
+	0.0, 0.5, 0.0, 0.0,
+	0.0, 0.0, 0.5, 0.0,
+	0.5, 0.5, 0.5, 1.0};
 
-    glDrawBuffer(GL_NONE); // No color buffer is drawn to.
-
-    // Always check that our framebuffer is ok
-    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-	std::cout << "fuck" << std::endl;
+    GLfloat * camProjection = _cam->getProjectionMatrix();
+    GLfloat * camModelview= _cam->getModelViewMatrix();
+    for (unsigned short i = 0; i <= 16; ++i) {
+	modelView[i] = camModelview[i];
+	projection[i] = camProjection[i];
+    }
+    glMatrixMode(GL_TEXTURE);
+    glActiveTextureARB(GL_TEXTURE7);
+    glLoadIdentity();
+    glLoadMatrixd(bias);
+    // concatating all matrices into one.
+    glMultMatrixd (projection);
+    glMultMatrixd (modelView);
+    // Go back to normal matrix mode
+    glMatrixMode(GL_MODELVIEW);
 }
 
 void newin::Mesh::render() {
-    //shadows();
+    //setTextureMatrix();
     if (_s)
 	_s->enable();
     else
@@ -164,8 +176,7 @@ void newin::Mesh::transform() {
 //for gdl.....
 
 void newin::Mesh::initialize() {
-    _callList = glGenLists(1);
-    _compiled = false;
+    generateShadowFBO();
 }
 
 void newin::Mesh::update(/*gdl::GameClock const &, */ gdl::Input & i) {

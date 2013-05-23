@@ -11,13 +11,15 @@ namespace newin {
 	    explicit Camera();
 	    explicit Camera(ShadeProgram* p, const Vector3D<GLfloat>& v = Vector3D<GLfloat>(), const Vector3D<GLfloat>& u = Vector3D<GLfloat>());
 	    //void initialize();
+	    virtual ~Camera();
 	    void initialize(ShadeProgram*, const Vector3D<GLfloat>&, const Vector3D<GLfloat>&);
 	    void update(/*gdl::GameClock const & gameClock,*/ gdl::Input & input);
 	    Vector3D<GLfloat> getPos() const;
 	    Vector3D<GLfloat> getRot() const;
 	    void setPos(const Vector3D<GLfloat>&);
 	    void setRot(const Vector3D<GLfloat>&);
-	    virtual ~Camera();
+	    GLfloat* getModelViewMatrix();
+	    GLfloat* getProjectionMatrix();
 	private:
 	    void loadProjectionMatrix(float fov = 1.046666640, float aspect = 1.33333f, float znear = 0.5f, float zfar = 1000.f);
 	    void calculate();

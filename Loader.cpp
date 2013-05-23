@@ -50,6 +50,9 @@ newin::Mesh* newin::Loader::loadOBJ(ShadeProgram* p, const std::string& fName) {
     int index;
 
     std::cout << "objfile : " << fName << std::endl;
+    if (!f.is_open()) {
+	std::cout << "failed to open file" << std::endl;
+    }
     while (tmp != "mtllib")
 	f >> tmp;
     f >> mtlfile;
@@ -89,5 +92,6 @@ newin::Mesh* newin::Loader::loadOBJ(ShadeProgram* p, const std::string& fName) {
     delete pure;
     Mesh * m = new Mesh(l, p);
     loadMTL(m, mtlfile);
+    delete l;
     return m;
 }

@@ -1,16 +1,17 @@
 #include <iostream>
 #include "Light.hh"
 
-newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& d) : _changed(true), _pos(p) , _diff(d), _spec(), _prgm(prgm){
+newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& lookat, const Vector3D<GLfloat>& d) : _changed(true), _pos(p), _lookat(lookat), _diff(d), _spec(), _prgm(prgm) {
     if (_prgm) {
 	_prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
-	_prgm->setVariable("lightDiff ", _diff.getX(), _diff.getY(), _diff.getZ());
-	_prgm->setVariable("specular", _spec.getX(), _spec.getY(), _spec.getZ());
+	_prgm->setVariable("lightDiff", _diff.getX(), _diff.getY(), _diff.getZ());
+	_prgm->setVariable("lightLookAt", _lookat.getX(), _lookat.getY(), _lookat.getZ());
     }
 }
 
-void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& d) {
+void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& lookat, const Vector3D<GLfloat>& d) {
     _pos = p;
+    _lookat = lookat;
     _diff = d;
     _prgm = prgm;
     if (!_prgm) {
@@ -18,7 +19,7 @@ void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, co
     }
     _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
     _prgm->setVariable("lightDiff", _diff.getX(), _diff.getY(), _diff.getZ());
-    //_prgm->setVariable("specular", _spec.getX(), _spec.getY(), _spec.getZ());
+    _prgm->setVariable("lightLookAt", _lookat.getX(), _lookat.getY(), _lookat.getZ());
 }
 
 void newin::Light::setShader(ShadeProgram* p) {
@@ -28,7 +29,7 @@ void newin::Light::setShader(ShadeProgram* p) {
     }
     _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
     _prgm->setVariable("lightDiff", _diff.getX(), _diff.getY(), _diff.getZ());
-    //_prgm->setVariable("specular", _spec.getX(), _spec.getY(), _spec.getZ());
+    _prgm->setVariable("lightLookAt", _lookat.getX(), _lookat.getY(), _lookat.getZ());
 }
 
 void newin::Light::initialize() {
@@ -46,7 +47,6 @@ void newin::Light::update(/*gdl::GameClock const &, */gdl::Input & i) {
 	_changed = false;
 	_prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
 	_prgm->setVariable("lightDiff", _diff.getX(), _diff.getY(), _diff.getZ());
-	//_prgm->setVariable("specular", _spec.getX(), _spec.getY(), _spec.getZ());
     }
 }
 

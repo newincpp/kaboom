@@ -6,6 +6,7 @@
 #include "libgdl_gl-2012.4/include/Image.hpp"
 #include "Shader.hh"
 #include "Types3D.hh"
+#include "Camera.hh"
 
 namespace newin {
     class Mesh : public AObject {
@@ -21,13 +22,12 @@ namespace newin {
 	    void setPos(const Vector3D<GLfloat>&);
 	    void setRot(const Vector3D<GLfloat>&);
 	    void setTex(const std::string&);
+	    void setWorlCam(Camera*);
 	    // for gdl.......
 	    void initialize();
 	    void update(/*gdl::GameClock const &,*/ gdl::Input &);
 	    void draw(void);
 	private:
-	    void shadows();
-	    void transform();
 	    explicit Mesh();
 	    void checkVertex() const;
 	    gdl::Image _tex;
@@ -40,9 +40,17 @@ namespace newin {
 	    Vector3D<GLfloat> _col;
 	    Vector3D<GLfloat> _pos;
 	    Vector3D<GLfloat> _rot;
+
+	    Camera* _cam;
+
+	    // matrix
 	    GLfloat _matrixTransform[16];
-	    GLuint _callList;
-	    bool _compiled;
+	    void transform();
+	    // shadows
+	    void generateShadowFBO();
+	    void setTextureMatrix();
+	    GLuint fboId;
+	    GLuint FBO;
     };
 }
 

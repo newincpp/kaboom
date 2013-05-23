@@ -125,3 +125,11 @@ void newin::Camera::loadProjectionMatrix(float fov, float aspect, float znear, f
     _projection[14] = qn;
     _projection[15] = 0;
 }
+
+GLfloat* newin::Camera::getModelViewMatrix() { // cannot be const because return non const pointer
+    return _modelView;
+}
+
+GLfloat* newin::Camera::getProjectionMatrix() { // cannot be const because return non const pointer
+    return _projection;
+}

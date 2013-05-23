@@ -26,6 +26,8 @@ namespace newin {
 	    void setVariable(const std::string&, const Vector3D<GLfloat>&);
 	    void setVariable(const std::string&, const float, const float, const float, const float);
 	    void setVariable(const std::string&, const float, const float, const float);
+	    void setVariable(const std::string&, const int);
+	    GLint getVariableLocation(const std::string&);
 	    void enable();
 	    void disenable();
 	    GLuint getID() const;

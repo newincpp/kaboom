@@ -12,6 +12,8 @@ App::~App() {
 }
 
 void App::initialize(void) {
+    window_.setWidth(1920);
+    window_.setHeight(1080);
     window_.create();
     window_.setTitle("bomberman !");
     GLenum err = glewInit();
@@ -26,13 +28,16 @@ void App::initialize(void) {
     } catch (newin::ShaderException& e) {
 	std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
     }
-    _camera.initialize(_defaultShader,  newin::Vector3D<GLfloat>(0,1,5), newin::Vector3D<GLfloat>(0,0,0));
-    _defaultLight.initialize(_defaultShader, newin::Vector3D<GLfloat>(0.25,0.25,0), newin::Vector3D<GLfloat>(0.5,0.5,0.5));
+    _camera.initialize(_defaultShader,  newin::Vector3D<GLfloat>(0, 1, 5), newin::Vector3D<GLfloat>(0, 0, 0));
+    _defaultLight.initialize(_defaultShader, newin::Vector3D<GLfloat>(0.25, 0.25, 0), newin::Vector3D<GLfloat>(1,1,1), newin::Vector3D<GLfloat>(0.5, 0.5, 0.5));
     _objects.push_back(newin::Loader().loadOBJ(_defaultShader, "plane.obj"));
-    ((newin::Mesh*)_objects.back())->setColor(newin::Vector3D<GLfloat>(0,0.5,0));
+    ((newin::Mesh*)_objects.back())->setColor(newin::Vector3D<GLfloat>(0, 0.5, 0));
+    ((newin::Mesh*)_objects.back())->setWorlCam(&_camera);
     _objects.push_back(newin::Loader().loadOBJ(_defaultShader, "test.obj"));
-    _objects.back()->setPos(newin::Vector3D<GLfloat>(0,-1,0));
-    _objects.back()->setRot(newin::Vector3D<GLfloat>(0,30,0));
+    _objects.back()->setPos(newin::Vector3D<GLfloat>(0, -1, 0));
+    _objects.back()->setRot(newin::Vector3D<GLfloat>(0, 30, 0));
+    ((newin::Mesh*)_objects.back())->setWorlCam(&_camera);
+
     _objects.push_back(&_defaultLight);
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
