@@ -27,7 +27,7 @@ public:
   IBonus	*rolling();
   IBonus	*backflip();
   IBonus	*life();
-  IBonus	*Wall();
+  IBonus	*wall();
   void	createMap();
   void	whichOne(std::string);
 };
