@@ -48,7 +48,6 @@ namespace newin {
 		    return out;
 		}
 
-
 		T getX() const { return _x; }
 		T getY() const { return _y; }
 		T getZ() const { return _z; }

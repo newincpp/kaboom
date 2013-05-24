@@ -20,7 +20,7 @@ namespace newin {
 
     class ShadeProgram {
 	public:
-	    ShadeProgram(const Shader& vertex, const Shader& fragment);
+	    ShadeProgram(const Shader&, const Shader&, const Shader&);
 	    ~ShadeProgram();
 	    void setVariable(const std::string&, const GLfloat*);
 	    void setVariable(const std::string&, const Vector3D<GLfloat>&);
@@ -34,6 +34,7 @@ namespace newin {
 	private:
 	    GLuint _vID;
 	    GLuint _fID;
+	    GLuint _gID;
 	    GLuint _prgmID;
 	    GLboolean _enabled;
     };
