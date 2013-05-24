@@ -18,18 +18,16 @@ namespace newin {
 	    void draw();
 	    void setPos(const Vector3D<GLfloat>&);
 	    void setRot(const Vector3D<GLfloat>&);
-	    void setDiff(const Vector3D<GLfloat>&);
-	    void setSpecular(const newin::Vector3D<GLfloat>&);
-	    Vector3D<GLfloat> getPos();
-	    Vector3D<GLfloat> getDiff();
-	    Vector3D<GLfloat> getSpecular();
+	    void setColor(const Vector3D<GLfloat>&);
+	    Vector3D<GLfloat> getPos() const;
+	    Vector3D<GLfloat> getColor() const;
 	    virtual ~Light();
 	private:
+	    Vector3D<GLfloat> getRot() const;
 	    bool _changed;
 	    Vector3D<GLfloat> _pos;
 	    Vector3D<GLfloat> _lookat;
-	    Vector3D<GLfloat> _diff;
-	    Vector3D<GLfloat> _spec;
+	    Vector3D<GLfloat> _color;
 	    ShadeProgram* _prgm;
     };
 }

@@ -19,7 +19,6 @@ newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _tset(f
 	_vertexCount = 0;
     }
     glGenBuffers(1, &_vboID);
-    std::cout << "HERE !" << std::endl;
     update();
     //checkVertex();
 }
@@ -43,6 +42,15 @@ void newin::Mesh::setTex(const std::string& name) {
     _tex.load("resources/" + name);
     _tset = true;
 }
+
+newin::Vector3D<GLfloat> newin::Mesh::getPos() const {
+    return _pos;
+}
+
+newin::Vector3D<GLfloat> newin::Mesh::getRot() const {
+    return _rot;
+}
+
 
 void newin::Mesh::setWorlCam(Camera* c) {
     _cam = c;
@@ -100,38 +108,6 @@ void newin::Mesh::toogleWireframe() {
     _wireframe = !_wireframe;
 }
 
-void newin::Mesh::generateShadowFBO() {
-    // Try to use a texture depth component
-}
-
-void newin::Mesh::setTextureMatrix() {
-    static double modelView[16];
-    static double projection[16];
-
-    //Moving from unit cube [-1,1] to [0,1]
-    const GLdouble bias[16] = {
-	0.5, 0.0, 0.0, 0.0,
-	0.0, 0.5, 0.0, 0.0,
-	0.0, 0.0, 0.5, 0.0,
-	0.5, 0.5, 0.5, 1.0};
-
-    GLfloat * camProjection = _cam->getProjectionMatrix();
-    GLfloat * camModelview= _cam->getModelViewMatrix();
-    for (unsigned short i = 0; i <= 16; ++i) {
-	modelView[i] = camModelview[i];
-	projection[i] = camProjection[i];
-    }
-    glMatrixMode(GL_TEXTURE);
-    glActiveTextureARB(GL_TEXTURE7);
-    glLoadIdentity();
-    glLoadMatrixd(bias);
-    // concatating all matrices into one.
-    glMultMatrixd (projection);
-    glMultMatrixd (modelView);
-    // Go back to normal matrix mode
-    glMatrixMode(GL_MODELVIEW);
-}
-
 void newin::Mesh::render() {
     //setTextureMatrix();
     if (_s)
@@ -176,7 +152,6 @@ void newin::Mesh::transform() {
 //for gdl.....
 
 void newin::Mesh::initialize() {
-    generateShadowFBO();
 }
 
 void newin::Mesh::update(/*gdl::GameClock const &, */ gdl::Input & i) {

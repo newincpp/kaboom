@@ -27,6 +27,7 @@ namespace newin {
 	    void setVariable(const std::string&, const float, const float, const float, const float);
 	    void setVariable(const std::string&, const float, const float, const float);
 	    void setVariable(const std::string&, const int);
+	    void setVariable(const std::string&, const float);
 	    GLint getVariableLocation(const std::string&);
 	    void enable();
 	    void disenable();

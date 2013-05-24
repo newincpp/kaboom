@@ -13,8 +13,8 @@ class AObject
 	virtual void draw(void) = 0;
 	virtual void setPos(const newin::Vector3D<GLfloat>&) = 0;
 	virtual void setRot(const newin::Vector3D<GLfloat>&) = 0;
-	virtual newin::Vector3D<GLfloat> getPos() = 0;
-	virtual newin::Vector3D<GLfloat> getRot() = 0;
+	virtual newin::Vector3D<GLfloat> getPos() const = 0;
+	virtual newin::Vector3D<GLfloat> getRot() const = 0;
     protected:
 	newin::Vector3D<GLfloat> position_;
 	newin::Vector3D<GLfloat> rotation_;

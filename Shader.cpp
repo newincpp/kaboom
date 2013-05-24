@@ -66,7 +66,7 @@ newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment, 
     _prgmID = glCreateProgram();
     glAttachShader(_prgmID, vertex.getID());
     glAttachShader(_prgmID, fragment.getID());
-    glAttachShader(_prgmID, geometry.getID());
+    //glAttachShader(_prgmID, geometry.getID());
     glLinkProgram(_prgmID);
     GLint status;
     glGetProgramiv(_prgmID, GL_LINK_STATUS, &status);
@@ -103,6 +103,10 @@ void newin::ShadeProgram::setVariable(const std::string& variableName, const flo
 
 void newin::ShadeProgram::setVariable(const std::string& variableName, const int i) {
     glUniform1i(getVariableLocation(variableName), i);
+}
+
+void newin::ShadeProgram::setVariable(const std::string& variableName, const float i) {
+    glUniform1f(getVariableLocation(variableName), i);
 }
 
 void newin::ShadeProgram::enable() {

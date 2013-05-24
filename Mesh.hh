@@ -21,6 +21,8 @@ namespace newin {
 	    void setColor(const Vector3D<GLfloat>&);
 	    void setPos(const Vector3D<GLfloat>&);
 	    void setRot(const Vector3D<GLfloat>&);
+	    Vector3D<GLfloat> getPos() const;
+	    Vector3D<GLfloat> getRot() const;
 	    void setTex(const std::string&);
 	    void setWorlCam(Camera*);
 	    // for gdl.......
@@ -46,11 +48,6 @@ namespace newin {
 	    // matrix
 	    GLfloat _matrixTransform[16];
 	    void transform();
-	    // shadows
-	    void generateShadowFBO();
-	    void setTextureMatrix();
-	    GLuint fboId;
-	    GLuint FBO;
     };
 }
 

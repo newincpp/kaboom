@@ -19,8 +19,8 @@ void main() {
 
     V.TVertex = objTransform * vec4(vertexPosition, 1.0);
     ////TNormal = vec4(normalize(NormalMatrix * vertexNormal), 1);
-    ////TNormal = projectionMatrix * modelViewMatrix * vec4(vertexNormal, 0.0);
-    //TNormal = vec4(vertexNormal,1);
+    //V.TNormal = projectionMatrix * modelViewMatrix * vec4(vertexNormal, 0.0);
+    //V.TNormal = vec4(vertexNormal,1);
     //V.TNormal = vec4(vertexPosition, 1.0);
 
     gl_Position = projectionMatrix * modelViewMatrix * objTransform * vec4(vertexPosition, 1.0);

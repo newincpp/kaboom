@@ -1,8 +1,9 @@
 #version 330
 
-uniform vec4 lightPos;
-uniform vec3 lightDiff;
-uniform vec4 lightLookAt;
+uniform vec3 lightPos;
+uniform vec3 lightColour;
+uniform vec3 lightLookAt;
+uniform float intensity;
 uniform vec4 inputColour;
 
 in struct vertex {
@@ -13,13 +14,12 @@ in struct vertex {
 out vec4 outputColour;
 
 void main () {
-    vec4 lightDir = lightLookAt - lightPos;
-    float intensity = 1;
-    vec4 amb = vec4(lightDiff, 1.0f) * intensity;
-    vec4 L = normalize(lightPos - V.TVertex);
-    float DiffuseFactor = dot(L, -lightLookAt);
-    vec4 DiffuseColor;
-
-    DiffuseColor = intensity * inputColour;
-    outputColour = DiffuseFactor.xxxx;
+    vec3 lightDir = lightLookAt - lightPos;
+    //float intensity = 0.2;
+    //vec4 amb = vec4(lightDiff, 1.0f) * intensity;
+    vec4 L = normalize(vec4(lightPos,1) - V.TVertex);
+    float DiffuseFactor = dot(L, -vec4(lightDir,1));
+    //outputColour = vec4(DiffuseFactor, DiffuseFactor, DiffuseFactor, 1) * intensity * inputColour;
+    outputColour = inputColour * intensity *  DiffuseFactor;
+    //outputColour = vec4(normalize(lightColour), 1);
 }
