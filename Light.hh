@@ -19,8 +19,10 @@ namespace newin {
 	    void setPos(const Vector3D<GLfloat>&);
 	    void setRot(const Vector3D<GLfloat>&);
 	    void setColor(const Vector3D<GLfloat>&);
+	    void setIntensity(const float);
 	    Vector3D<GLfloat> getPos() const;
 	    Vector3D<GLfloat> getColor() const;
+	    float getIntensity() const;
 	    virtual ~Light();
 	private:
 	    Vector3D<GLfloat> getRot() const;
@@ -28,6 +30,7 @@ namespace newin {
 	    Vector3D<GLfloat> _pos;
 	    Vector3D<GLfloat> _lookat;
 	    Vector3D<GLfloat> _color;
+	    float _intensity;
 	    ShadeProgram* _prgm;
     };
 }

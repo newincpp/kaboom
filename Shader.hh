@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <exception>
+#include <map>
 #include "glinclude.h"
 #include "Types3D.hh"
 
@@ -38,6 +39,7 @@ namespace newin {
 	    GLuint _gID;
 	    GLuint _prgmID;
 	    GLboolean _enabled;
+	    std::map<std::string, GLint> _vardb;
     };
 
     class ShaderException : public std::exception {

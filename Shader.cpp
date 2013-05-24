@@ -77,12 +77,19 @@ newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment, 
 
 inline GLint newin::ShadeProgram::getVariableLocation(const std::string& variableName) {
     enable();
-    GLint loc = glGetUniformLocation(_prgmID, variableName.c_str());
-    if (loc < 0) {
-	std::cout << "ERROR getting variable named '" << variableName << "' from shader" << std::endl;
-	return 0;
+
+    std::map<std::string,GLint>::iterator uniform = _vardb.find(variableName);
+    if (uniform == _vardb.end()) {
+	GLint loc = glGetUniformLocation(_prgmID, variableName.c_str());
+	if (loc < 0) {
+	    std::cout << "ERROR getting variable named '" << variableName << "' from shader" << std::endl;
+	    return -1;
+	}
+	_vardb[variableName] = loc;
+	return loc;
+    } else {
+	return uniform->second;
     }
-    return loc;
 }
 
 void newin::ShadeProgram::setVariable(const std::string& variableName, const GLfloat* v) {

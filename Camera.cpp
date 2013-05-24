@@ -54,19 +54,27 @@ void newin::Camera::update(/*gdl::GameClock const & gameClock,*/ gdl::Input & i)
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::Numpad8) == true) {
-	_pos.setY( _pos.getY() - 0.01);
-	_changed = true;
-    }
-    if (i.isKeyDown(gdl::Keys::Numpad5) == true) {
-	_pos.setY( _pos.getY() + 0.01);
-	_changed = true;
-    }
-    if (i.isKeyDown(gdl::Keys::Add) == true) {
 	_pos.setZ( _pos.getZ() - 0.01);
 	_changed = true;
     }
-    if (i.isKeyDown(gdl::Keys::Subtract) == true) {
+    if (i.isKeyDown(gdl::Keys::Numpad5) == true) {
 	_pos.setZ( _pos.getZ() + 0.01);
+	_changed = true;
+    }
+    if (i.isKeyDown(gdl::Keys::Add) == true) {
+	_pos.setY( _pos.getY() + 0.01);
+	_changed = true;
+    }
+    if (i.isKeyDown(gdl::Keys::Subtract) == true) {
+	_pos.setY( _pos.getY() - 0.01);
+	_changed = true;
+    }
+    if (i.isKeyDown(gdl::Keys::Numpad7) == true) {
+	_rot.setY(_rot.getY() + 0.1);
+	_changed = true;
+    }
+    if (i.isKeyDown(gdl::Keys::Numpad9) == true) {
+	_rot.setY(_rot.getY() - 0.1);
 	_changed = true;
     }
     if (_changed){
