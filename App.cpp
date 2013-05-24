@@ -12,8 +12,8 @@ App::~App() {
 }
 
 void App::initialize(void) {
-    window_.setWidth(1920);
-    window_.setHeight(1080);
+    window_.setWidth(800);
+    window_.setHeight(600);
     window_.create();
     window_.setTitle("bomberman !");
     GLenum err = glewInit();
@@ -21,10 +21,12 @@ void App::initialize(void) {
 	std::cerr << "FAIL !" << std::endl;
     newin::Shader v(new std::fstream("defuse_vs.glsl"), GL_VERTEX_SHADER);
     newin::Shader f(new std::fstream("defuse_fs.glsl"), GL_FRAGMENT_SHADER);
+    newin::Shader g(new std::fstream("default_gs.glsl"), GL_GEOMETRY_SHADER);
     try {
 	v.compile();
 	f.compile();
-	_defaultShader = new newin::ShadeProgram(v, f);
+	g.compile();
+	_defaultShader = new newin::ShadeProgram(v, f, g);
     } catch (newin::ShaderException& e) {
 	std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
     }

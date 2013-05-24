@@ -62,15 +62,15 @@ GLuint newin::Shader::getID() const {
 //  				    PROGRAM
 /////////////////////////////////////////////////////////////////////////////
 
-newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment) : _vID(vertex.getID()), _fID(fragment.getID()), _enabled(false) {
+newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment, const Shader& geometry) : _vID(vertex.getID()), _fID(fragment.getID()), _gID(geometry.getID()), _enabled(false) {
     _prgmID = glCreateProgram();
     glAttachShader(_prgmID, vertex.getID());
     glAttachShader(_prgmID, fragment.getID());
+    glAttachShader(_prgmID, geometry.getID());
     glLinkProgram(_prgmID);
     GLint status;
     glGetProgramiv(_prgmID, GL_LINK_STATUS, &status);
     if (GL_FALSE == status) {
-//	std::cout << "ERROR: failed to link shader programme" << std::endl;
 	throw ShaderException("ERROR: failed to link shader programme");
     }
 }
