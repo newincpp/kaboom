@@ -19,13 +19,10 @@ void App::initialize(void) {
     GLenum err = glewInit();
     if (err != GLEW_OK)
 	std::cerr << "FAIL !" << std::endl;
-    newin::Shader v(new std::fstream("defuse_vs.glsl"), GL_VERTEX_SHADER);
-    newin::Shader f(new std::fstream("defuse_fs.glsl"), GL_FRAGMENT_SHADER);
-    newin::Shader g(new std::fstream("default_gs.glsl"), GL_GEOMETRY_SHADER);
     try {
-	v.compile();
-	f.compile();
-	g.compile();
+	newin::Shader v("defuse_vs.glsl", GL_VERTEX_SHADER);
+	newin::Shader f("defuse_fs.glsl", GL_FRAGMENT_SHADER);
+	newin::Shader g("default_gs.glsl", GL_GEOMETRY_SHADER);
 	_defaultShader = new newin::ShadeProgram(v, f, g);
     } catch (newin::ShaderException& e) {
 	std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;

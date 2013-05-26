@@ -6,18 +6,19 @@
 //				    SHADER
 ////////////////////////////////////////////////////////////////////////////////
 
-newin::Shader::Shader(std::fstream* s, GLenum TYPE) : _shaderID(glCreateShader(TYPE)) {
+newin::Shader::Shader(const std::string& name, GLenum TYPE) : _shaderID(glCreateShader(TYPE)) {
     size_t size;
 
-    s->seekg(0, std::ios::end);
-    size = s->tellg();
+    std::fstream s(name.c_str());
+    s.seekg(0, std::ios::end);
+    size = s.tellg();
     source = new char[size];
-    s->seekg(0, std::ios::beg);
-    s->read(source, size);
+    s.seekg(0, std::ios::beg);
+    s.read(source, size);
     source[size-1] = 0;
-    s->close();
-    delete s;
+    s.close();
     glShaderSource(_shaderID, 1, (const char**)&source, NULL);
+    compile();
 }
 
 void newin::Shader::compile() {

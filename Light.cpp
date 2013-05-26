@@ -23,12 +23,14 @@ void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, co
     _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
     _prgm->setVariable("lightLookAt", _lookat.getX(), _lookat.getY(), _lookat.getZ());
     _prgm->setVariable("intensity", _intensity);
-    Shader v(new std::fstream("shadowMap_vs.glsl"), GL_VERTEX_SHADER);
-    Shader f(new std::fstream("shadowMap_fs.glsl"), GL_FRAGMENT_SHADER);
-    Shader g(new std::fstream("default_gs.glsl"), GL_GEOMETRY_SHADER);
-    v.compile();
-    f.compile();
-    _shad = new newin::ShadeProgram(v, f, g);
+    try {
+	Shader v("shadowMap_vs.glsl", GL_VERTEX_SHADER);
+	Shader f("shadowMap_fs.glsl", GL_FRAGMENT_SHADER);
+	Shader g("default_gs.glsl", GL_GEOMETRY_SHADER);
+	_shad = new newin::ShadeProgram(v, f, g);
+    } catch (newin::ShaderException& e) {
+	std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
+    }
     glGenFramebuffers(1, &FramebufferName);
     glGenTextures(1, &depthTexture);
     _proj.setShader(_shad);
@@ -40,9 +42,9 @@ void newin::Light::setShader(ShadeProgram* p) {
 	throw newin::ShaderException("shader cannot be null");
     }
     _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
-	       _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
-      _prgm->setVariable("lightLookAt", _lookat.getX(), _lookat.getY(), _lookat.getZ());
-             _prgm->setVariable("intensity", _intensity);
+    _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
+    _prgm->setVariable("lightLookAt", _lookat.getX(), _lookat.getY(), _lookat.getZ());
+    _prgm->setVariable("intensity", _intensity);
 }
 
 void newin::Light::initialize() {
