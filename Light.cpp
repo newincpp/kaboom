@@ -40,9 +40,9 @@ void newin::Light::setShader(ShadeProgram* p) {
 	throw newin::ShaderException("shader cannot be null");
     }
     _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
-    _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
-    _prgm->setVariable("lightLookAt", _lookat.getX(), _lookat.getY(), _lookat.getZ());
-    _prgm->setVariable("intensity", _intensity);
+	       _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
+      _prgm->setVariable("lightLookAt", _lookat.getX(), _lookat.getY(), _lookat.getZ());
+             _prgm->setVariable("intensity", _intensity);
 }
 
 void newin::Light::initialize() {
