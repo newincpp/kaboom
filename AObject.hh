@@ -1,7 +1,7 @@
 #ifndef AOBJECT_H_
 # define AOBJECT_H_
 
-#include "Types3D.hh"
+#include "Vector3D.hh"
 #include "libgdl_gl-2012.4/include/Game.hpp"
 
 class AObject

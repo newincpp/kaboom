@@ -5,7 +5,7 @@
 #include <exception>
 #include <map>
 #include "glinclude.h"
-#include "Types3D.hh"
+#include "Vector3D.hh"
 
 namespace newin {
     class Shader {

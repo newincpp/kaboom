@@ -5,7 +5,8 @@
 #include "Mesh.hh"
 #include "Shader.hh"
 #include "AObject.hh"
-#include "Types3D.hh"
+#include "Vector3D.hh"
+#include "Matrix4.hh"
 
 namespace newin {
     class Light : public AObject {
@@ -22,6 +23,7 @@ namespace newin {
 	    void setIntensity(const float);
 	    Vector3D<GLfloat> getPos() const;
 	    Vector3D<GLfloat> getColor() const;
+	    void shadowMap();
 	    float getIntensity() const;
 	    virtual ~Light();
 	private:
@@ -32,6 +34,14 @@ namespace newin {
 	    Vector3D<GLfloat> _color;
 	    float _intensity;
 	    ShadeProgram* _prgm;
+	    std::list<AObject*>* _shadowModelList;
+
+	    GLuint FramebufferName;
+	    GLuint depthTexture;
+	    ShadeProgram* _shad;
+	    //GLfloat _projection[16];
+	    mat4<GLfloat> _proj;
+
     };
 }
 

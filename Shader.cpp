@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include "Shader.hh"
-#include "Types3D.hh"
 
 ////////////////////////////////////////////////////////////////////////////////
 //				    SHADER
@@ -64,9 +63,9 @@ GLuint newin::Shader::getID() const {
 
 newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment, const Shader& geometry) : _vID(vertex.getID()), _fID(fragment.getID()), _gID(geometry.getID()), _enabled(false) {
     _prgmID = glCreateProgram();
-    glAttachShader(_prgmID, vertex.getID());
-    glAttachShader(_prgmID, fragment.getID());
-    //glAttachShader(_prgmID, geometry.getID());
+    //glAttachShader(_prgmID, _gID);
+    glAttachShader(_prgmID, _vID);
+    glAttachShader(_prgmID, _fID);
     glLinkProgram(_prgmID);
     GLint status;
     glGetProgramiv(_prgmID, GL_LINK_STATUS, &status);

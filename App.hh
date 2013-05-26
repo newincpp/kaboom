@@ -21,7 +21,6 @@ class App : public gdl::Game {
 	newin::Light _defaultLight;
 	std::list<AObject*> _objects;
 	newin::ShadeProgram* _defaultShader;
-	AObject* _testLightMesh;
 };
 
 #endif /* !APP_H_ */

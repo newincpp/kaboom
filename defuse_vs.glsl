@@ -1,6 +1,5 @@
 #version 330
 
-// layout (location = x)
 uniform mat4 modelViewMatrix;
 uniform mat4 objTransform;
 uniform mat4 projectionMatrix;

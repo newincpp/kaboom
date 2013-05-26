@@ -3,7 +3,7 @@
 
 #include <string>
 #include "Mesh.hh"
-#include "Types3D.hh"
+#include "Vector3D.hh"
 
 namespace newin {
     class Loader {

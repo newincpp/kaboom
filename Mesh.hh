@@ -5,7 +5,7 @@
 #include "AObject.hh"
 #include "libgdl_gl-2012.4/include/Image.hpp"
 #include "Shader.hh"
-#include "Types3D.hh"
+#include "Vector3D.hh"
 #include "Camera.hh"
 
 namespace newin {

@@ -17,5 +17,5 @@ void main () {
     vec3 lightDir = lightLookAt - lightPos;
     vec4 L = normalize(vec4(lightPos,1) - V.TVertex);
     float DiffuseFactor = dot(L, -vec4(lightDir,1));
-    outputColour = (vec4(lightColour,1) + inputColour) * intensity *  DiffuseFactor;
+    outputColour = (vec4(lightColour, 1) + inputColour) * intensity *  DiffuseFactor;
 }

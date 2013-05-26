@@ -109,17 +109,12 @@ void newin::Mesh::toogleWireframe() {
 }
 
 void newin::Mesh::render() {
-    //setTextureMatrix();
     if (_s)
 	_s->enable();
     else
 	glUseProgram(0);
-    //update();
     _s->setVariable("objTransform", _matrixTransform);
     _s->setVariable("inputColour", Vector3D<GLfloat>(_col.getX(),_col.getY(), _col.getZ(), 1.0));
-    // enable a range of gl rendering options specific to our object
-    //if (_tset)
-    //_tex.bind();
     glBindBuffer(GL_ARRAY_BUFFER, _vboID);
     glBindVertexArray(_vboID); // make our VAO the current bound VAO
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL); // map memory for the 0th variable that is the size of 3 floats

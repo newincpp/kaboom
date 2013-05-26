@@ -3,7 +3,8 @@
 
 #include "libgdl_gl-2012.4/include/Input.hpp"
 #include "Shader.hh"
-#include "Types3D.hh"
+#include "Vector3D.hh"
+#include "Matrix4.hh"
 
 namespace newin {
     class Camera {
@@ -18,17 +19,15 @@ namespace newin {
 	    Vector3D<GLfloat> getRot() const;
 	    void setPos(const Vector3D<GLfloat>&);
 	    void setRot(const Vector3D<GLfloat>&);
-	    GLfloat* getModelViewMatrix();
-	    GLfloat* getProjectionMatrix();
+	    mat4<GLfloat> getModelViewMatrix();
+	    mat4<GLfloat> getProjectionMatrix();
 	private:
-	    void loadProjectionMatrix(float fov = 1.046666640, float aspect = 1.33333f, float znear = 0.5f, float zfar = 1000.f);
-	    void calculate();
 	    bool _changed;
 	    Vector3D<GLfloat> _pos;
 	    Vector3D<GLfloat> _rot;
 	    ShadeProgram* _prgm;
-	    GLfloat _modelView[16];
-	    GLfloat _projection[16];
+	    mat4<GLfloat> _modv;
+	    mat4<GLfloat> _projv;
     };
 }
 

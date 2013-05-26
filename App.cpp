@@ -1,9 +1,9 @@
 #include <iostream>
 #include <stdlib.h>
 #include <cstdlib>
+#include <unistd.h>
 #include "Loader.hh"
 #include "App.hh"
-#include <unistd.h>
 
 App::App() : _camera(), _defaultLight() {
 }
@@ -40,9 +40,7 @@ void App::initialize(void) {
     _objects.back()->setPos(newin::Vector3D<GLfloat>(0, -1, 0));
     _objects.back()->setRot(newin::Vector3D<GLfloat>(0, 30, 0));
     ((newin::Mesh*)_objects.back())->setWorlCam(&_camera);
-    _objects.push_back(&_defaultLight);
-    _testLightMesh = newin::Loader().loadOBJ(_defaultShader, "lamp.obj");
-    _testLightMesh->setPos(_defaultLight.getPos());
+    //_objects.push_back(&_defaultLight);
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
 	(*itb)->initialize();
@@ -50,13 +48,14 @@ void App::initialize(void) {
 
 void App::update(void) {
     if (input_.isKeyDown(gdl::Keys::Escape)) {
-	exit(0);
+	window_.close();
     }
+    _defaultLight.update(input_);
+    //_defaultLight.shadowMap();
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
 	(*itb)->update(/*gameClock_,*/input_);
     _camera.update(/*gameClock_,*/ input_);
-    //    ((newin::Mesh*)_testLightMesh)->update();
 }
 
 void App::draw(void) {
@@ -70,7 +69,6 @@ void App::draw(void) {
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
 	(*itb)->draw();
-    _testLightMesh->draw();
     window_.display();
     if ((_old_time = (1666.666666 - ((gameClock_.getElapsedTime() - _old_time) * 100000))) > 0)
 	usleep(_old_time);
