@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:52:54 2013 Dorian Stroher
-// Last update Wed May 22 15:52:54 2013 Dorian Stroher
+// Last update Wed May 22 17:56:02 2013 Valentin Laurent
 //
 
 #ifndef __WALL__HH__
@@ -36,11 +36,12 @@ public:
   int getPush() const;
   int getSpeed() const;
   int getLife() const;
-  void setRange();
-  void setBombe();
-  void setPush();
-  void setSpeed();
-  void setLife();
+  void setRange(int);
+  void setBombe(int);
+  void setPush(int);
+  void setSpeed(int);
+  void setLife(int);
+  type getType() const;
 };
 
 #endif /* __HEART__HH__ */

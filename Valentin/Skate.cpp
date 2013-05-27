@@ -14,27 +14,35 @@ Skate::~Skate()
 {
 }
 
-int Skate::getRange()
+type Skate::getType() const
+{
+  type tmp;
+
+  tmp = skate;
+  return (tmp);
+}
+
+int Skate::getRange() const
 {
   return (range);
 }
 
-int Skate::getBombe()
+int Skate::getBombe() const
 {
   return (bombe);
 }
 
-int Skate::getPush()
+int Skate::getPush() const
 {
   return (push);
 }
 
-int Skate::getSpeed()
+int Skate::getSpeed() const
 {
   return (speed);
 }
 
-int Skate::getLife()
+int Skate::getLife() const
 {
   return (life);
 }

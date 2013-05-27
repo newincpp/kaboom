@@ -26,11 +26,12 @@ public:
   int getPush() const;
   int getSpeed() const;
   int getLife() const;
-  void setRange();
-  void setBombe();
-  void setPush();
-  void setSpeed();
-  void setLife();
+  void setRange(int);
+  void setBombe(int);
+  void setPush(int);
+  void setSpeed(int);
+  void setLife(int);
+  type getType() const;
 };
 
 #endif /* __HEART__HH__ */

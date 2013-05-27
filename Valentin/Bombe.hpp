@@ -27,6 +27,7 @@ public:
   int getPush() const;
   int getSpeed() const;
   int getLife() const;
+  type getType() const;
   void setRange(int);
   void setBombe(int);
   void setPush(int);

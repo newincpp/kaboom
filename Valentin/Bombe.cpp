@@ -14,6 +14,14 @@ Bombe::~Bombe()
 {
 }
 
+type	Bombe::getType() const
+{
+  type tmp;
+
+  tmp = bomb;
+  return (tmp);
+}
+
 int Bombe::getRange() const
 {
   return (range);

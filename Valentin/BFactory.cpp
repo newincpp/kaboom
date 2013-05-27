@@ -49,9 +49,9 @@ IBonus *BFactory::wall()
   return (new Wall);
 }
 
-void	BFactory::whichOne(std::string bonus)
+IBonus	*BFactory::whichOne(std::string bonus)
 {
   //  IBonus	*(*func)(); Ne sert pas normalement
 
-  (this->*extra[bonus]) ();
+  return ((this->*extra[bonus]) ());
 }

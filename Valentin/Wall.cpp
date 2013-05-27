@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:51:26 2013 Dorian Stroher
-// Last update Wed May 22 15:52:20 2013 Dorian Stroher
+// Last update Wed May 22 17:56:01 2013 Valentin Laurent
 //
 
 #include "Wall.hpp"
@@ -19,32 +19,39 @@ Wall::Wall()
   life = 1;
 }
 
-
 Wall::~Wall()
 {
 }
 
-int Wall::getRange()
+type Wall::getType() const
+{
+  type tmp;
+
+  tmp = wall;
+  return (tmp);
+}
+
+int Wall::getRange() const
 {
   return (range);
 }
 
-int Wall::getBombe()
+int Wall::getBombe() const
 {
   return (bombe);
 }
 
-int Wall::getPush()
+int Wall::getPush() const
 {
   return (push);
 }
 
-int Wall::getSpeed()
+int Wall::getSpeed() const
 {
   return (speed);
 }
 
-int Wall::getLife()
+int Wall::getLife() const
 {
   return (life);
 }

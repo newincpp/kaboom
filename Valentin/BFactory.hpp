@@ -29,7 +29,7 @@ public:
   IBonus	*life();
   IBonus	*wall();
   void	createMap();
-  void	whichOne(std::string);
+  IBonus	*whichOne(std::string);
 };
 
 #endif /* __BFACTORY__HPP__ */
