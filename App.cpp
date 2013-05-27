@@ -37,7 +37,6 @@ void App::initialize(void) {
     _objects.back()->setPos(newin::Vector3D<GLfloat>(0, -1, 0));
     _objects.back()->setRot(newin::Vector3D<GLfloat>(0, 30, 0));
     ((newin::Mesh*)_objects.back())->setWorlCam(&_camera);
-    //_objects.push_back(&_defaultLight);
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
 	(*itb)->initialize();
@@ -48,11 +47,11 @@ void App::update(void) {
 	window_.close();
     }
     _defaultLight.update(input_);
-    //_defaultLight.shadowMap();
+    _defaultLight.shadowMap();
+    _camera.update(/*gameClock_,*/ input_);
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
 	(*itb)->update(/*gameClock_,*/input_);
-    _camera.update(/*gameClock_,*/ input_);
 }
 
 void App::draw(void) {

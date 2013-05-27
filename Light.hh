@@ -11,7 +11,7 @@
 namespace newin {
     class Light : public AObject {
 	public:
-	    explicit Light(ShadeProgram* prgm = NULL, const Vector3D<GLfloat>& p = Vector3D<GLfloat>(), const Vector3D<GLfloat>& lookat = Vector3D<GLfloat>(), const Vector3D<GLfloat>& r = Vector3D<GLfloat>());
+	    explicit Light(ShadeProgram* prgm = NULL, const Vector3D<GLfloat>& p = Vector3D<GLfloat>(), const Vector3D<GLfloat>& r = Vector3D<GLfloat>(), const Vector3D<GLfloat>& c = Vector3D<GLfloat>());
 	    void initialize();
 	    void initialize(ShadeProgram*, const Vector3D<GLfloat>&, const Vector3D<GLfloat>&, const Vector3D<GLfloat>&);
 	    void setShader(ShadeProgram* p);
@@ -23,24 +23,25 @@ namespace newin {
 	    void setIntensity(const float);
 	    Vector3D<GLfloat> getPos() const;
 	    Vector3D<GLfloat> getColor() const;
-	    void shadowMap();
+	    Vector3D<GLfloat> getRot() const;
 	    float getIntensity() const;
+	    void shadowMap();
 	    virtual ~Light();
 	private:
-	    Vector3D<GLfloat> getRot() const;
 	    bool _changed;
 	    Vector3D<GLfloat> _pos;
-	    Vector3D<GLfloat> _lookat;
+	    Vector3D<GLfloat> _rot;
 	    Vector3D<GLfloat> _color;
 	    float _intensity;
 	    ShadeProgram* _prgm;
 	    std::list<AObject*>* _shadowModelList;
 
+	    void initShadowTex();
 	    GLuint FramebufferName;
 	    GLuint depthTexture;
 	    ShadeProgram* _shad;
-	    //GLfloat _projection[16];
 	    mat4<GLfloat> _proj;
+	    mat4<GLfloat> _modv;
 
     };
 }

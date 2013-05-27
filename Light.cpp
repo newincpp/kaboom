@@ -2,18 +2,18 @@
 #include <cmath>
 #include "Light.hh"
 
-newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& lookat, const Vector3D<GLfloat>& c) : _changed(true), _pos(p), _lookat(lookat), _color(c), _intensity(0.5), _prgm(prgm) {
+newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& r, const Vector3D<GLfloat>& c) : _changed(true), _pos(p), _rot(r), _color(c), _intensity(0.5), _prgm(prgm), _shad(NULL) {
     if (_prgm) {
 	_prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
 	_prgm->setVariable("lightColour", _color);
-	_prgm->setVariable("lightLookAt", _lookat.getX(), _lookat.getY(), _lookat.getZ());
+	_prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
 	_prgm->setVariable("intensity", _intensity);
     }
 }
 
-void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& lookat, const Vector3D<GLfloat>& c) {
+void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& rot, const Vector3D<GLfloat>& c) {
     _pos = p;
-    _lookat = lookat;
+    _rot = rot;
     _color = c;
     _prgm = prgm;
     if (!_prgm) {
@@ -21,19 +21,20 @@ void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, co
     }
     _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
     _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
-    _prgm->setVariable("lightLookAt", _lookat.getX(), _lookat.getY(), _lookat.getZ());
+    _prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
     _prgm->setVariable("intensity", _intensity);
     try {
 	Shader v("shadowMap_vs.glsl", GL_VERTEX_SHADER);
 	Shader f("shadowMap_fs.glsl", GL_FRAGMENT_SHADER);
 	Shader g("default_gs.glsl", GL_GEOMETRY_SHADER);
 	_shad = new newin::ShadeProgram(v, f, g);
+	_proj.setShader(_shad);
+	_modv.setShader(_shad);
     } catch (newin::ShaderException& e) {
 	std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
     }
-    glGenFramebuffers(1, &FramebufferName);
-    glGenTextures(1, &depthTexture);
     _proj.setShader(_shad);
+    initShadowTex();
 }
 
 void newin::Light::setShader(ShadeProgram* p) {
@@ -43,7 +44,7 @@ void newin::Light::setShader(ShadeProgram* p) {
     }
     _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
     _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
-    _prgm->setVariable("lightLookAt", _lookat.getX(), _lookat.getY(), _lookat.getZ());
+    _prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
     _prgm->setVariable("intensity", _intensity);
 }
 
@@ -69,7 +70,7 @@ void newin::Light::update(/*gdl::GameClock const &, */gdl::Input & i) {
 	_changed = false;
 	_prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
 	_prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
-	_prgm->setVariable("lightLookAt", _lookat.getX(), _lookat.getY(), _lookat.getZ());
+	_prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
     }
 }
 
@@ -108,25 +109,47 @@ float newin::Light::getIntensity() const {
     return _intensity;
 }
 
-void newin::Light::shadowMap() {
-    //glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE); // disenabed output to screen
+void newin::Light::initShadowTex() {
+    if (!_shad) {
+	std::cout << "LOL" << std::endl;
+    }
+    _shad->enable();
+    glGenFramebuffers(1, &FramebufferName);
+    glGenTextures(1, &depthTexture);
+
     glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
 
     // Depth texture. Slower than a depth buffer, but you can sample it later in your shader
     glBindTexture(GL_TEXTURE_2D, depthTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT16, 1024, 1024, 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    //GLuint depthrenderbuffer;
+    //glGenRenderbuffers(1, &depthrenderbuffer);
+    //glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
+    //glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1024, 768);
+    //glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
 
     glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture, 0);
 
     glDrawBuffer(GL_NONE); // No color buffer is drawn to.
 
     // Always check that our framebuffer is ok
-    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+	std::cout << "frame Buffer failed" << std::endl;
 	return ;
+    }
+    _proj.loadProjectionMatrix();
+    _modv.genModelView(_pos, _rot);
+    glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the lower left corner to the upper right
+    _shad->disenable();
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void newin::Light::shadowMap() {
 }
 
 newin::Light::~Light() {

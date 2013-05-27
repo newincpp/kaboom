@@ -1,5 +1,6 @@
 #ifndef MATRIX4_H_
 # define MATRIX4_H_
+#include <iostream>
 
 namespace newin {
     template <typename T>
@@ -27,7 +28,11 @@ namespace newin {
 		    glRotatef(rot.getX(), 1, 0, 0);
 		    glTranslatef(- pos.getX(), - pos.getY(), - pos.getZ());
 		    glGetFloatv(GL_MODELVIEW_MATRIX, _mat);
-		    _prgm->setVariable("modelViewMatrix", _mat);
+		    if (_prgm) {
+			_prgm->setVariable("modelViewMatrix", _mat);
+		    } else {
+			std::cout << "WARNING shader is not set, 'uniform modelViewMatrix' will not set" << std::endl;
+		    }
 		}
 		void loadProjectionMatrix(float fov = 1.046666640, float aspect = 1.33333f, float znear = 0.5f, float zfar = 1000.f) {
 		    float xymax = znear * tan(fov/2);
@@ -58,7 +63,11 @@ namespace newin {
 		    _mat[13] = 0;
 		    _mat[14] = qn;
 		    _mat[15] = 0;
-		    _prgm->setVariable("projectionMatrix", _mat);
+		    if (_prgm) {
+			_prgm->setVariable("projectionMatrix", _mat);
+		    } else {
+			std::cout << "WARNING shader is not set, 'uniform projectionMatrix' will not set" << std::endl;
+		    }
 		}
 		void upload(const std::string& name) {
 		    _prgm->setVariable(name.c_str(), _mat);
