@@ -19,13 +19,10 @@ void App::initialize(void) {
     GLenum err = glewInit();
     if (err != GLEW_OK)
 	std::cerr << "FAIL !" << std::endl;
-    newin::Shader v(new std::fstream("defuse_vs.glsl"), GL_VERTEX_SHADER);
-    newin::Shader f(new std::fstream("defuse_fs.glsl"), GL_FRAGMENT_SHADER);
-    newin::Shader g(new std::fstream("default_gs.glsl"), GL_GEOMETRY_SHADER);
     try {
-	v.compile();
-	f.compile();
-	g.compile();
+	newin::Shader v("defuse_vs.glsl", GL_VERTEX_SHADER);
+	newin::Shader f("defuse_fs.glsl", GL_FRAGMENT_SHADER);
+	newin::Shader g("default_gs.glsl", GL_GEOMETRY_SHADER);
 	_defaultShader = new newin::ShadeProgram(v, f, g);
     } catch (newin::ShaderException& e) {
 	std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
@@ -40,7 +37,6 @@ void App::initialize(void) {
     _objects.back()->setPos(newin::Vector3D<GLfloat>(0, -1, 0));
     _objects.back()->setRot(newin::Vector3D<GLfloat>(0, 30, 0));
     ((newin::Mesh*)_objects.back())->setWorlCam(&_camera);
-    //_objects.push_back(&_defaultLight);
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
 	(*itb)->initialize();
@@ -51,11 +47,11 @@ void App::update(void) {
 	window_.close();
     }
     _defaultLight.update(input_);
-    //_defaultLight.shadowMap();
+    _defaultLight.shadowMap();
+    _camera.update(/*gameClock_,*/ input_);
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
 	(*itb)->update(/*gameClock_,*/input_);
-    _camera.update(/*gameClock_,*/ input_);
 }
 
 void App::draw(void) {

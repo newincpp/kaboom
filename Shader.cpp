@@ -6,18 +6,23 @@
 //				    SHADER
 ////////////////////////////////////////////////////////////////////////////////
 
-newin::Shader::Shader(std::fstream* s, GLenum TYPE) : _shaderID(glCreateShader(TYPE)) {
+newin::Shader::Shader(const std::string& name, GLenum TYPE) : _shaderID(glCreateShader(TYPE)) {
     size_t size;
 
-    s->seekg(0, std::ios::end);
-    size = s->tellg();
-    source = new char[size];
-    s->seekg(0, std::ios::beg);
-    s->read(source, size);
-    source[size-1] = 0;
-    s->close();
-    delete s;
-    glShaderSource(_shaderID, 1, (const char**)&source, NULL);
+    std::fstream s(name.c_str());
+    if (!s.is_open()) {
+	std::cerr << "\033[1;31m" << "failed to open shader file" << "\033[0m" << std::endl;
+    } else {
+	s.seekg(0, std::ios::end);
+	size = s.tellg();
+	source = new char[size];
+	s.seekg(0, std::ios::beg);
+	s.read(source, size);
+	source[size-1] = 0;
+	s.close();
+	glShaderSource(_shaderID, 1, (const char**)&source, NULL);
+    }
+    compile();
 }
 
 void newin::Shader::compile() {

@@ -10,7 +10,7 @@
 namespace newin {
     class Shader {
 	public:
-	    Shader(std::fstream*, GLenum);
+	    Shader(const std::string&, GLenum);
 	    ~Shader();
 	    void compile();
 	    GLuint getID() const;
