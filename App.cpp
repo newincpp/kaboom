@@ -32,11 +32,9 @@ void App::initialize(void) {
 
     _objects.push_back(newin::Loader().loadOBJ(_defaultShader, "plane.obj"));
     ((newin::Mesh*)_objects.back())->setColor(newin::Vector3D<GLfloat>(0, 0.5, 0));
-    ((newin::Mesh*)_objects.back())->setWorlCam(&_camera);
     _objects.push_back(newin::Loader().loadOBJ(_defaultShader, "test.obj"));
     _objects.back()->setPos(newin::Vector3D<GLfloat>(0, -1, 0));
     _objects.back()->setRot(newin::Vector3D<GLfloat>(0, 30, 0));
-    ((newin::Mesh*)_objects.back())->setWorlCam(&_camera);
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
 	(*itb)->initialize();
