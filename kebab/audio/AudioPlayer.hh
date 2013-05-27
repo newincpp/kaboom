@@ -3,6 +3,7 @@
 
 # include <iostream>
 # include <vector>
+# include <exception>
 
 # include <al.h>
 # include <alc.h>
@@ -11,19 +12,41 @@
 class AudioPlayer {
 
     public:
+        // ctors, dtors
+        AudioPlayer();
         AudioPlayer(const std::string&);
         virtual ~AudioPlayer();
 
+        // controllers
+        void loadFile(const std::string&);
+        void play();
+        void pause();
+
+        // exception
+        class Exception : public std::exception {
+
+            public:
+                Exception(const std::string& msg) : _msg(msg) {}
+                virtual ~Exception() throw() {}
+                virtual const char *what() const throw() { return (_msg.c_str()); }
+
+            private:
+                std::string _msg;
+
+        };
+
+    private:
+        // file name
+        std::string _name;
+
+        // initializer members
+        void loadFile();
         void initContext();
         void cleanContext();
         void createSource();
         void destroySource();
-        void loadFile();
-        void play();
-        void pause();
 
-    private:
-        std::string _name;
+        // initializer variables
         ALCdevice *_device;
         ALCcontext *_context;
 
@@ -34,7 +57,7 @@ class AudioPlayer {
         ALuint _buff;
         std::vector<ALshort> _sample;
 
-        //play song
+        // song source
         ALuint _source;
 
 };
