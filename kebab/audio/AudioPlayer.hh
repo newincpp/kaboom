@@ -18,6 +18,7 @@ class AudioPlayer {
         virtual ~AudioPlayer();
 
         // controllers
+        void cleanUp();
         void loadFile(const std::string&);
         void play();
         void pause();
