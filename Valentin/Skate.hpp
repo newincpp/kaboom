@@ -5,9 +5,9 @@
 #include <vector>
 #include <string>
 #include <list>
-#include "IBonus.hh"
+#include "IObject.hh"
 
-class Skate : public IBonus {
+class Skate : public IObject {
 
 private:
 

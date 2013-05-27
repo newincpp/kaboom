@@ -1,5 +1,5 @@
 #include "BFactory.hpp"
-#include "IBonus.hh"
+#include "IObject.hh"
 
 BFactory::BFactory()
 {
@@ -19,39 +19,39 @@ void	BFactory::createMap()
   this->extra["Wall"] = &BFactory::wall;
 }
 
-IBonus *BFactory::burn()
+IObject *BFactory::burn()
 {
   return (new Fire);
 }
 
-IBonus *BFactory::explode()
+IObject *BFactory::explode()
 {
   return (new Bombe);
 }
 
-IBonus *BFactory::rolling()
+IObject *BFactory::rolling()
 {
   return (new Roller);
 }
 
-IBonus *BFactory::backflip()
+IObject *BFactory::backflip()
 {
   return (new Skate);
 }
 
-IBonus *BFactory::life()
+IObject *BFactory::life()
 {
   return (new Heart);
 }
 
-IBonus *BFactory::wall()
+IObject *BFactory::wall()
 {
   return (new Wall);
 }
 
-IBonus	*BFactory::whichOne(std::string bonus)
+IObject	*BFactory::whichOne(std::string bonus)
 {
-  //  IBonus	*(*func)(); Ne sert pas normalement
+  //  IObject	*(*func)(); Ne sert pas normalement
 
   return ((this->*extra[bonus]) ());
 }
