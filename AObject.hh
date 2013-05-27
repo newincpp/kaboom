@@ -1,7 +1,7 @@
 #ifndef AOBJECT_H_
 # define AOBJECT_H_
 
-#include "Types3D.hh"
+#include "Vector3D.hh"
 #include "libgdl_gl-2012.4/include/Game.hpp"
 
 class AObject
@@ -13,6 +13,8 @@ class AObject
 	virtual void draw(void) = 0;
 	virtual void setPos(const newin::Vector3D<GLfloat>&) = 0;
 	virtual void setRot(const newin::Vector3D<GLfloat>&) = 0;
+	virtual newin::Vector3D<GLfloat> getPos() const = 0;
+	virtual newin::Vector3D<GLfloat> getRot() const = 0;
     protected:
 	newin::Vector3D<GLfloat> position_;
 	newin::Vector3D<GLfloat> rotation_;

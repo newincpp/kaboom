@@ -1,19 +1,20 @@
 #version 330
 
-in vec4 TNormal;
-in vec4 TVertex;
-
-uniform vec4 lightPos;
-uniform vec3 lightDiff;
+uniform vec3 lightPos;
+uniform vec3 lightColour;
+uniform vec3 lightRot;
+uniform float intensity;
 uniform vec4 inputColour;
+
+in struct vertex {
+    vec4 TVertex;
+    vec4 TNormal;
+} V;
 
 out vec4 outputColour;
 
-void main ()
-{
-    vec4 amb = vec4(0.2,0.2,0.2, 0);
-    vec4 L = normalize(lightPos - TVertex);
-    vec4 Idiff = vec4(lightDiff, 0) * max(dot(TNormal,L), 0.0);
-    //outputColour = (amb - Idiff ) * inputColour;
-    outputColour = Idiff + inputColour;
+void main () {
+    vec4 L = normalize(vec4(lightPos,1) - V.TVertex);
+    float DiffuseFactor = dot(L, -vec4(-lightPos,1));
+    outputColour = (vec4(lightColour, 1) + inputColour) * intensity *  DiffuseFactor;
 }

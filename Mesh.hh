@@ -5,7 +5,8 @@
 #include "AObject.hh"
 #include "libgdl_gl-2012.4/include/Image.hpp"
 #include "Shader.hh"
-#include "Types3D.hh"
+#include "Vector3D.hh"
+#include "Camera.hh"
 
 namespace newin {
     class Mesh : public AObject {
@@ -20,14 +21,15 @@ namespace newin {
 	    void setColor(const Vector3D<GLfloat>&);
 	    void setPos(const Vector3D<GLfloat>&);
 	    void setRot(const Vector3D<GLfloat>&);
+	    Vector3D<GLfloat> getPos() const;
+	    Vector3D<GLfloat> getRot() const;
 	    void setTex(const std::string&);
+	    void setWorlCam(Camera*);
 	    // for gdl.......
 	    void initialize();
 	    void update(/*gdl::GameClock const &,*/ gdl::Input &);
 	    void draw(void);
 	private:
-	    void shadows();
-	    void transform();
 	    explicit Mesh();
 	    void checkVertex() const;
 	    gdl::Image _tex;
@@ -40,9 +42,12 @@ namespace newin {
 	    Vector3D<GLfloat> _col;
 	    Vector3D<GLfloat> _pos;
 	    Vector3D<GLfloat> _rot;
+
+	    Camera* _cam;
+
+	    // matrix
 	    GLfloat _matrixTransform[16];
-	    GLuint _callList;
-	    bool _compiled;
+	    void transform();
     };
 }
 

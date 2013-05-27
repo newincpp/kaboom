@@ -1,24 +1,28 @@
 #include <iostream>
 #include <fstream>
 #include "Shader.hh"
-#include "Types3D.hh"
 
 ////////////////////////////////////////////////////////////////////////////////
 //				    SHADER
 ////////////////////////////////////////////////////////////////////////////////
 
-newin::Shader::Shader(std::fstream* s, GLenum TYPE) : _shaderID(glCreateShader(TYPE)) {
+newin::Shader::Shader(const std::string& name, GLenum TYPE) : _shaderID(glCreateShader(TYPE)) {
     size_t size;
 
-    s->seekg(0, std::ios::end);
-    size = s->tellg();
-    source = new char[size];
-    s->seekg(0, std::ios::beg);
-    s->read(source, size);
-    source[size-1] = 0;
-    s->close();
-    delete s;
-    glShaderSource(_shaderID, 1, (const char**)&source, NULL);
+    std::fstream s(name.c_str());
+    if (!s.is_open()) {
+	std::cerr << "\033[1;31m" << "failed to open shader file" << "\033[0m" << std::endl;
+    } else {
+	s.seekg(0, std::ios::end);
+	size = s.tellg();
+	source = new char[size];
+	s.seekg(0, std::ios::beg);
+	s.read(source, size);
+	source[size-1] = 0;
+	s.close();
+	glShaderSource(_shaderID, 1, (const char**)&source, NULL);
+    }
+    compile();
 }
 
 void newin::Shader::compile() {
@@ -62,27 +66,38 @@ GLuint newin::Shader::getID() const {
 //  				    PROGRAM
 /////////////////////////////////////////////////////////////////////////////
 
-newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment) : _vID(vertex.getID()), _fID(fragment.getID()), _enabled(false) {
+newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment, const Shader& geometry) : _vID(vertex.getID()), _fID(fragment.getID()), _gID(geometry.getID()), _enabled(false) {
     _prgmID = glCreateProgram();
-    glAttachShader(_prgmID, vertex.getID());
-    glAttachShader(_prgmID, fragment.getID());
+    //glAttachShader(_prgmID, _gID);
+    glAttachShader(_prgmID, _vID);
+    glAttachShader(_prgmID, _fID);
     glLinkProgram(_prgmID);
     GLint status;
     glGetProgramiv(_prgmID, GL_LINK_STATUS, &status);
     if (GL_FALSE == status) {
-//	std::cout << "ERROR: failed to link shader programme" << std::endl;
 	throw ShaderException("ERROR: failed to link shader programme");
     }
 }
 
-void newin::ShadeProgram::setVariable(const std::string& variableName, const GLfloat* v) {
+inline GLint newin::ShadeProgram::getVariableLocation(const std::string& variableName) {
     enable();
-    GLint loc = glGetUniformLocation(_prgmID, variableName.c_str());
-    if (loc < 0) {
-	std::cout << "ERROR getting variable named '" << variableName << "' from shader" << std::endl;
-	return ;
+
+    std::map<std::string,GLint>::iterator uniform = _vardb.find(variableName);
+    if (uniform == _vardb.end()) {
+	GLint loc = glGetUniformLocation(_prgmID, variableName.c_str());
+	if (loc < 0) {
+	    std::cout << "ERROR getting variable named '" << variableName << "' from shader" << std::endl;
+	    return -1;
+	}
+	_vardb[variableName] = loc;
+	return loc;
+    } else {
+	return uniform->second;
     }
-    glUniformMatrix4fv(loc, 1, false, v);
+}
+
+void newin::ShadeProgram::setVariable(const std::string& variableName, const GLfloat* v) {
+    glUniformMatrix4fv(getVariableLocation(variableName), 1, false, v);
 }
 
 void newin::ShadeProgram::setVariable(const std::string& variableName, const Vector3D<float>& v) {
@@ -90,23 +105,19 @@ void newin::ShadeProgram::setVariable(const std::string& variableName, const Vec
 }
 
 void newin::ShadeProgram::setVariable(const std::string& variableName, const float x, const float y, const float z, const float w) {
-    enable();
-    GLint loc = glGetUniformLocation(_prgmID, variableName.c_str());
-    if (loc < 0) {
-	std::cout << "ERROR getting variable named '" << variableName << "' from shader" << std::endl;
-	return ;
-    }
-    glUniform4f(loc, x, y, z, w);
+    glUniform4f(getVariableLocation(variableName), x, y, z, w);
 }
 
 void newin::ShadeProgram::setVariable(const std::string& variableName, const float x, const float y, const float z) {
-    enable();
-    GLint loc = glGetUniformLocation(_prgmID, variableName.c_str());
-    if (loc < 0) {
-	std::cout << "ERROR getting variable named '" << variableName << "' from shader" << std::endl;
-	return ;
-    }
-    glUniform3f(loc, x, y, z);
+    glUniform3f(getVariableLocation(variableName), x, y, z);
+}
+
+void newin::ShadeProgram::setVariable(const std::string& variableName, const int i) {
+    glUniform1i(getVariableLocation(variableName), i);
+}
+
+void newin::ShadeProgram::setVariable(const std::string& variableName, const float i) {
+    glUniform1f(getVariableLocation(variableName), i);
 }
 
 void newin::ShadeProgram::enable() {

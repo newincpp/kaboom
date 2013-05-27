@@ -2,7 +2,8 @@
 #include "Mesh.hh"
 #define GLEW_STATIC
 
-newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _tset(false), _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.1, 0.1, 0.1, 1.0)), _pos(), _rot(), _compiled(false) {
+newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _tset(false), _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.1, 0.1, 0.1, 1.0)), _pos(), _rot(), _cam(NULL) {
+    _vboID = 0;
     if (m) {
 	_verts = Vector3D<GLfloat>::toGLfloatArray(*m);
 	int j = 0;
@@ -17,7 +18,6 @@ newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _tset(f
 	_verts = NULL;
 	_vertexCount = 0;
     }
-    delete m;
     glGenBuffers(1, &_vboID);
     update();
     //checkVertex();
@@ -41,6 +41,19 @@ void newin::Mesh::setRot(const Vector3D<GLfloat>& rot) {
 void newin::Mesh::setTex(const std::string& name) {
     _tex.load("resources/" + name);
     _tset = true;
+}
+
+newin::Vector3D<GLfloat> newin::Mesh::getPos() const {
+    return _pos;
+}
+
+newin::Vector3D<GLfloat> newin::Mesh::getRot() const {
+    return _rot;
+}
+
+
+void newin::Mesh::setWorlCam(Camera* c) {
+    _cam = c;
 }
 
 void newin::Mesh::checkVertex() const {
@@ -95,43 +108,10 @@ void newin::Mesh::toogleWireframe() {
     _wireframe = !_wireframe;
 }
 
-void newin::Mesh::shadows() {
-    //The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
-    GLuint FramebufferName = 0;
-    glGenFramebuffers(1, &FramebufferName);
-    glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
-
-    // Depth texture. Slower than a depth buffer, but you can sample it later in your shader
-    GLuint depthTexture;
-    glGenTextures(1, &depthTexture);
-    glBindTexture(GL_TEXTURE_2D, depthTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT16, 1024, 1024, 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture, 0);
-
-    glDrawBuffer(GL_NONE); // No color buffer is drawn to.
-
-    // Always check that our framebuffer is ok
-    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-	std::cout << "fuck" << std::endl;
-}
-
 void newin::Mesh::render() {
-    //shadows();
-    if (_s)
-	_s->enable();
-    else
-	glUseProgram(0);
-    //update();
+    _s->enable();
     _s->setVariable("objTransform", _matrixTransform);
     _s->setVariable("inputColour", Vector3D<GLfloat>(_col.getX(),_col.getY(), _col.getZ(), 1.0));
-    // enable a range of gl rendering options specific to our object
-    //if (_tset)
-    //_tex.bind();
     glBindBuffer(GL_ARRAY_BUFFER, _vboID);
     glBindVertexArray(_vboID); // make our VAO the current bound VAO
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL); // map memory for the 0th variable that is the size of 3 floats
@@ -139,8 +119,8 @@ void newin::Mesh::render() {
 	glDrawArrays(GL_LINE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
     else
 	glDrawArrays(GL_TRIANGLES, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
-    //glBindBuffer(GL_ARRAY_BUFFER, 0);
-    //_s->disenable();
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    _s->disenable();
 }
 
 newin::Mesh::~Mesh() {
@@ -164,8 +144,6 @@ void newin::Mesh::transform() {
 //for gdl.....
 
 void newin::Mesh::initialize() {
-    _callList = glGenLists(1);
-    _compiled = false;
 }
 
 void newin::Mesh::update(/*gdl::GameClock const &, */ gdl::Input & i) {

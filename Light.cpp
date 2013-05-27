@@ -1,24 +1,40 @@
 #include <iostream>
+#include <cmath>
 #include "Light.hh"
 
-newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& d) : _changed(true), _pos(p) , _diff(d), _spec(), _prgm(prgm){
+newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& r, const Vector3D<GLfloat>& c) : _changed(true), _pos(p), _rot(r), _color(c), _intensity(0.5), _prgm(prgm), _shad(NULL) {
     if (_prgm) {
 	_prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
-	_prgm->setVariable("lightDiff ", _diff.getX(), _diff.getY(), _diff.getZ());
-	_prgm->setVariable("specular", _spec.getX(), _spec.getY(), _spec.getZ());
+	_prgm->setVariable("lightColour", _color);
+	_prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
+	_prgm->setVariable("intensity", _intensity);
     }
 }
 
-void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& d) {
+void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& rot, const Vector3D<GLfloat>& c) {
     _pos = p;
-    _diff = d;
+    _rot = rot;
+    _color = c;
     _prgm = prgm;
     if (!_prgm) {
 	throw newin::ShaderException("cannot use light without shader");
     }
     _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
-    _prgm->setVariable("lightDiff", _diff.getX(), _diff.getY(), _diff.getZ());
-    //_prgm->setVariable("specular", _spec.getX(), _spec.getY(), _spec.getZ());
+    _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
+    _prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
+    _prgm->setVariable("intensity", _intensity);
+    try {
+	Shader v("shadowMap_vs.glsl", GL_VERTEX_SHADER);
+	Shader f("shadowMap_fs.glsl", GL_FRAGMENT_SHADER);
+	Shader g("default_gs.glsl", GL_GEOMETRY_SHADER);
+	_shad = new newin::ShadeProgram(v, f, g);
+	_proj.setShader(_shad);
+	_modv.setShader(_shad);
+    } catch (newin::ShaderException& e) {
+	std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
+    }
+    _proj.setShader(_shad);
+    initShadowTex();
 }
 
 void newin::Light::setShader(ShadeProgram* p) {
@@ -27,8 +43,9 @@ void newin::Light::setShader(ShadeProgram* p) {
 	throw newin::ShaderException("shader cannot be null");
     }
     _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
-    _prgm->setVariable("lightDiff", _diff.getX(), _diff.getY(), _diff.getZ());
-    //_prgm->setVariable("specular", _spec.getX(), _spec.getY(), _spec.getZ());
+    _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
+    _prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
+    _prgm->setVariable("intensity", _intensity);
 }
 
 void newin::Light::initialize() {
@@ -38,15 +55,22 @@ void newin::Light::draw() {
 }
 
 void newin::Light::update(/*gdl::GameClock const &, */gdl::Input & i) {
-    (void) i;
+    if (i.isKeyDown(gdl::Keys::I)) {
+	_pos.setX(_pos.getX() + 0.1);
+	_changed = true;
+    }
+    if (i.isKeyDown(gdl::Keys::O)) {
+	_pos.setX(_pos.getX() - 0.1);
+	_changed = true;
+    }
     if (!_prgm) {
 	throw newin::ShaderException("cannot use light without shader");
     }
     if (_changed){
 	_changed = false;
 	_prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
-	_prgm->setVariable("lightDiff", _diff.getX(), _diff.getY(), _diff.getZ());
-	//_prgm->setVariable("specular", _spec.getX(), _spec.getY(), _spec.getZ());
+	_prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
+	_prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
     }
 }
 
@@ -58,25 +82,76 @@ void newin::Light::setRot(const newin::Vector3D<GLfloat>& r) {
     (void) r;
 }
 
-void newin::Light::setDiff(const newin::Vector3D<GLfloat>& d) {
-    _diff = d;
+void newin::Light::setColor(const newin::Vector3D<GLfloat>& c) {
+    _color = c;
 }
 
-void newin::Light::setSpecular(const newin::Vector3D<GLfloat>& s) {
-    _spec = s;
+void newin::Light::setIntensity(const float i) {
+    if (i > 1) {
+	std::cout << "warning: intensity > 1 will probably make some shit" << std::endl;
+    }
+    _intensity = i;
 }
 
-newin::Vector3D<GLfloat> newin::Light::getPos() {
+newin::Vector3D<GLfloat> newin::Light::getPos() const {
     return _pos;
 }
 
-newin::Vector3D<GLfloat> newin::Light::getDiff() {
-    return _diff;
+newin::Vector3D<GLfloat> newin::Light::getRot() const {
+    return Vector3D<GLfloat>();
 }
 
-newin::Vector3D<GLfloat> newin::Light::getSpecular() {
-    return _spec;
+newin::Vector3D<GLfloat> newin::Light::getColor() const {
+    return _color;
+}
+
+float newin::Light::getIntensity() const {
+    return _intensity;
+}
+
+void newin::Light::initShadowTex() {
+    if (!_shad) {
+	std::cout << "LOL" << std::endl;
+    }
+    _shad->enable();
+    glGenFramebuffers(1, &FramebufferName);
+    glGenTextures(1, &depthTexture);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
+
+    // Depth texture. Slower than a depth buffer, but you can sample it later in your shader
+    glBindTexture(GL_TEXTURE_2D, depthTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    //GLuint depthrenderbuffer;
+    //glGenRenderbuffers(1, &depthrenderbuffer);
+    //glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
+    //glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1024, 768);
+    //glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
+
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture, 0);
+
+    glDrawBuffer(GL_NONE); // No color buffer is drawn to.
+
+    // Always check that our framebuffer is ok
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+	std::cout << "frame Buffer failed" << std::endl;
+	return ;
+    }
+    _proj.loadProjectionMatrix();
+    _modv.genModelView(_pos, _rot);
+    glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the lower left corner to the upper right
+    _shad->disenable();
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void newin::Light::shadowMap() {
 }
 
 newin::Light::~Light() {
+    delete _shad;
 }
