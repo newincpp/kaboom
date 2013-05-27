@@ -2,7 +2,7 @@
 #define __BFACTORY__HPP__
 
 #include <map>
-#include "IBonus.hh"
+#include "IObject.hh"
 #include "Fire.hpp"
 #include "Bombe.hpp"
 #include "Heart.hpp"
@@ -14,7 +14,7 @@ class BFactory {
 
 private:
 
-  typedef IBonus *(BFactory::*ptr)();
+  typedef IObject *(BFactory::*ptr)();
   std::map<std::string, ptr> extra;
 
 public:
@@ -22,14 +22,14 @@ public:
   BFactory();
   ~BFactory();
 
-  IBonus	*burn();
-  IBonus	*explode();
-  IBonus	*rolling();
-  IBonus	*backflip();
-  IBonus	*life();
-  IBonus	*wall();
+  IObject	*burn();
+  IObject	*explode();
+  IObject	*rolling();
+  IObject	*backflip();
+  IObject	*life();
+  IObject	*wall();
   void	createMap();
-  void	whichOne(std::string);
+  IObject	*whichOne(std::string);
 };
 
 #endif /* __BFACTORY__HPP__ */

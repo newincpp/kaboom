@@ -24,6 +24,10 @@ AudioPlayer::AudioPlayer(const std::string& name) : _name(name)
 AudioPlayer::~AudioPlayer()
 {
     destroySource();
+}
+
+void AudioPlayer::cleanUp()
+{
     cleanContext();
 }
 
@@ -45,6 +49,7 @@ void AudioPlayer::play()
     while (status == AL_PLAYING) {
         alGetSourcei(_source, AL_SOURCE_STATE, &status);
     }
+    destroySource();
 }
 
 // pause loaded song
@@ -78,6 +83,7 @@ void AudioPlayer::cleanContext()
     alcCloseDevice(_device);
 }
 
+// load file with libsndfile, creates sample and save it to buffer
 void AudioPlayer::loadFile()
 {
     SF_INFO info;
@@ -118,4 +124,10 @@ void AudioPlayer::destroySource()
     alDeleteBuffers(1, &_buff);
     alSourcei(_source, AL_BUFFER, 0);
     alDeleteSources(1, &_source);
+    _nbsample = 0;
+    _samplerate = 0;
+    _format = 0;
+    _buff = 0;
+    _sample.clear();
+    std::cout << "sources destroyed" << std::endl;
 }

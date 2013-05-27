@@ -14,27 +14,35 @@ Fire::~Fire()
 {
 }
 
-int Fire::getRange()
+type Fire::getType() const
+{
+  type tmp;
+
+  tmp = fire;
+  return (tmp);
+}
+
+int Fire::getRange() const
 {
   return (range);
 }
 
-int Fire::getBombe()
+int Fire::getBombe() const
 {
   return (bombe);
 }
 
-int Fire::getPush()
+int Fire::getPush() const
 {
   return (push);
 }
 
-int Fire::getSpeed()
+int Fire::getSpeed() const
 {
   return (speed);
 }
 
-int Fire::getLife()
+int Fire::getLife() const
 {
   return (life);
 }
