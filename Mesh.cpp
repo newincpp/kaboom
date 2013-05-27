@@ -2,7 +2,7 @@
 #include "Mesh.hh"
 #define GLEW_STATIC
 
-newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _tset(false), _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.1, 0.1, 0.1, 1.0)), _pos(), _rot(), _cam(NULL) {
+newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _tset(false), _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.1, 0.1, 0.1, 1.0)), _pos(), _rot() {
     _vboID = 0;
     if (m) {
 	_verts = Vector3D<GLfloat>::toGLfloatArray(*m);
@@ -49,11 +49,6 @@ newin::Vector3D<GLfloat> newin::Mesh::getPos() const {
 
 newin::Vector3D<GLfloat> newin::Mesh::getRot() const {
     return _rot;
-}
-
-
-void newin::Mesh::setWorlCam(Camera* c) {
-    _cam = c;
 }
 
 void newin::Mesh::checkVertex() const {

@@ -43,8 +43,6 @@ namespace newin {
 	    Vector3D<GLfloat> _pos;
 	    Vector3D<GLfloat> _rot;
 
-	    Camera* _cam;
-
 	    // matrix
 	    GLfloat _matrixTransform[16];
 	    void transform();
