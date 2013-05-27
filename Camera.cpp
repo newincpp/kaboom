@@ -68,6 +68,7 @@ void newin::Camera::update(/*gdl::GameClock const & gameClock,*/ gdl::Input & i)
 	_changed = true;
     }
     if (_changed){
+	std::cout << "C: " << _pos.getX() << " " << _pos.getY() << " " << _pos.getZ() << std::endl;
 	_changed = false;
 	_modv.genModelView(_pos, _rot);
     }
