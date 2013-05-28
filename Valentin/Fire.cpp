@@ -27,47 +27,7 @@ int Fire::getRange() const
   return (range);
 }
 
-int Fire::getBombe() const
-{
-  return (bombe);
-}
-
-int Fire::getPush() const
-{
-  return (push);
-}
-
-int Fire::getSpeed() const
-{
-  return (speed);
-}
-
-int Fire::getLife() const
-{
-  return (life);
-}
-
 void Fire::setRange(int i)
 {
   range = i;
-}
-
-void Fire::setBombe(int i)
-{
-  bombe = i;
-}
-
-void Fire::setPush(int i)
-{
-  push = i;
-}
-
-void	Fire::setSpeed(int i)
-{
-  speed = i;
-}
-
-void	Fire::setLife(int i)
-{
-  life = i;
 }

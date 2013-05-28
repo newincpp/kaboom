@@ -22,16 +22,8 @@ public:
   Roller();
   ~Roller();
 
-  int getRange() const;
-  int getBombe() const;
   int getPush() const;
-  int getSpeed() const;
-  int getLife() const;
-  void setRange(int);
-  void setBombe(int);
   void setPush(int);
-  void setSpeed(int);
-  void setLife(int);
   type getType() const;
 };
 

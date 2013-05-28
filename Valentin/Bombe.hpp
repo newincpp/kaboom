@@ -22,17 +22,9 @@ public:
   Bombe();
   ~Bombe();
 
-  int getRange() const;
   int getBombe() const;
-  int getPush() const;
-  int getSpeed() const;
-  int getLife() const;
   type getType() const;
-  void setRange(int);
   void setBombe(int);
-  void setPush(int);
-  void setSpeed(int);
-  void setLife(int);
 };
 
 #endif /* __BOMBE__HH__ */

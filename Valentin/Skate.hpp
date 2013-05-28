@@ -22,17 +22,9 @@ public:
   Skate();
   ~Skate();
 
-  int getRange() const;
-  int getBombe() const;
-  int getPush() const;
   int getSpeed() const;
-  int getLife() const;
-  void setRange(int);
-  void setBombe(int);
-  void setPush(int);
   void setSpeed(int);
-  void setLife(int);
-  type getType() const;
+   type getType() const;
 };
 
 #endif /* __SKATE__HH__ */
