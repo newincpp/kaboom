@@ -23,16 +23,16 @@ void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, co
     _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
     _prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
     _prgm->setVariable("intensity", _intensity);
-    try {
-	Shader v("shadowMap_vs.glsl", GL_VERTEX_SHADER);
-	Shader f("shadowMap_fs.glsl", GL_FRAGMENT_SHADER);
-	Shader g("default_gs.glsl", GL_GEOMETRY_SHADER);
-	_shad = new newin::ShadeProgram(v, f, g);
-	_proj.setShader(_shad);
-	_modv.setShader(_shad);
-    } catch (newin::ShaderException& e) {
-	std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
-    }
+
+    Shader v("shadowMap_vs.glsl", GL_VERTEX_SHADER);
+    Shader f("shadowMap_fs.glsl", GL_FRAGMENT_SHADER);
+    std::cout << "LOL" << std::endl;
+    Shader g("default_gs.glsl", GL_GEOMETRY_SHADER);
+    std::cout << "LOL" << std::endl;
+
+    _shad = new ShadeProgram(v,f,g);
+    _proj.setShader(_shad);
+    _modv.setShader(_shad);
     _proj.setShader(_shad);
     initShadowTex();
 }
@@ -111,15 +111,32 @@ float newin::Light::getIntensity() const {
 
 void newin::Light::initShadowTex() {
     if (!_shad) {
-	std::cout << "LOL" << std::endl;
+	std::cout << "shader is not set..." << std::endl;
+    } else {
+	_shad->enable();
     }
-    _shad->enable();
     glGenFramebuffers(1, &FramebufferName);
     glGenTextures(1, &depthTexture);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void newin::Light::shadowMap() {
+    GLfloat biasMatrix[16] = {
+	0.5, 0.0, 0.0, 0.0,
+	0.0, 0.5, 0.0, 0.0,
+	0.0, 0.0, 0.5, 0.0,
+	0.5, 0.5, 0.5, 1.0
+    };
+    if (_shad) {
+	_shad->enable();
+    } else {
+	std::cout << "warning : shader is not set or has failed to compile" << std::endl;
+    }
+    //_shad->setVariable("biasMatrix", biasMatrix);
 
     glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
-
     // Depth texture. Slower than a depth buffer, but you can sample it later in your shader
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, depthTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -145,11 +162,9 @@ void newin::Light::initShadowTex() {
     _proj.loadProjectionMatrix();
     _modv.genModelView(_pos, _rot);
     glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the lower left corner to the upper right
-    _shad->disenable();
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
-void newin::Light::shadowMap() {
+    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+//    if (_shad)
+//	_shad->disenable();
 }
 
 newin::Light::~Light() {

@@ -45,7 +45,6 @@ void App::update(void) {
 	window_.close();
     }
     _defaultLight.update(input_);
-    _defaultLight.shadowMap();
     _camera.update(/*gameClock_,*/ input_);
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
@@ -60,9 +59,20 @@ void App::draw(void) {
     glDepthMask(GL_TRUE); // turn back on
     glDepthFunc(GL_LESS);
     glClearDepth(1.0f);
+
+    //render shadow
+    _defaultLight.shadowMap();
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
 	(*itb)->draw();
+
+    //render object
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    _camera.renderMode();
+    itb = _objects.begin();
+    for (; itb != _objects.end(); ++itb)
+	(*itb)->draw();
+    _camera.endRenderMode();
     window_.display();
     if ((_old_time = (1666.666666 - ((gameClock_.getElapsedTime() - _old_time) * 100000))) > 0)
 	usleep(_old_time);

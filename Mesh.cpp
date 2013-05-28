@@ -104,7 +104,7 @@ void newin::Mesh::toogleWireframe() {
 }
 
 void newin::Mesh::render() {
-    _s->enable();
+    //_s->enable();
     _s->setVariable("objTransform", _matrixTransform);
     _s->setVariable("inputColour", Vector3D<GLfloat>(_col.getX(),_col.getY(), _col.getZ(), 1.0));
     glBindBuffer(GL_ARRAY_BUFFER, _vboID);
@@ -115,7 +115,7 @@ void newin::Mesh::render() {
     else
 	glDrawArrays(GL_TRIANGLES, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    _s->disenable();
+    //_s->disenable();
 }
 
 newin::Mesh::~Mesh() {

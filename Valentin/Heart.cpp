@@ -14,49 +14,17 @@ Heart::~Heart()
 {
 }
 
-int Heart::getRange()
+type Heart::getType() const
 {
-  return (range);
+  type	tmp;
+
+  tmp = heart;
+  return (tmp);
 }
 
-int Heart::getBombe()
-{
-  return (bombe);
-}
-
-int Heart::getPush()
-{
-  return (push);
-}
-
-int Heart::getSpeed()
-{
-  return (speed);
-}
-
-int Heart::getLife()
+int Heart::getLife() const
 {
   return (life);
-}
-
-void Heart::setRange(int i)
-{
-  range = i;
-}
-
-void Heart::setBombe(int i)
-{
-  bombe = i;
-}
-
-void Heart::setPush(int i)
-{
-  push = i;
-}
-
-void	Heart::setSpeed(int i)
-{
-  speed = i;
 }
 
 void	Heart::setLife(int i)

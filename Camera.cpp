@@ -91,6 +91,14 @@ void newin::Camera::setRot(const Vector3D<GLfloat>& r) {
     _rot = r;
 }
 
+void newin::Camera::renderMode() {
+    _prgm->enable();
+}
+
+void newin::Camera::endRenderMode() {
+    _prgm->disenable();
+}
+
 newin::mat4<GLfloat> newin::Camera::getModelViewMatrix() { // cannot be const because return non const pointer
     return _modv;
 }
