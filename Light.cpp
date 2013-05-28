@@ -26,7 +26,9 @@ void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, co
 
     Shader v("shadowMap_vs.glsl", GL_VERTEX_SHADER);
     Shader f("shadowMap_fs.glsl", GL_FRAGMENT_SHADER);
-    Shader g("defauld_gs.glsl", GL_GEOMETRY_SHADER);
+    std::cout << "LOL" << std::endl;
+    Shader g("default_gs.glsl", GL_GEOMETRY_SHADER);
+    std::cout << "LOL" << std::endl;
 
     _shad = new ShadeProgram(v,f,g);
     _proj.setShader(_shad);
