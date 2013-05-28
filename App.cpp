@@ -65,11 +65,14 @@ void App::draw(void) {
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
 	(*itb)->draw();
+
     //render object
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    _camera.renderMode();
     itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
 	(*itb)->draw();
+    _camera.endRenderMode();
     window_.display();
     if ((_old_time = (1666.666666 - ((gameClock_.getElapsedTime() - _old_time) * 100000))) > 0)
 	usleep(_old_time);

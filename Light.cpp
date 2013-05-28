@@ -23,6 +23,12 @@ void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, co
     _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
     _prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
     _prgm->setVariable("intensity", _intensity);
+
+    Shader v("shadowMap_vs.glsl", GL_VERTEX_SHADER);
+    Shader f("shadowMap_fs.glsl", GL_FRAGMENT_SHADER);
+    Shader g("defauld_gs.glsl", GL_GEOMETRY_SHADER);
+
+    _shad = new ShadeProgram(v,f,g);
     _proj.setShader(_shad);
     _modv.setShader(_shad);
     _proj.setShader(_shad);
@@ -59,8 +65,6 @@ void newin::Light::update(/*gdl::GameClock const &, */gdl::Input & i) {
 	throw newin::ShaderException("cannot use light without shader");
     }
     if (_changed){
-	std::cout << "L: " << _pos.getX() << " " << _pos.getY() << " " << _pos.getZ() << std::endl;
-	//15.8003 4.19 13.1902
 	_changed = false;
 	_prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
 	_prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
@@ -121,12 +125,16 @@ void newin::Light::shadowMap() {
 	0.0, 0.0, 0.5, 0.0,
 	0.5, 0.5, 0.5, 1.0
     };
+    if (_shad) {
+	_shad->enable();
+    } else {
+	std::cout << "warning : shader is not set or has failed to compile" << std::endl;
+    }
     //_shad->setVariable("biasMatrix", biasMatrix);
-    _prgm->enable();
 
     glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
-
     // Depth texture. Slower than a depth buffer, but you can sample it later in your shader
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, depthTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -153,9 +161,8 @@ void newin::Light::shadowMap() {
     _modv.genModelView(_pos, _rot);
     glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the lower left corner to the upper right
     //glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    //    if (_shad)
-    //	_shad->disenable();
-
+//    if (_shad)
+//	_shad->disenable();
 }
 
 newin::Light::~Light() {

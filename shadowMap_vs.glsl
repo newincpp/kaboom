@@ -10,5 +10,5 @@ uniform mat4 biasMatrix;
 in vec3 vertexin;
 
 void main() {
-    gl_Position =  projectionMatrix * modelViewMatrix * objTransform * vec4(vertexin, 1);
+    gl_Position =  biasMatrix * projectionMatrix * modelViewMatrix * objTransform * vec4(vertexin, 1);
 }

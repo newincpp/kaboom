@@ -68,7 +68,6 @@ void newin::Camera::update(/*gdl::GameClock const & gameClock,*/ gdl::Input & i)
 	_changed = true;
     }
     if (_changed){
-	std::cout << "C: " << _pos.getX() << " " << _pos.getY() << " " << _pos.getZ() << std::endl;
 	_changed = false;
 	_modv.genModelView(_pos, _rot);
     }
@@ -90,6 +89,14 @@ void newin::Camera::setPos(const Vector3D<GLfloat>& p) {
 void newin::Camera::setRot(const Vector3D<GLfloat>& r) {
     _changed = true;
     _rot = r;
+}
+
+void newin::Camera::renderMode() {
+    _prgm->enable();
+}
+
+void newin::Camera::endRenderMode() {
+    _prgm->disenable();
 }
 
 newin::mat4<GLfloat> newin::Camera::getModelViewMatrix() { // cannot be const because return non const pointer
