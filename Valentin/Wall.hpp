@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:52:54 2013 Dorian Stroher
-// Last update Mon May 27 17:14:20 2013 Valentin Laurent
+// Last update Tue May 28 14:40:56 2013 Valentin Laurent
 //
 
 #ifndef __WALL__HH__
@@ -26,21 +26,14 @@ private:
   int	push;
   int	speed;
   int	life;
+  int	brick;
 
 public:
 
   Wall();
   virtual ~Wall();
-  int getRange() const;
-  int getBombe() const;
-  int getPush() const;
-  int getSpeed() const;
-  int getLife() const;
-  void setRange(int);
-  void setBombe(int);
-  void setPush(int);
-  void setSpeed(int);
-  void setLife(int);
+  int getBrick() const;
+  void setBrick(int);
   type getType() const;
 };
 
