@@ -11,9 +11,8 @@
 namespace newin {
     class Mesh : public AObject {
 	public:
-	    explicit Mesh(std::vector<Vector3D<GLfloat> >*, ShadeProgram*);
+	    explicit Mesh(std::vector<Vector3D<GLfloat> >*, std::vector<Vector3D<GLfloat> >*, ShadeProgram*);
 	    virtual ~Mesh();
-	    void addVertex(const Vector3D<GLfloat>&);
 	    void setShader(ShadeProgram*);
 	    void render();
 	    void toogleWireframe();
@@ -36,9 +35,12 @@ namespace newin {
 	    GLboolean _tset;
 	    ShadeProgram* _s;
 	    bool _wireframe;
+	    unsigned int _normalCount;
 	    unsigned int _vertexCount;
 	    GLfloat* _verts;
+	    GLfloat* _normal;
 	    GLuint _vboID;
+	    GLuint _nboID;
 	    Vector3D<GLfloat> _col;
 	    Vector3D<GLfloat> _pos;
 	    Vector3D<GLfloat> _rot;

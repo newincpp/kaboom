@@ -2,7 +2,7 @@
 #include <cmath>
 #include "Light.hh"
 
-newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& r, const Vector3D<GLfloat>& c) : _changed(true), _pos(p), _rot(r), _color(c), _intensity(0.5), _prgm(prgm), _shad(NULL) {
+newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& r, const Vector3D<GLfloat>& c) : _changed(true), _pos(p), _rot(r), _color(c), _intensity(0.9), _prgm(prgm), _shad(NULL) {
     if (_prgm) {
 	_prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
 	_prgm->setVariable("lightColour", _color);
@@ -26,9 +26,7 @@ void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, co
 
     Shader v("shadowMap_vs.glsl", GL_VERTEX_SHADER);
     Shader f("shadowMap_fs.glsl", GL_FRAGMENT_SHADER);
-    std::cout << "LOL" << std::endl;
     Shader g("default_gs.glsl", GL_GEOMETRY_SHADER);
-    std::cout << "LOL" << std::endl;
 
     _shad = new ShadeProgram(v,f,g);
     _proj.setShader(_shad);
@@ -56,11 +54,27 @@ void newin::Light::draw() {
 
 void newin::Light::update(/*gdl::GameClock const &, */gdl::Input & i) {
     if (i.isKeyDown(gdl::Keys::I)) {
+	_pos.setZ(_pos.getZ() - 0.1);
+	_changed = true;
+    }
+    if (i.isKeyDown(gdl::Keys::K)) {
+	_pos.setZ(_pos.getZ() + 0.1);
+	_changed = true;
+    }
+    if (i.isKeyDown(gdl::Keys::J)) {
+	_pos.setX(_pos.getX() - 0.1);
+	_changed = true;
+    }
+    if (i.isKeyDown(gdl::Keys::L)) {
 	_pos.setX(_pos.getX() + 0.1);
 	_changed = true;
     }
+    if (i.isKeyDown(gdl::Keys::U)) {
+	_pos.setY(_pos.getY() - 0.1);
+	_changed = true;
+    }
     if (i.isKeyDown(gdl::Keys::O)) {
-	_pos.setX(_pos.getX() - 0.1);
+	_pos.setY(_pos.getY() + 0.1);
 	_changed = true;
     }
     if (!_prgm) {
@@ -163,8 +177,8 @@ void newin::Light::shadowMap() {
     _modv.genModelView(_pos, _rot);
     glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the lower left corner to the upper right
     //glBindFramebuffer(GL_FRAMEBUFFER, 0);
-//    if (_shad)
-//	_shad->disenable();
+    //    if (_shad)
+    //	_shad->disenable();
 }
 
 newin::Light::~Light() {

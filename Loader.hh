@@ -16,6 +16,7 @@ namespace newin {
 	    Mesh* loadOBJ(ShadeProgram*, const std::string&);
 	    void loadMTL(Mesh*, const std::string&);
 	private:
+	    void orderInFaceList(std::vector< Vector3D<GLfloat> >*,std::vector< Vector3D<GLfloat> >*,std::vector< Vector3D<GLfloat> >*,std::vector< Vector3D<GLfloat> >*, std::fstream&);
 	    std::string _filename;
     };
 }
