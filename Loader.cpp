@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstdlib>
 #include "Loader.hh"
 
 newin::Loader::Loader(const std::string& f) : _filename(f) {
@@ -17,7 +18,7 @@ newin::Mesh* newin::Loader::genTri(ShadeProgram* p) {
     l->push_back(Vector3D<GLfloat>(0.5, 0.5, 0, 0));
     l->push_back(Vector3D<GLfloat>(0.5, -0.5, 0, 0));
     l->push_back(Vector3D<GLfloat>(-0.5, -0.5, 0, 0));
-    return new Mesh(l, p);
+    return new Mesh(l, NULL, p);
 }
 
 newin::Mesh* newin::Loader::genQuad(ShadeProgram* p) {
@@ -30,7 +31,7 @@ newin::Mesh* newin::Loader::genQuad(ShadeProgram* p) {
     l->push_back(Vector3D<GLfloat>(0.5, 0.5, 0, 0));
     l->push_back(Vector3D<GLfloat>(-0.5, 0.5, 0, 0));
     l->push_back(Vector3D<GLfloat>(-0.5, -0.5, 0, 0));
-    return new Mesh(l, p);
+    return new Mesh(l, NULL, p);
 }
 
 void newin::Loader::loadMTL(Mesh* m, const std::string& fName) {
@@ -41,8 +42,10 @@ void newin::Loader::loadMTL(Mesh* m, const std::string& fName) {
 
 newin::Mesh* newin::Loader::loadOBJ(ShadeProgram* p, const std::string& fName) {
     std::fstream f(("resources/" + fName).c_str());
-    std::vector< Vector3D<GLfloat> >* l = new std::vector< Vector3D<GLfloat> >();
+    std::vector< Vector3D<GLfloat> >* vertex= new std::vector< Vector3D<GLfloat> >();
     std::vector< Vector3D<GLfloat> >* pure = new std::vector< Vector3D<GLfloat> >();
+    std::vector< Vector3D<GLfloat> >* n = new std::vector< Vector3D<GLfloat> >();
+    std::vector< Vector3D<GLfloat> >* normal = new std::vector< Vector3D<GLfloat> >();
     std::string tmp;
     std::string mtlfile;
     std::string objectName;
@@ -65,33 +68,48 @@ newin::Mesh* newin::Loader::loadOBJ(ShadeProgram* p, const std::string& fName) {
 	f >> value.x;
 	f >> value.y;
 	f >> value.z;
-	//std::cout << "v : " << value.x << " " << value.y << " "<< value.z << std::endl;
 	pure->push_back(Vector3D<GLfloat>(value.x, value.y, value.z));
 	f >> tmp;
     }
-    while (tmp != "f") {
+    while (tmp == "vn") {
+	f >> value.x;
+	f >> value.y;
+	f >> value.z;
+	n->push_back(Vector3D<GLfloat>(value.x, value.y, value.z));
 	f >> tmp;
     }
-    while ((tmp == "f") && (!f.eof())) {
-	f >> index;
-	//std::cout << index << " ";
-	l->push_back(pure->at(index - 1));
-	f >> index;
-	//std::cout << index << " ";
-	l->push_back(pure->at(index - 1));
-	f >> index;
-	//std::cout << index << " ";
-	l->push_back(pure->at(index - 1));
-	//std::cout << std::endl;
-	f >> tmp;
-	if (tmp == "usemtl") {
+    orderInFaceList(vertex, pure, normal, n, f);
+    delete pure;
+    f.close();
+    Mesh * m = new Mesh(vertex, normal, p);
+    loadMTL(m, mtlfile);
+    delete vertex;
+    delete n;
+    return m;
+}
+
+void newin::Loader::orderInFaceList(std::vector< Vector3D<GLfloat> >* vert, std::vector< Vector3D<GLfloat> >* pvert,
+	std::vector< Vector3D<GLfloat> >* nor, std::vector< Vector3D<GLfloat> >* pnor,
+	std::fstream& f) {
+    std::string tmp;
+    std::string svert;
+    std::string snormal;
+    unsigned int delimitter;
+
+    while (!f.eof()) {
+	while (!f.eof() && tmp != "f") {
 	    f >> tmp;
+	}
+	if (!f.eof()) {
+	    for (unsigned int i = 0; i < 3; ++i) {
+		f >> tmp;
+		delimitter = tmp.find("//");
+		svert = tmp.substr(0, delimitter);
+		snormal = tmp.substr(delimitter + 2);
+		vert->push_back(pvert->at(std::atoi(svert.c_str()) - 1));
+		nor->push_back(pnor->at(std::atoi(snormal.c_str()) - 1));
+	    }
 	    f >> tmp;
 	}
     }
-    delete pure;
-    Mesh * m = new Mesh(l, p);
-    loadMTL(m, mtlfile);
-    delete l;
-    return m;
 }

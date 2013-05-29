@@ -14,52 +14,20 @@ Skate::~Skate()
 {
 }
 
-int Skate::getRange()
+type Skate::getType() const
 {
-  return (range);
+  type tmp;
+
+  tmp = skate;
+  return (tmp);
 }
 
-int Skate::getBombe()
-{
-  return (bombe);
-}
-
-int Skate::getPush()
-{
-  return (push);
-}
-
-int Skate::getSpeed()
+int Skate::getSpeed() const
 {
   return (speed);
-}
-
-int Skate::getLife()
-{
-  return (life);
-}
-
-void Skate::setRange(int i)
-{
-  range = i;
-}
-
-void Skate::setBombe(int i)
-{
-  bombe = i;
-}
-
-void Skate::setPush(int i)
-{
-  push = i;
 }
 
 void	Skate::setSpeed(int i)
 {
   speed = i;
-}
-
-void	Skate::setLife(int i)
-{
-  life = i;
 }

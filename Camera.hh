@@ -15,6 +15,8 @@ namespace newin {
 	    virtual ~Camera();
 	    void initialize(ShadeProgram*, const Vector3D<GLfloat>&, const Vector3D<GLfloat>&);
 	    void update(/*gdl::GameClock const & gameClock,*/ gdl::Input & input);
+	    void renderMode();
+	    void endRenderMode();
 	    Vector3D<GLfloat> getPos() const;
 	    Vector3D<GLfloat> getRot() const;
 	    void setPos(const Vector3D<GLfloat>&);

@@ -14,9 +14,12 @@ Bombe::~Bombe()
 {
 }
 
-int Bombe::getRange() const
+type	Bombe::getType() const
 {
-  return (range);
+  type tmp;
+
+  tmp = bomb;
+  return (tmp);
 }
 
 int Bombe::getBombe() const
@@ -24,42 +27,7 @@ int Bombe::getBombe() const
   return (bombe);
 }
 
-int Bombe::getPush() const
-{
-  return (push);
-}
-
-int Bombe::getSpeed() const
-{
-  return (speed);
-}
-
-int Bombe::getLife() const
-{
-  return (life);
-}
-
-void Bombe::setRange(int i)
-{
-  range = i;
-}
-
 void Bombe::setBombe(int i)
 {
   bombe = i;
-}
-
-void Bombe::setPush(int i)
-{
-  push = i;
-}
-
-void	Bombe::setSpeed(int i)
-{
-  speed = i;
-}
-
-void	Bombe::setLife(int i)
-{
-  life = i;
 }

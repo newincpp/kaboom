@@ -14,52 +14,20 @@ Roller::~Roller()
 {
 }
 
-int Roller::getRange()
+type Roller::getType() const
 {
-  return (range);
+  type	tmp;
+
+  tmp = roller;
+  return (tmp);
 }
 
-int Roller::getBombe()
-{
-  return (bombe);
-}
-
-int Roller::getPush()
+int Roller::getPush() const
 {
   return (push);
-}
-
-int Roller::getSpeed()
-{
-  return (speed);
-}
-
-int Roller::getLife()
-{
-  return (life);
-}
-
-void Roller::setRange(int i)
-{
-  range = i;
-}
-
-void Roller::setBombe(int i)
-{
-  bombe = i;
 }
 
 void Roller::setPush(int i)
 {
   push = i;
-}
-
-void	Roller::setSpeed(int i)
-{
-  speed = i;
-}
-
-void	Roller::setLife(int i)
-{
-  life = i;
 }

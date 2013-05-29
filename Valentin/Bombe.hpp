@@ -5,9 +5,9 @@
 #include <vector>
 #include <string>
 #include <list>
-#include "IBonus.hh"
+#include "IObject.hh"
 
-class Bombe : public IBonus {
+class Bombe : public IObject {
 
 private:
 
@@ -22,16 +22,9 @@ public:
   Bombe();
   ~Bombe();
 
-  int getRange() const;
   int getBombe() const;
-  int getPush() const;
-  int getSpeed() const;
-  int getLife() const;
-  void setRange(int);
+  type getType() const;
   void setBombe(int);
-  void setPush(int);
-  void setSpeed(int);
-  void setLife(int);
 };
 
 #endif /* __BOMBE__HH__ */

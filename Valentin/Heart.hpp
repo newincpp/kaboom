@@ -5,9 +5,9 @@
 #include <vector>
 #include <string>
 #include <list>
-#include "IBonus.hh"
+#include "IObject.hh"
 
-class Heart : public IBonus {
+class Heart : public IObject {
 
 private:
 
@@ -21,16 +21,9 @@ public:
 
   Heart();
   virtual ~Heart();
-  int getRange() const;
-  int getBombe() const;
-  int getPush() const;
-  int getSpeed() const;
   int getLife() const;
-  void setRange();
-  void setBombe();
-  void setPush();
-  void setSpeed();
-  void setLife();
+  void setLife(int);
+  type getType() const;
 };
 
 #endif /* __HEART__HH__ */

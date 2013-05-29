@@ -14,52 +14,20 @@ Fire::~Fire()
 {
 }
 
-int Fire::getRange()
+type Fire::getType() const
+{
+  type tmp;
+
+  tmp = fire;
+  return (tmp);
+}
+
+int Fire::getRange() const
 {
   return (range);
-}
-
-int Fire::getBombe()
-{
-  return (bombe);
-}
-
-int Fire::getPush()
-{
-  return (push);
-}
-
-int Fire::getSpeed()
-{
-  return (speed);
-}
-
-int Fire::getLife()
-{
-  return (life);
 }
 
 void Fire::setRange(int i)
 {
   range = i;
-}
-
-void Fire::setBombe(int i)
-{
-  bombe = i;
-}
-
-void Fire::setPush(int i)
-{
-  push = i;
-}
-
-void	Fire::setSpeed(int i)
-{
-  speed = i;
-}
-
-void	Fire::setLife(int i)
-{
-  life = i;
 }

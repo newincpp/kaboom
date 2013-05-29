@@ -2,7 +2,7 @@
 #include "Mesh.hh"
 #define GLEW_STATIC
 
-newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _tset(false), _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.1, 0.1, 0.1, 1.0)), _pos(), _rot() {
+newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, std::vector<Vector3D<GLfloat> >* n, ShadeProgram* s) : _tset(false), _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.1, 0.1, 0.1, 1.0)), _pos(), _rot() {
     _vboID = 0;
     if (m) {
 	_verts = Vector3D<GLfloat>::toGLfloatArray(*m);
@@ -18,7 +18,22 @@ newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, ShadeProgram* s) : _tset(f
 	_verts = NULL;
 	_vertexCount = 0;
     }
+    if (n) {
+	_normal = Vector3D<GLfloat>::toGLfloatArray(*n);
+	int j = 0;
+	for (int i = m->size() - 1; i != -1 ; --i) {
+	    _normal[j + 0] = n->at(i).getX();
+	    _normal[j + 1] = n->at(i).getY();
+	    _normal[j + 2] = n->at(i).getZ();
+	    j += 3;
+	}
+	_normalCount = n->size();
+    } else {
+	_normal = NULL;
+	_normalCount = 0;
+    }
     glGenBuffers(1, &_vboID);
+    glGenBuffers(1, &_nboID);
     update();
     //checkVertex();
 }
@@ -60,39 +75,23 @@ void newin::Mesh::checkVertex() const {
 }
 
 void newin::Mesh::update() const {
-    std::cout << "\033[1;31m" << "try to updating vbo" << "\033[0m" << std::endl;
+    std::cout << "update vertex in video card buffer" << std::endl;
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboID); // bind (enable) buffer
     // Put data in currently bound buffer
     glBufferData(GL_ARRAY_BUFFER, (_vertexCount) * 3 * sizeof(GLfloat), &_verts[0], GL_STATIC_DRAW);
 
-    glBindVertexArray(_vboID); // make our VAO the current bound VAO
+    //glBindVertexArray(_vboID); // make our VAO the current bound VAO
     glEnableVertexAttribArray(0); // add a new variable for position as location 0 to our VAO
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboID); // make our VBO the currently bound VBO
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL); // map memory for the 0th variable that is the size of 3 floats
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
+    //glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-void newin::Mesh::addVertex(const Vector3D<GLfloat>& n) {
-    GLfloat* local = new GLfloat[(_vertexCount + 1) * 3];
-    unsigned int i;
-
-    for (i = 0; (i) < (_vertexCount * 3) ; ++i) {
-	local[i] = _verts[i];
-    }
-    ++_vertexCount;
-    delete _verts;
-    _verts = local;
-    _verts[i + 0] = n.getX();
-    _verts[i + 1] = n.getY();
-    _verts[i + 2] = n.getZ();
-    //checkVertex();
-    if(glIsBufferARB(_vboID)) {
-	glDeleteBuffersARB(1, &_vboID);
-    }
-    glGenBuffers(1, &_vboID); // regen vbo
-    update();
+    glBindBuffer (GL_ARRAY_BUFFER, _nboID);
+    glEnableVertexAttribArray(1);
+    glBufferData (GL_ARRAY_BUFFER, (_normalCount)* sizeof (float), &_normal, GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL); // map memory for the 0th variable that is the size of 3 floats
 }
 
 void newin::Mesh::setShader(ShadeProgram* s) {
@@ -104,18 +103,17 @@ void newin::Mesh::toogleWireframe() {
 }
 
 void newin::Mesh::render() {
-    _s->enable();
     _s->setVariable("objTransform", _matrixTransform);
     _s->setVariable("inputColour", Vector3D<GLfloat>(_col.getX(),_col.getY(), _col.getZ(), 1.0));
     glBindBuffer(GL_ARRAY_BUFFER, _vboID);
-    glBindVertexArray(_vboID); // make our VAO the current bound VAO
+    //glBindVertexArray(_vboID); // make our VAO the current bound VAO
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL); // map memory for the 0th variable that is the size of 3 floats
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL); // map memory for the 0th variable that is the size of 3 floats
     if (_wireframe == true)
 	glDrawArrays(GL_LINE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
     else
 	glDrawArrays(GL_TRIANGLES, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    _s->disenable();
+    //glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 newin::Mesh::~Mesh() {
