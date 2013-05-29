@@ -24,6 +24,7 @@ AudioPlayer::AudioPlayer(const std::string& name) : _name(name)
 AudioPlayer::~AudioPlayer()
 {
     destroySource();
+    cleanContext();
 }
 
 void AudioPlayer::cleanUp()
@@ -49,7 +50,6 @@ void AudioPlayer::play()
     while (status == AL_PLAYING) {
         alGetSourcei(_source, AL_SOURCE_STATE, &status);
     }
-    destroySource();
 }
 
 // pause loaded song
@@ -58,7 +58,18 @@ void AudioPlayer::pause()
     alSourcePause(_source);
 }
 
-
+// destroy source
+void AudioPlayer::destroySource()
+{
+    alDeleteBuffers(1, &_buff);
+    alSourcei(_source, AL_BUFFER, 0);
+    alDeleteSources(1, &_source);
+    _nbsample = 0;
+    _samplerate = 0;
+    _format = 0;
+    _buff = 0;
+    _sample.clear();
+}
 
 /********************************************\
  *
@@ -89,6 +100,7 @@ void AudioPlayer::loadFile()
     SF_INFO info;
     SNDFILE *file;
 
+    memset(&info, 0, sizeof(SF_INFO));
     if ((file = sf_open(_name.c_str(), SFM_READ, &info)) == NULL)
         throw Exception("cannot load file " + _name);
     _nbsample = static_cast<ALsizei>(info.channels * info.frames);
@@ -118,16 +130,4 @@ void AudioPlayer::createSource()
     alSourcei(_source, AL_BUFFER, _buff);
 }
 
-// destroy source
-void AudioPlayer::destroySource()
-{
-    alDeleteBuffers(1, &_buff);
-    alSourcei(_source, AL_BUFFER, 0);
-    alDeleteSources(1, &_source);
-    _nbsample = 0;
-    _samplerate = 0;
-    _format = 0;
-    _buff = 0;
-    _sample.clear();
-    std::cout << "sources destroyed" << std::endl;
-}
+
