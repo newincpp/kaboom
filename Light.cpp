@@ -6,7 +6,7 @@ newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector
     if (_prgm) {
 	_prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
 	_prgm->setVariable("lightColour", _color);
-	_prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
+	//_prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
 	_prgm->setVariable("intensity", _intensity);
     }
 }
@@ -21,7 +21,7 @@ void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, co
     }
     _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
     _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
-    _prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
+    //_prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
     _prgm->setVariable("intensity", _intensity);
 
     Shader v("shadowMap_vs.glsl", GL_VERTEX_SHADER);
@@ -42,7 +42,7 @@ void newin::Light::setShader(ShadeProgram* p) {
     }
     _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
     _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
-    _prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
+    //_prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
     _prgm->setVariable("intensity", _intensity);
 }
 
@@ -84,7 +84,7 @@ void newin::Light::update(/*gdl::GameClock const &, */gdl::Input & i) {
 	_changed = false;
 	_prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
 	_prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
-	_prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
+	//_prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
     }
 }
 

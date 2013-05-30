@@ -55,6 +55,7 @@ newin::Mesh* newin::Loader::loadOBJ(ShadeProgram* p, const std::string& fName) {
     std::cout << "objfile : " << fName << std::endl;
     if (!f.is_open()) {
 	std::cout << "failed to open file" << std::endl;
+	return new Mesh(NULL,NULL, p);
     }
     while (tmp != "mtllib")
 	f >> tmp;
