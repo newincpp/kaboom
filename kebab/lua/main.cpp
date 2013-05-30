@@ -21,7 +21,7 @@ int main(void)
 
         l.callFun("giraul", std::string("poireaux"));
 
-        //l.callFun("zizi", NULL);
+        l.callFun("zizi", nullptr);
     }
     catch (const LuaScript::Exception& e) {
         std::cout << "LuaScript error: " << e.what() << std::endl;

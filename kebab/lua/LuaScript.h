@@ -21,10 +21,10 @@ class LuaScript {
         void callFun(const std::string&);
 
         template <typename T>
-        void callFunReal(const T& value);
+        int callFunReal(const T& value);
         
         template <typename T, typename... U>
-        void callFunReal(const T& head, const U&... tail);
+        int callFunReal(const T& head, const U&... tail);
 
         template <typename Z, typename T, typename... U>
         void callFun(const std::string& name, Z*, const T& head, const U&... tail);
@@ -49,8 +49,8 @@ class LuaScript {
         };
 
     private:
-        lua_State *_L;
         bool limiter;
+        lua_State *_L;
 
 };
 

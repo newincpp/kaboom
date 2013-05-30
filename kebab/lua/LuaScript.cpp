@@ -21,33 +21,38 @@ void LuaScript::loadScript(const std::string& name)
 }
 
 template <>
-void LuaScript::callFunReal<int>(const int& value)
+int LuaScript::callFunReal<int>(const int& value)
 {
     lua_pushnumber(_L, value);
+    return 0;
 }
 
 template <>
-void LuaScript::callFunReal<double>(const double& value)
+int LuaScript::callFunReal<double>(const double& value)
 {
     lua_pushnumber(_L, value);
+    return 0;
 }
 
 template <>
-void LuaScript::callFunReal<std::string>(const std::string& value)
+int LuaScript::callFunReal<std::string>(const std::string& value)
 {
     lua_pushstring(_L, value.c_str());
+    return 0;
 }
 
 template <>
-void LuaScript::callFunReal<charity>(const charity& value)
+int LuaScript::callFunReal<charity>(const charity& value)
 {
     lua_pushstring(_L, value);
+    return 0;
 }
 
 template <>
-void LuaScript::callFunReal<bool>(const bool& value)
+int LuaScript::callFunReal<bool>(const bool& value)
 {
     lua_pushboolean(_L, value);
+    return 0;
 }
 
 template <>
