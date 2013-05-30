@@ -75,7 +75,7 @@ void newin::Mesh::checkVertex() const {
 }
 
 void newin::Mesh::update() const {
-    std::cout << "update vertex in video card buffer" << std::endl;
+    std::cout << "\033[1;32m" << "update vertex in video card buffer" << "\033[0m" << std::endl;
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboID); // bind (enable) buffer
     // Put data in currently bound buffer

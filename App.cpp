@@ -28,7 +28,7 @@ void App::initialize(void) {
 	std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
     }
     _camera.initialize(_defaultShader,  newin::Vector3D<GLfloat>(0, 1, 5), newin::Vector3D<GLfloat>(0, 0, 0));
-    _defaultLight.initialize(_defaultShader, newin::Vector3D<GLfloat>(3, -1, 0), newin::Vector3D<GLfloat>(1,1,1), newin::Vector3D<GLfloat>(1, 1, 1));
+    _defaultLight.initialize(_defaultShader, newin::Vector3D<GLfloat>(3, 1, 0), newin::Vector3D<GLfloat>(1,1,1), newin::Vector3D<GLfloat>(1, 1, 1));
 
     _objects.push_back(newin::Loader().loadOBJ(_defaultShader, "plane.obj"));
     ((newin::Mesh*)_objects.back())->setColor(newin::Vector3D<GLfloat>(0, 0.5, 0));
@@ -36,7 +36,7 @@ void App::initialize(void) {
     _objects.back()->setPos(newin::Vector3D<GLfloat>(0, -1, 0));
     _objects.back()->setRot(newin::Vector3D<GLfloat>(0, 30, 0));
     _objects.push_back(newin::Loader().loadOBJ(_defaultShader, "sphere.obj"));
-    ((newin::Mesh*)_objects.back())->setPos(newin::Vector3D<GLfloat>(3, -1, 0));
+    ((newin::Mesh*)_objects.back())->setPos(newin::Vector3D<GLfloat>(3, 1, 0));
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
 	(*itb)->initialize();

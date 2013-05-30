@@ -2,12 +2,9 @@
 #include <cmath>
 #include "Light.hh"
 
-newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& r, const Vector3D<GLfloat>& c) : _changed(true), _pos(p), _rot(r), _color(c), _intensity(0.9), _prgm(prgm), _shad(NULL) {
+newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& r, const Vector3D<GLfloat>& c) : _changed(true), _pos(p), _rot(r), _color(c), _diff(30),_intensity(0.9), _prgm(prgm), _shad(NULL) {
     if (_prgm) {
-	_prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
-	_prgm->setVariable("lightColour", _color);
-	_prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
-	_prgm->setVariable("intensity", _intensity);
+	internalUpdate();
     }
 }
 
@@ -19,10 +16,7 @@ void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, co
     if (!_prgm) {
 	throw newin::ShaderException("cannot use light without shader");
     }
-    _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
-    _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
-    _prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
-    _prgm->setVariable("intensity", _intensity);
+    internalUpdate();
 
     Shader v("shadowMap_vs.glsl", GL_VERTEX_SHADER);
     Shader f("shadowMap_fs.glsl", GL_FRAGMENT_SHADER);
@@ -40,10 +34,7 @@ void newin::Light::setShader(ShadeProgram* p) {
     if (!_prgm) {
 	throw newin::ShaderException("shader cannot be null");
     }
-    _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
-    _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
-    _prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
-    _prgm->setVariable("intensity", _intensity);
+    internalUpdate();
 }
 
 void newin::Light::initialize() {
@@ -54,27 +45,27 @@ void newin::Light::draw() {
 
 void newin::Light::update(/*gdl::GameClock const &, */gdl::Input & i) {
     if (i.isKeyDown(gdl::Keys::I)) {
-	_pos.setZ(_pos.getZ() - 0.1);
+	_pos.setZ(_pos.getZ() - 0.01);
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::K)) {
-	_pos.setZ(_pos.getZ() + 0.1);
+	_pos.setZ(_pos.getZ() + 0.01);
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::J)) {
-	_pos.setX(_pos.getX() - 0.1);
+	_pos.setX(_pos.getX() - 0.01);
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::L)) {
-	_pos.setX(_pos.getX() + 0.1);
+	_pos.setX(_pos.getX() + 0.01);
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::U)) {
-	_pos.setY(_pos.getY() - 0.1);
+	_pos.setY(_pos.getY() - 0.01);
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::O)) {
-	_pos.setY(_pos.getY() + 0.1);
+	_pos.setY(_pos.getY() + 0.01);
 	_changed = true;
     }
     if (!_prgm) {
@@ -83,9 +74,15 @@ void newin::Light::update(/*gdl::GameClock const &, */gdl::Input & i) {
     if (_changed){
 	_changed = false;
 	_prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
-	_prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
-	_prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
     }
+}
+
+inline void newin::Light::internalUpdate() {
+    _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
+    _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
+    _prgm->setVariable("lightDiff", _diff);
+    _prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
+    _prgm->setVariable("intensity", _intensity);
 }
 
 void newin::Light::setPos(const newin::Vector3D<GLfloat>& p) {
@@ -98,6 +95,10 @@ void newin::Light::setRot(const newin::Vector3D<GLfloat>& r) {
 
 void newin::Light::setColor(const newin::Vector3D<GLfloat>& c) {
     _color = c;
+}
+
+void newin::Light::setDiff(const int d) {
+    _diff = d;
 }
 
 void newin::Light::setIntensity(const float i) {
