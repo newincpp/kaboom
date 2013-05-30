@@ -9,7 +9,7 @@
 #include "Matrix4.hh"
 
 namespace newin {
-    class Light : public AObject {
+    class Light : public ::AObject {
 	public:
 	    explicit Light(ShadeProgram* prgm = NULL, const Vector3D<GLfloat>& p = Vector3D<GLfloat>(), const Vector3D<GLfloat>& r = Vector3D<GLfloat>(), const Vector3D<GLfloat>& c = Vector3D<GLfloat>());
 	    void initialize();
@@ -31,8 +31,8 @@ namespace newin {
 	private:
 	    void internalUpdate();
 	    bool _changed;
-	    Vector3D<GLfloat> _pos;
-	    Vector3D<GLfloat> _rot;
+	    //Vector3D<GLfloat> _pos;
+	    //Vector3D<GLfloat> _rot;
 	    Vector3D<GLfloat> _color;
 	    int _diff;
 	    float _intensity;

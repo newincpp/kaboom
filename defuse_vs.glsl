@@ -19,6 +19,4 @@ void main() {
     V.TNormal = objTransform * vec4(vertexNormal,1.0);
 
     gl_Position = projectionMatrix * modelViewMatrix * objTransform * vec4(vertexPosition, 1.0);
-
-    //gl_Position = vec4(vertexPosition,1);
 }

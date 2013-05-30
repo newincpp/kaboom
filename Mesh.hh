@@ -42,8 +42,8 @@ namespace newin {
 	    GLuint _vboID;
 	    GLuint _nboID;
 	    Vector3D<GLfloat> _col;
-	    Vector3D<GLfloat> _pos;
-	    Vector3D<GLfloat> _rot;
+	    //Vector3D<GLfloat> _pos;
+	    //Vector3D<GLfloat> _rot;
 
 	    // matrix
 	    GLfloat _matrixTransform[16];

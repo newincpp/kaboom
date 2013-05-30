@@ -2,7 +2,7 @@
 #include "Mesh.hh"
 #define GLEW_STATIC
 
-newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, std::vector<Vector3D<GLfloat> >* n, ShadeProgram* s) : _tset(false), _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.1, 0.1, 0.1, 1.0)), _pos(), _rot() {
+newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, std::vector<Vector3D<GLfloat> >* n, ShadeProgram* s) : AObject(), _tset(false), _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.1, 0.1, 0.1, 1.0)) {
     _vboID = 0;
     if (m) {
 	_verts = Vector3D<GLfloat>::toGLfloatArray(*m);
@@ -126,7 +126,7 @@ newin::Mesh::~Mesh() {
 void newin::Mesh::transform() {
     glPushMatrix();
     glLoadIdentity();
-    glTranslatef(- _pos.getX(), - _pos.getY(), - _pos.getZ());
+    glTranslatef( _pos.getX(),  _pos.getY(),  _pos.getZ());
     glRotatef(_rot.getZ(), 0, 0, 1);
     glRotatef(_rot.getY(), 0, 1, 0);
     glRotatef(_rot.getX(), 1, 0, 0);
@@ -157,6 +157,12 @@ void newin::Mesh::update(/*gdl::GameClock const &, */ gdl::Input & i) {
     }
     if (i.isKeyDown(gdl::Keys::E) == true) {
 	_rot.setY( _rot.getY() - 0.1);
+    }
+    if (i.isKeyDown(gdl::Keys::C) == true) {
+	_pos.setY( _pos.getY() - 0.1);
+    }
+    if (i.isKeyDown(gdl::Keys::Space) == true) {
+	_pos.setY( _pos.getY() + 0.1);
     }
     transform();
 }

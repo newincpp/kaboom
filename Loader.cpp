@@ -50,7 +50,6 @@ newin::Mesh* newin::Loader::loadOBJ(ShadeProgram* p, const std::string& fName) {
     std::string mtlfile;
     std::string objectName;
     struct GLvector3f value;
-    int index;
 
     std::cout << "objfile : " << fName << std::endl;
     if (!f.is_open()) {

@@ -11,10 +11,10 @@
 //#include "libgdl_gl-2012.4/include/Model.hpp"
 //#include "libgdl_gl-2012.4/include/Window.hpp"
 
-#include "App.hh"
+#include "Scene.hh"
 
 int main() {
-    App bbman;
+    SceneMgr bbman;
 
     try {
 	bbman.run();

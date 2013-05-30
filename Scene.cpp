@@ -3,17 +3,17 @@
 #include <cstdlib>
 #include <unistd.h>
 #include "Loader.hh"
-#include "App.hh"
+#include "Scene.hh"
 
-App::App() : _camera(), _defaultLight() {
+SceneMgr::SceneMgr() : _camera(), _defaultLight() {
 }
 
-App::~App() {
+SceneMgr::~SceneMgr() {
 }
 
-void App::initialize(void) {
-    window_.setWidth(800);
-    window_.setHeight(600);
+void SceneMgr::initialize(void) {
+    window_.setWidth(1920);
+    window_.setHeight(1024);
     window_.create();
     window_.setTitle("bomberman !");
     GLenum err = glewInit();
@@ -31,18 +31,20 @@ void App::initialize(void) {
     _defaultLight.initialize(_defaultShader, newin::Vector3D<GLfloat>(3, 1, 0), newin::Vector3D<GLfloat>(1,1,1), newin::Vector3D<GLfloat>(1, 1, 1));
 
     _objects.push_back(newin::Loader().loadOBJ(_defaultShader, "plane.obj"));
-    ((newin::Mesh*)_objects.back())->setColor(newin::Vector3D<GLfloat>(0, 0.5, 0));
+    ((newin::Mesh*)_objects.back())->setColor(newin::Vector3D<GLfloat>(0.1, 0.1, 0.1));
+
     _objects.push_back(newin::Loader().loadOBJ(_defaultShader, "test.obj"));
-    _objects.back()->setPos(newin::Vector3D<GLfloat>(0, -1, 0));
-    _objects.back()->setRot(newin::Vector3D<GLfloat>(0, 30, 0));
+    _objects.back()->setPos(newin::Vector3D<GLfloat>(0.1, 1, 0.1));
+    _objects.back()->setRot(newin::Vector3D<GLfloat>(0.1, 30, 0.1));
+
     _objects.push_back(newin::Loader().loadOBJ(_defaultShader, "sphere.obj"));
-    ((newin::Mesh*)_objects.back())->setPos(newin::Vector3D<GLfloat>(3, 1, 0));
+    ((newin::Mesh*)_objects.back())->setPos(newin::Vector3D<GLfloat>(3.1, 1.1, 0.1));
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
 	(*itb)->initialize();
 }
 
-void App::update(void) {
+void SceneMgr::update(void) {
     if (input_.isKeyDown(gdl::Keys::Escape)) {
 	window_.close();
     }
@@ -53,7 +55,7 @@ void App::update(void) {
 	(*itb)->update(/*gameClock_,*/input_);
 }
 
-void App::draw(void) {
+void SceneMgr::draw(void) {
     _old_time = gameClock_.getElapsedTime();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.05f, 0.05, 0.0f, 1.0f);
@@ -81,6 +83,23 @@ void App::draw(void) {
 	usleep(_old_time);
 }
 
-void App::unload(void) {
+void SceneMgr::unload(void) {
     delete _defaultShader;
+}
+
+std::list<AObject*> SceneMgr::getObjectList() const {
+    return _objects;
+}
+
+newin::Camera* SceneMgr::getCam() {
+    return &_camera;
+}
+
+AObject* SceneMgr::getLight() {
+    return &_defaultLight;
+}
+
+void SceneMgr::addModel(AObject* newobj, const std::string& identifier) {
+    newobj->setIdentifier(identifier);
+    _objects.push_back(newobj);
 }
