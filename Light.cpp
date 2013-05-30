@@ -17,7 +17,6 @@ void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, co
 	throw newin::ShaderException("cannot use light without shader");
     }
     internalUpdate();
-
     Shader v("shadowMap_vs.glsl", GL_VERTEX_SHADER);
     Shader f("shadowMap_fs.glsl", GL_FRAGMENT_SHADER);
     Shader g("default_gs.glsl", GL_GEOMETRY_SHADER);
