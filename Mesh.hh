@@ -11,19 +11,18 @@
 namespace newin {
     class Mesh : public AObject {
 	public:
-	    explicit Mesh(std::vector<Vector3D<GLfloat> >*, std::vector<Vector3D<GLfloat> >*, ShadeProgram*);
+	    explicit Mesh(std::vector<Vector3D<GLfloat> >*, std::vector<Vector3D<GLfloat> >*);
 	    virtual ~Mesh();
 	    void setShader(ShadeProgram*);
 	    void render();
 	    void toogleWireframe();
 	    void update() const;
-	    void setColor(const Vector3D<GLfloat>&);
-	    void setPos(const Vector3D<GLfloat>&);
-	    void setRot(const Vector3D<GLfloat>&);
-	    Vector3D<GLfloat> getPos() const;
-	    Vector3D<GLfloat> getRot() const;
+	    //void setColor(const Vector3D<GLfloat>&);
+	    //void setPos(const Vector3D<GLfloat>&);
+	    //void setRot(const Vector3D<GLfloat>&);
+	    //Vector3D<GLfloat> getPos() const;
+	    //Vector3D<GLfloat> getRot() const;
 	    void setTex(const std::string&);
-	    void setWorlCam(Camera*);
 	    // for gdl.......
 	    void initialize();
 	    void update(/*gdl::GameClock const &,*/ gdl::Input &);
@@ -41,7 +40,7 @@ namespace newin {
 	    GLfloat* _normal;
 	    GLuint _vboID;
 	    GLuint _nboID;
-	    Vector3D<GLfloat> _col;
+	    //Vector3D<GLfloat> _col;
 	    //Vector3D<GLfloat> _pos;
 	    //Vector3D<GLfloat> _rot;
 

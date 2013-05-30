@@ -81,7 +81,6 @@ newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment, 
 
 inline GLint newin::ShadeProgram::getVariableLocation(const std::string& variableName) {
     enable();
-
     std::map<std::string,GLint>::iterator uniform = _vardb.find(variableName);
     if (uniform == _vardb.end()) {
 	GLint loc = glGetUniformLocation(_prgmID, variableName.c_str());

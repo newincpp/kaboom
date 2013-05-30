@@ -17,23 +17,14 @@ namespace newin {
 	    void setShader(ShadeProgram* p);
 	    void update(/*gdl::GameClock const &, */gdl::Input &);
 	    void draw();
-	    void setPos(const Vector3D<GLfloat>&);
-	    void setRot(const Vector3D<GLfloat>&);
-	    void setColor(const Vector3D<GLfloat>&);
 	    void setDiff(const int);
 	    void setIntensity(const float);
-	    Vector3D<GLfloat> getPos() const;
-	    Vector3D<GLfloat> getColor() const;
-	    Vector3D<GLfloat> getRot() const;
 	    float getIntensity() const;
 	    void shadowMap();
 	    virtual ~Light();
 	private:
 	    void internalUpdate();
 	    bool _changed;
-	    //Vector3D<GLfloat> _pos;
-	    //Vector3D<GLfloat> _rot;
-	    Vector3D<GLfloat> _color;
 	    int _diff;
 	    float _intensity;
 	    ShadeProgram* _prgm;
