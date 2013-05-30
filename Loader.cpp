@@ -119,7 +119,24 @@ newin::Mesh* newin::Loader::loadDAE(ShadeProgram* p, const std::string& fName) {
 	f >> value.z;
 	pure->push_back(Vector3D<GLfloat>(value.x, value.y, value.z));
     }
+  while (tmp != "<float_array")
+    f >> tmp;
+  f >> objectName;
+  std::cout << "object in loading : " << objectName << std::endl;
+  while(tmp != ">")
+    f >> tmp;
+  while (tmp != "</float_array>")
+    {
+	f >> value.x;
+	f >> value.y;
+	f >> value.z;
+	l->push_back(Vector3D<GLfloat>(value.x, value.y, value.z));
+    }
+  while (tmp != "vcount")
+    {
+
+    }
   Mesh * m = new Mesh(l, p);
-  loadMTL(m, mtfile);
+  //  loadMTL(m, mtfile);
   return (m);
 }
