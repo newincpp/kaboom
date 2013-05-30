@@ -1,7 +1,7 @@
 SRC	= main.cpp \
 	  Shader.cpp \
 	  Camera.cpp \
-	  App.cpp \
+	  Scene.cpp \
 	  Mesh.cpp \
 	  Loader.cpp \
 	  Light.cpp \

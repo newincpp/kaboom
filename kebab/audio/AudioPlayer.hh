@@ -8,6 +8,7 @@
 # include <al.h>
 # include <alc.h>
 # include <sndfile.h>
+# include <string.h>
 
 class AudioPlayer {
 
@@ -22,6 +23,7 @@ class AudioPlayer {
         void loadFile(const std::string&);
         void play();
         void pause();
+        void destroySource();
 
         // exception
         class Exception : public std::exception {
@@ -45,7 +47,6 @@ class AudioPlayer {
         void initContext();
         void cleanContext();
         void createSource();
-        void destroySource();
 
         // initializer variables
         ALCdevice *_device;

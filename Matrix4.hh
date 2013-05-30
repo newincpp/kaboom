@@ -34,7 +34,7 @@ namespace newin {
 			std::cout << "WARNING shader is not set, 'uniform modelViewMatrix' will not set" << std::endl;
 		    }
 		}
-		void loadProjectionMatrix(float fov = 1.046666640, float aspect = 1.33333f, float znear = 0.5f, float zfar = 1000.f) {
+		void loadProjectionMatrix(float fov = 1.5707963267949, float aspect = 1.875f, float znear = 0.5f, float zfar = 1000.f) {
 		    float xymax = znear * tan(fov/2);
 		    float ymin = -xymax;
 		    float xmin = -xymax;
