@@ -80,7 +80,6 @@ inline void newin::Light::internalUpdate() {
     _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
     _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
     _prgm->setVariable("lightDiff", _diff);
-    _prgm->setVariable("lightRot", _rot.getX(), _rot.getY(), _rot.getZ());
     _prgm->setVariable("intensity", _intensity);
 }
 
