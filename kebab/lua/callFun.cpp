@@ -3,6 +3,18 @@ void LuaScript::callFunReal(const T& value)
 {
 }
 
+template <typename T>
+void LuaScript::callFunReal(const std::vector<T>& value)
+{
+    lua_newtable(_L);
+
+    for (size_t i = 0; i < value.size(); ++i) {
+        lua_pushnumber(_L, i);
+        callFunReal(value[i]);
+        lua_settable(_L, -3);
+    }
+}
+
 // recursive variadic template.
 // iterates with specialization to push arguments to the lua stack.
 template <typename T, typename... U>

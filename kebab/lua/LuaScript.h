@@ -3,7 +3,8 @@
 
 # include <iostream>
 # include <exception>
-# include <typeinfo>
+# include <vector>
+//# include <typeinfo>
 
 extern "C" {
 # include "lua.h"
@@ -22,6 +23,9 @@ class LuaScript {
 
         template <typename T>
         void callFunReal(const T& value);
+
+        template <typename T>
+        void callFunReal(const std::vector<T>& value);
         
         template <typename T, typename... U>
         void callFunReal(const T& head, const U&... tail);
