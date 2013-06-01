@@ -14,7 +14,6 @@ int main(void)
         std::cout << l.callFun<char *>("no_param") << std::endl << std::endl;
         l.callFun("no_param2");
         std::cout << std::endl;
-        //l.callFun("show_string", std::string("this string is cool"));
         
         std::vector<std::string> vec;
         vec.push_back("one string");

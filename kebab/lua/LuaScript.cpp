@@ -89,6 +89,10 @@ char *LuaScript::returnType<char *>()
 
 
 
+/*
+ * callFun specialization 
+ * no parameters and no return type
+*/
 
 void LuaScript::callFun(const std::string& name)
 {
@@ -96,11 +100,3 @@ void LuaScript::callFun(const std::string& name)
     lua_pcall(_L, 0, 0, 0);
     lua_pop(_L, 1);
 }
-
-/*
-template <typename... T>
-void LuaScript::callFun(const std::string& name, const T&... args)
-{
-    std::cout << name << std::endl;
-}
-*/

@@ -29,5 +29,5 @@ function show_string(a)
 end
 
 function third_arg_table(a)
-    return (a[2])
+    return ("the second argument is: '" .. a[2] .. "'")
 end
