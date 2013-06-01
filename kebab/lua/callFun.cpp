@@ -1,44 +1,48 @@
 template <typename T>
-int LuaScript::callFunReal(const T& value)
+void LuaScript::callFunReal(const T& value)
 {
-    return 1;
 }
 
+// recursive variadic template.
+// iterates with specialization to push arguments to the lua stack.
 template <typename T, typename... U>
-int LuaScript::callFunReal(const T& head, const U&... tail)
+void LuaScript::callFunReal(const T& head, const U&... tail)
 {
-    int ret = 0;
-
-    if (callFunReal(head) == 1)
-        ret = 1;
-    if (callFunReal(tail...) == 1)
-        ret = 1;
-    return ret;
+    callFunReal(head);
+    callFunReal(tail...);
 }
 
-template <typename Z, typename T, typename... U>
-void LuaScript::callFun(const std::string& name, Z* ret, const T& head, const U&... tail)
+template <typename Z, typename... T>
+Z LuaScript::callFun(const std::string& name, const T&... args)
 {
+    Z ret;
+
+    // the function is now registered to later be called
     lua_getglobal(_L, name.c_str());
-    callFunReal(head, tail...);
-    lua_call(_L, (sizeof...(tail) + 1), 1);
-    returnType(ret);
+    // this will push the arguments to the lua stack
+    callFunReal(args...);
+    // the function with be called [sizeof...(args) = number of arguments]
+    lua_call(_L, sizeof...(args), 1);
+    // returning depending of the type passed on parameter
+    ret = returnType<Z>();
     lua_pop(_L, 1);
+    return (ret);
 }
 
-template <typename T, typename... U>
-void LuaScript::callFun(const std::string& name, const T& head, const U&... tail)
+template <typename Z>
+Z LuaScript::callFun(const std::string& name)
 {
+    Z ret;
+
     lua_getglobal(_L, name.c_str());
-    if (callFunReal(head, tail...) == 1)
-        lua_pcall(_L, 0, 0, 0);
-    else
-        lua_call(_L, (sizeof...(tail) + 1), 0);
+    lua_pcall(_L, 0, 1, 0);
+    ret = returnType<Z>();
     lua_pop(_L, 1);
+    return (ret);
 }
 
 template <typename T>
-void LuaScript::returnType(T type)
+T LuaScript::returnType()
 {
-    std::cout << "Warning: no return defined." << std::endl;
+    throw Exception("warning: no return defined");
 }

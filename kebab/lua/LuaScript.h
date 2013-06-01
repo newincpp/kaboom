@@ -21,19 +21,24 @@ class LuaScript {
         void callFun(const std::string&);
 
         template <typename T>
-        int callFunReal(const T& value);
+        void callFunReal(const T& value);
         
         template <typename T, typename... U>
-        int callFunReal(const T& head, const U&... tail);
+        void callFunReal(const T& head, const U&... tail);
 
-        template <typename Z, typename T, typename... U>
-        void callFun(const std::string& name, Z*, const T& head, const U&... tail);
+        template <typename Z, typename... T>
+        Z callFun(const std::string&, const T&...);
 
-        template <typename T, typename... U>
-        void callFun(const std::string& name, const T& head, const U&... tail);
+        template <typename Z>
+        Z callFun(const std::string&);
+
+        /*
+        template <typename... T>
+        void callFun(const std::string&, const T&...);
+        */
 
         template <typename T>
-        void returnType(T);
+        T returnType();
  
         // exception
         class Exception : public std::exception {

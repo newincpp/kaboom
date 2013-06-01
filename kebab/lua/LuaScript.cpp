@@ -1,6 +1,6 @@
 #include "LuaScript.h"
 
-typedef char* charity;
+typedef const char* charity;
 
 LuaScript::LuaScript()
 {
@@ -11,7 +11,7 @@ LuaScript::LuaScript()
 
 LuaScript::~LuaScript()
 {
-lua_close(_L);
+    lua_close(_L);
 }
 
 void LuaScript::loadScript(const std::string& name)
@@ -20,63 +20,87 @@ void LuaScript::loadScript(const std::string& name)
         throw Exception("cannot load file " + name);
 }
 
+
+/*
+ * callFunReal specialization
+ * iterates on every type that can be pushed on the lua stack
+*/
+
 template <>
-int LuaScript::callFunReal<int>(const int& value)
+void LuaScript::callFunReal<int>(const int& value)
 {
     lua_pushnumber(_L, value);
-    return 0;
 }
 
 template <>
-int LuaScript::callFunReal<double>(const double& value)
+void LuaScript::callFunReal<double>(const double& value)
 {
     lua_pushnumber(_L, value);
-    return 0;
 }
 
 template <>
-int LuaScript::callFunReal<std::string>(const std::string& value)
+void LuaScript::callFunReal<std::string>(const std::string& value)
 {
     lua_pushstring(_L, value.c_str());
-    return 0;
 }
 
 template <>
-int LuaScript::callFunReal<charity>(const charity& value)
+void LuaScript::callFunReal<charity>(const charity& value)
 {
     lua_pushstring(_L, value);
-    return 0;
 }
 
 template <>
-int LuaScript::callFunReal<bool>(const bool& value)
+void LuaScript::callFunReal<bool>(const bool& value)
 {
     lua_pushboolean(_L, value);
-    return 0;
+}
+
+
+
+/*
+ * returnType
+ * iterates on every known lua return type
+*/
+
+template <>
+int LuaScript::returnType<int>()
+{
+    return (lua_tonumber(_L, -1));
 }
 
 template <>
-void LuaScript::returnType<double*>(double *type)
+double LuaScript::returnType<double>()
 {
-    *type = lua_tonumber(_L, -1);
+    return (lua_tonumber(_L, -1));
 }
 
 template <>
-void LuaScript::returnType<bool*>(bool *type)
+bool LuaScript::returnType<bool>()
 {
-    *type = lua_toboolean(_L, -1);
+    return (lua_toboolean(_L, -1));
 }
 
 template <>
-void LuaScript::returnType<char **>(char **type)
+char *LuaScript::returnType<char *>()
 {
-    *type = const_cast<char*>(lua_tostring(_L, -1));
+    return (const_cast<char*>(lua_tostring(_L, -1)));
 }
 
-/*template <std::string>
+
+
+
 void LuaScript::callFun(const std::string& name)
 {
     lua_getglobal(_L, name.c_str());
-    lua_call(_L, 0, 1);
+    lua_pcall(_L, 0, 0, 0);
     lua_pop(_L, 1);
-}*/
+}
+
+/*
+template <typename... T>
+void LuaScript::callFun(const std::string& name, const T&... args)
+{
+    std::cout << name << std::endl;
+}
+*/
