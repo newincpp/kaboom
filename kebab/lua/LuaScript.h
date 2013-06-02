@@ -3,7 +3,9 @@
 
 # include <iostream>
 # include <exception>
+# include <vector>
 # include <typeinfo>
+# include <utility>
 
 extern "C" {
 # include "lua.h"
@@ -21,19 +23,28 @@ class LuaScript {
         void callFun(const std::string&);
 
         template <typename T>
-        int callFunReal(const T& value);
-        
-        template <typename T, typename... U>
-        int callFunReal(const T& head, const U&... tail);
-
-        template <typename Z, typename T, typename... U>
-        void callFun(const std::string& name, Z*, const T& head, const U&... tail);
-
-        template <typename T, typename... U>
-        void callFun(const std::string& name, const T& head, const U&... tail);
+        void callFunReal(const T& value);
 
         template <typename T>
-        void returnType(T);
+        void callFunReal(const std::vector<T>& value);
+        
+        template <typename T, typename... U>
+        void callFunReal(const T& head, const U&... tail);
+
+        template <typename Z, typename... T>
+        Z callFun(const std::string&, const T&...);
+
+        template <typename Z>
+        Z callFun(const std::string&);
+
+        template <typename... T>
+        void callFunVoidRet(const std::string&, const T&...);
+
+        template <typename Z, typename... T>
+        Z callFunNoVoid(const std::string&, const T&...);
+
+        template <typename T>
+        T returnType();
  
         // exception
         class Exception : public std::exception {

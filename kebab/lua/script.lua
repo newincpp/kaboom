@@ -1,29 +1,33 @@
-function additionazi(a, b, c)
+function addition(a, b, c)
     return (a + b + c)
 end
 
-function additionope(a)
-    return (a)
+function hello_string(a)
+    return ("hello " .. a .. "! :)")
 end
 
-function print_char(a)
-    print (a)
-    return ("bonjour " .. a)
+function no_param()
+    return ("no parameters and a return!")
 end
 
-function giraul(a)
-    print ("giraul mange des " .. a)
+function no_param2()
+    print ("no parameters and no return!")
 end
 
-function zizi()
-    print ("pas de paramètre, pas de retour, comme un ZIZ IN THE SKY!")
-end
-
-function test_bool(a)
+function is_true(a)
     if a == true then
-        print ("true")
+        print ("it is... true!")
+        return ("true")
     else
-        print ("false")
+        print ("nope, it's false...")
+        return ("false")
     end
-    return (a);
+end
+
+function show_string(a)
+    print (a)
+end
+
+function third_arg_table(a)
+    return ("the second argument is: '" .. a[2] .. "'")
 end

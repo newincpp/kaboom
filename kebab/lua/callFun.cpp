@@ -1,44 +1,60 @@
 template <typename T>
-int LuaScript::callFunReal(const T& value)
+void LuaScript::callFunReal(const T& value)
 {
-    return 1;
-}
-
-template <typename T, typename... U>
-int LuaScript::callFunReal(const T& head, const U&... tail)
-{
-    int ret = 0;
-
-    if (callFunReal(head) == 1)
-        ret = 1;
-    if (callFunReal(tail...) == 1)
-        ret = 1;
-    return ret;
-}
-
-template <typename Z, typename T, typename... U>
-void LuaScript::callFun(const std::string& name, Z* ret, const T& head, const U&... tail)
-{
-    lua_getglobal(_L, name.c_str());
-    callFunReal(head, tail...);
-    lua_call(_L, (sizeof...(tail) + 1), 1);
-    returnType(ret);
-    lua_pop(_L, 1);
-}
-
-template <typename T, typename... U>
-void LuaScript::callFun(const std::string& name, const T& head, const U&... tail)
-{
-    lua_getglobal(_L, name.c_str());
-    if (callFunReal(head, tail...) == 1)
-        lua_pcall(_L, 0, 0, 0);
-    else
-        lua_call(_L, (sizeof...(tail) + 1), 0);
-    lua_pop(_L, 1);
 }
 
 template <typename T>
-void LuaScript::returnType(T type)
+void LuaScript::callFunReal(const std::vector<T>& value)
 {
-    std::cout << "Warning: no return defined." << std::endl;
+    lua_newtable(_L);
+
+    for (size_t i = 0; i < value.size(); ++i) {
+        lua_pushnumber(_L, i);
+        callFunReal(value[i]);
+        lua_settable(_L, -3);
+    }
+}
+
+// recursive variadic template.
+// iterates with specialization to push arguments to the lua stack.
+template <typename T, typename... U>
+void LuaScript::callFunReal(const T& head, const U&... tail)
+{
+    callFunReal(head);
+    callFunReal(tail...);
+}
+
+template <typename Z, typename... T>
+Z LuaScript::callFun(const std::string& name, const T&... args)
+{
+    Z ret;
+
+    // the function is now registered to later be called
+    lua_getglobal(_L, name.c_str());
+    // this will push the arguments to the lua stack
+    callFunReal(args...);
+    // the function with be called [sizeof...(args) = number of arguments]
+    lua_call(_L, sizeof...(args), 1);
+    // returning depending of the type passed on parameter
+    ret = returnType<Z>();
+    lua_pop(_L, 1);
+    return (ret);
+}
+
+template <typename Z>
+Z LuaScript::callFun(const std::string& name)
+{
+    Z ret;
+
+    lua_getglobal(_L, name.c_str());
+    lua_pcall(_L, 0, 1, 0);
+    ret = returnType<Z>();
+    lua_pop(_L, 1);
+    return (ret);
+}
+
+template <typename T>
+T LuaScript::returnType()
+{
+    throw Exception("warning: no return defined");
 }
