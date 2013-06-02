@@ -2,6 +2,7 @@
 # define LOADER_H_
 
 #include <string>
+#include <map>
 #include "Mesh.hh"
 #include "Vector3D.hh"
 
@@ -18,6 +19,7 @@ namespace newin {
 	private:
 	    void orderInFaceList(std::vector< Vector3D<GLfloat> >*,std::vector< Vector3D<GLfloat> >*,std::vector< Vector3D<GLfloat> >*,std::vector< Vector3D<GLfloat> >*, std::fstream&);
 	    std::string _filename;
+	    std::map<std::string, Mesh*> _meshdb;
     };
 }
 

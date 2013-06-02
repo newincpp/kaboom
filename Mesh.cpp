@@ -2,7 +2,7 @@
 #include "Mesh.hh"
 #define GLEW_STATIC
 
-newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, std::vector<Vector3D<GLfloat> >* n) : AObject(), _tset(false), _wireframe(false) {
+newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, std::vector<Vector3D<GLfloat> >* n) : AObject(), _wireframe(false) {
     _vboID = 0;
     if (m) {
 	_verts = Vector3D<GLfloat>::toGLfloatArray(*m);
@@ -35,33 +35,17 @@ newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, std::vector<Vector3D<GLflo
     //checkVertex();
 }
 
+newin::Mesh::Mesh(const Mesh& m) : AObject(), _vertexCount(m._vertexCount), _normalCount(m._normalCount), _verts(new GLfloat[m._vertexCount]), _normal(new GLfloat[m._normalCount]), _wireframe(false) {
+    for (unsigned int i = 0; i < m._vertexCount; ++i) {
+	_verts[i] = m._verts[i];
+    }
+    for (unsigned int i = 0; i < m._normalCount; ++i) {
+	_normal[i] = m._normal[i];
+    }
+}
+
 newin::Mesh::Mesh() : _s(NULL), _wireframe(false) {
 }
-
-//void newin::Mesh::setColor(const Vector3D<GLfloat>& color) {
-//    _col = color;
-//}
-//
-//void newin::Mesh::setPos(const Vector3D<GLfloat>& pos ) {
-//    _pos = pos;
-//}
-//
-//void newin::Mesh::setRot(const Vector3D<GLfloat>& rot) {
-//    _rot = rot;
-//}
-
-void newin::Mesh::setTex(const std::string& name) {
-    _tex.load("resources/" + name);
-    _tset = true;
-}
-
-//newin::Vector3D<GLfloat> newin::Mesh::getPos() const {
-//    return _pos;
-//}
-
-//newin::Vector3D<GLfloat> newin::Mesh::getRot() const {
-//    return _rot;
-//}
 
 void newin::Mesh::checkVertex() const {
     for (unsigned int i = 0 ; i <= (_vertexCount * 3 - 1); i += 3) {

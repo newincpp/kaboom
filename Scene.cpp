@@ -6,29 +6,28 @@
 #include "Loader.hh"
 #include "Scene.hh"
 
-newin::SceneMgr::SceneMgr() : _camera(), _defaultLight() {
+newin::SceneMgr::SceneMgr() :  _height(__DHEIGHT), _width(__DWIDTH), _camera(), _defaultLight() {
 }
 
 newin::SceneMgr::~SceneMgr() {
 }
 
 void newin::SceneMgr::initialize(void) {
-    window_.setWidth(1920);
-    window_.setHeight(1024);
-    window_.create();
+    window_.setWidth(_width);
+    window_.setHeight(_height);
     window_.setTitle("bomberman !");
+    window_.create();
+    glViewport(0, 0, _width, _height);
     GLenum err = glewInit();
     if (err != GLEW_OK)
 	std::cerr << "FAIL !" << std::endl;
     try {
 	newin::Shader v("defuse_vs.glsl", GL_VERTEX_SHADER);
 	newin::Shader f("defuse_fs.glsl", GL_FRAGMENT_SHADER);
-	newin::Shader g("default_gs.glsl", GL_GEOMETRY_SHADER);
-	_defaultShader = new newin::ShadeProgram(v, f, g);
+	_defaultShader = new newin::ShadeProgram(v, f);
     } catch (newin::ShaderException& e) {
 	std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
     }
-    std::cout << "compile fine" << std::endl;
     _camera.initialize(_defaultShader,  newin::Vector3D<GLfloat>(0, 1, 5), newin::Vector3D<GLfloat>(0, 0, 0));
     _defaultLight.initialize(_defaultShader, newin::Vector3D<GLfloat>(3, 1, 0), newin::Vector3D<GLfloat>(1,1,1), newin::Vector3D<GLfloat>(1, 1, 1));
 
@@ -52,8 +51,8 @@ void newin::SceneMgr::update(void) {
 
 void newin::SceneMgr::draw(void) {
     _old_time = gameClock_.getElapsedTime();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.05f, 0.05, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_DEPTH_TEST); // enable depth-testing
     glDepthMask(GL_TRUE); // turn back on
     glDepthFunc(GL_LESS);

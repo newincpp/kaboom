@@ -3,15 +3,8 @@
 #include "Camera.hh"
 
 newin::Camera::Camera(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& r) : _changed(true) ,_pos(p), _rot(r) , _prgm(prgm), _modv(prgm) {
-    //calculate();
-    //for (unsigned int i = 0; i < 16; ++i) {
-    //    _projection[i] = 0;
-    //}
-    //loadProjectionMatrix();
-    //_prgm->setVariable("modelViewMatrix", _modelView);
     _modv.genModelView(_pos, _rot);
     _projv.loadProjectionMatrix();
-    //_prgm->setVariable("projectionMatrix", _projection);
 }
 
 newin::Camera::Camera() {

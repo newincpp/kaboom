@@ -12,17 +12,12 @@ namespace newin {
     class Mesh : public AObject {
 	public:
 	    explicit Mesh(std::vector<Vector3D<GLfloat> >*, std::vector<Vector3D<GLfloat> >*);
+	    explicit Mesh(const Mesh&);
 	    virtual ~Mesh();
 	    void setShader(ShadeProgram*);
 	    void render();
 	    void toogleWireframe();
 	    void update() const;
-	    //void setColor(const Vector3D<GLfloat>&);
-	    //void setPos(const Vector3D<GLfloat>&);
-	    //void setRot(const Vector3D<GLfloat>&);
-	    //Vector3D<GLfloat> getPos() const;
-	    //Vector3D<GLfloat> getRot() const;
-	    void setTex(const std::string&);
 	    // for gdl.......
 	    void initialize();
 	    void update(/*gdl::GameClock const &,*/ gdl::Input &);
@@ -30,20 +25,14 @@ namespace newin {
 	private:
 	    explicit Mesh();
 	    void checkVertex() const;
-	    gdl::Image _tex;
-	    GLboolean _tset;
-	    ShadeProgram* _s;
-	    bool _wireframe;
-	    unsigned int _normalCount;
 	    unsigned int _vertexCount;
+	    unsigned int _normalCount;
 	    GLfloat* _verts;
 	    GLfloat* _normal;
+	    ShadeProgram* _s;
+	    bool _wireframe;
 	    GLuint _vboID;
 	    GLuint _nboID;
-	    //Vector3D<GLfloat> _col;
-	    //Vector3D<GLfloat> _pos;
-	    //Vector3D<GLfloat> _rot;
-
 	    // matrix
 	    GLfloat _matrixTransform[16];
 	    void transform();
