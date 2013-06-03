@@ -45,7 +45,7 @@ void newin::Shader::compile() {
 	    int written;
 	    glGetShaderInfoLog(_shaderID, length, &written, errorLog);
 	    errorLog[written] = 0;
-	    std::cerr << "Shader error log;" << std::endl << "\"" << errorLog << "\"" << std::endl;
+	    //std::cerr << "Shader error log;" << std::endl << "\"" << errorLog << "\"" << std::endl;
 	    throw ShaderException(errorLog);
 	    delete [] errorLog;
 	}
@@ -66,9 +66,8 @@ GLuint newin::Shader::getID() const {
 //  				    PROGRAM
 /////////////////////////////////////////////////////////////////////////////
 
-newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment, const Shader& geometry) : _vID(vertex.getID()), _fID(fragment.getID()), _gID(geometry.getID()), _enabled(false) {
+newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment) : _vID(vertex.getID()), _fID(fragment.getID()), _enabled(false) {
     _prgmID = glCreateProgram();
-    //glAttachShader(_prgmID, _gID);
     glAttachShader(_prgmID, _vID);
     glAttachShader(_prgmID, _fID);
     glLinkProgram(_prgmID);
@@ -81,7 +80,6 @@ newin::ShadeProgram::ShadeProgram(const Shader& vertex, const Shader& fragment, 
 
 inline GLint newin::ShadeProgram::getVariableLocation(const std::string& variableName) {
     enable();
-
     std::map<std::string,GLint>::iterator uniform = _vardb.find(variableName);
     if (uniform == _vardb.end()) {
 	GLint loc = glGetUniformLocation(_prgmID, variableName.c_str());

@@ -2,7 +2,7 @@
 #include "Mesh.hh"
 #define GLEW_STATIC
 
-newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, std::vector<Vector3D<GLfloat> >* n, ShadeProgram* s) : AObject(), _tset(false), _s(s) , _wireframe(false), _col(Vector3D<GLfloat>(0.1, 0.1, 0.1, 1.0)) {
+newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, std::vector<Vector3D<GLfloat> >* n) : AObject(), _wireframe(false) {
     _vboID = 0;
     if (m) {
 	_verts = Vector3D<GLfloat>::toGLfloatArray(*m);
@@ -32,38 +32,19 @@ newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, std::vector<Vector3D<GLflo
 	_normal = NULL;
 	_normalCount = 0;
     }
-    glGenBuffers(1, &_vboID);
-    glGenBuffers(1, &_nboID);
-    update();
     //checkVertex();
 }
 
+newin::Mesh::Mesh(const Mesh& m) : AObject(), _vertexCount(m._vertexCount), _normalCount(m._normalCount), _verts(new GLfloat[m._vertexCount]), _normal(new GLfloat[m._normalCount]), _wireframe(false) {
+    for (unsigned int i = 0; i < m._vertexCount; ++i) {
+	_verts[i] = m._verts[i];
+    }
+    for (unsigned int i = 0; i < m._normalCount; ++i) {
+	_normal[i] = m._normal[i];
+    }
+}
+
 newin::Mesh::Mesh() : _s(NULL), _wireframe(false) {
-}
-
-void newin::Mesh::setColor(const Vector3D<GLfloat>& color) {
-    _col = color;
-}
-
-void newin::Mesh::setPos(const Vector3D<GLfloat>& pos ) {
-    _pos = pos;
-}
-
-void newin::Mesh::setRot(const Vector3D<GLfloat>& rot) {
-    _rot = rot;
-}
-
-void newin::Mesh::setTex(const std::string& name) {
-    _tex.load("resources/" + name);
-    _tset = true;
-}
-
-newin::Vector3D<GLfloat> newin::Mesh::getPos() const {
-    return _pos;
-}
-
-newin::Vector3D<GLfloat> newin::Mesh::getRot() const {
-    return _rot;
 }
 
 void newin::Mesh::checkVertex() const {
@@ -103,12 +84,15 @@ void newin::Mesh::toogleWireframe() {
 }
 
 void newin::Mesh::render() {
-    _s->setVariable("objTransform", _matrixTransform);
-    _s->setVariable("inputColour", Vector3D<GLfloat>(_col.getX(),_col.getY(), _col.getZ(), 1.0));
+    if (_s) {
+	_s->setVariable("inputColour", Vector3D<GLfloat>(_col.getX(),_col.getY(), _col.getZ(), 1.0));
+	_s->setVariable("objTransform", _matrixTransform);
+    }
     glBindBuffer(GL_ARRAY_BUFFER, _vboID);
     //glBindVertexArray(_vboID); // make our VAO the current bound VAO
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL); // map memory for the 0th variable that is the size of 3 floats
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL); // map memory for the 0th variable that is the size of 3 floats
+
     if (_wireframe == true)
 	glDrawArrays(GL_LINE_STRIP, 0, _vertexCount); // draw triangles using VBO points from 0 up to vertexCount
     else
@@ -137,6 +121,9 @@ void newin::Mesh::transform() {
 //for gdl.....
 
 void newin::Mesh::initialize() {
+    glGenBuffers(1, &_vboID);
+    glGenBuffers(1, &_nboID);
+    update();
 }
 
 void newin::Mesh::update(/*gdl::GameClock const &, */ gdl::Input & i) {
@@ -163,6 +150,9 @@ void newin::Mesh::update(/*gdl::GameClock const &, */ gdl::Input & i) {
     }
     if (i.isKeyDown(gdl::Keys::Space) == true) {
 	_pos.setY( _pos.getY() + 0.1);
+    }
+    if (i.isKeyDown(gdl::Keys::Z) == true) {
+	_wireframe = !_wireframe;
     }
     transform();
 }

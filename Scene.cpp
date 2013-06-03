@@ -2,49 +2,43 @@
 #include <stdlib.h>
 #include <cstdlib>
 #include <unistd.h>
+#include <exception>
 #include "Loader.hh"
 #include "Scene.hh"
 
-SceneMgr::SceneMgr() : _camera(), _defaultLight() {
+newin::SceneMgr::SceneMgr() :  _height(__DHEIGHT), _width(__DWIDTH), _camera(), _defaultLight() {
 }
 
-SceneMgr::~SceneMgr() {
+newin::SceneMgr::~SceneMgr() {
 }
 
-void SceneMgr::initialize(void) {
-    window_.setWidth(1920);
-    window_.setHeight(1024);
-    window_.create();
+void newin::SceneMgr::initialize(void) {
+    window_.setWidth(_width);
+    window_.setHeight(_height);
     window_.setTitle("bomberman !");
+    window_.create();
+    glViewport(0, 0, _width, _height);
     GLenum err = glewInit();
     if (err != GLEW_OK)
 	std::cerr << "FAIL !" << std::endl;
     try {
 	newin::Shader v("defuse_vs.glsl", GL_VERTEX_SHADER);
 	newin::Shader f("defuse_fs.glsl", GL_FRAGMENT_SHADER);
-	newin::Shader g("default_gs.glsl", GL_GEOMETRY_SHADER);
-	_defaultShader = new newin::ShadeProgram(v, f, g);
+	_defaultShader = new newin::ShadeProgram(v, f);
     } catch (newin::ShaderException& e) {
 	std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
     }
     _camera.initialize(_defaultShader,  newin::Vector3D<GLfloat>(0, 1, 5), newin::Vector3D<GLfloat>(0, 0, 0));
     _defaultLight.initialize(_defaultShader, newin::Vector3D<GLfloat>(3, 1, 0), newin::Vector3D<GLfloat>(1,1,1), newin::Vector3D<GLfloat>(1, 1, 1));
 
-    _objects.push_back(newin::Loader().loadOBJ(_defaultShader, "plane.obj"));
-    ((newin::Mesh*)_objects.back())->setColor(newin::Vector3D<GLfloat>(0.1, 0.1, 0.1));
-
-    _objects.push_back(newin::Loader().loadOBJ(_defaultShader, "test.obj"));
-    _objects.back()->setPos(newin::Vector3D<GLfloat>(0.1, 1, 0.1));
-    _objects.back()->setRot(newin::Vector3D<GLfloat>(0.1, 30, 0.1));
-
-    _objects.push_back(newin::Loader().loadOBJ(_defaultShader, "sphere.obj"));
-    ((newin::Mesh*)_objects.back())->setPos(newin::Vector3D<GLfloat>(3.1, 1.1, 0.1));
     std::list<AObject*>::iterator itb = _objects.begin();
-    for (; itb != _objects.end(); ++itb)
+    for (; itb != _objects.end(); ++itb) {
 	(*itb)->initialize();
+	((Mesh*)(*itb))->setShader(_defaultShader);
+    }
 }
 
-void SceneMgr::update(void) {
+void newin::SceneMgr::update(void) {
     if (input_.isKeyDown(gdl::Keys::Escape)) {
 	window_.close();
     }
@@ -55,10 +49,10 @@ void SceneMgr::update(void) {
 	(*itb)->update(/*gameClock_,*/input_);
 }
 
-void SceneMgr::draw(void) {
+void newin::SceneMgr::draw(void) {
     _old_time = gameClock_.getElapsedTime();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.05f, 0.05, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_DEPTH_TEST); // enable depth-testing
     glDepthMask(GL_TRUE); // turn back on
     glDepthFunc(GL_LESS);
@@ -68,9 +62,9 @@ void SceneMgr::draw(void) {
     //render shadow
     _defaultLight.shadowMap();
     std::list<AObject*>::iterator itb = _objects.begin();
-    for (; itb != _objects.end(); ++itb)
+    for (; itb != _objects.end(); ++itb) {
 	(*itb)->draw();
-
+    }
     //render object
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     _camera.renderMode();
@@ -83,23 +77,36 @@ void SceneMgr::draw(void) {
 	usleep(_old_time);
 }
 
-void SceneMgr::unload(void) {
+void newin::SceneMgr::unload(void) {
     delete _defaultShader;
 }
 
-std::list<AObject*> SceneMgr::getObjectList() const {
+std::list<AObject*> newin::SceneMgr::getObjectList() const {
     return _objects;
 }
 
-newin::Camera* SceneMgr::getCam() {
+newin::Camera* newin::SceneMgr::getCam() {
     return &_camera;
 }
 
-AObject* SceneMgr::getLight() {
+AObject* newin::SceneMgr::getLight() {
     return &_defaultLight;
 }
 
-void SceneMgr::addModel(AObject* newobj, const std::string& identifier) {
-    newobj->setIdentifier(identifier);
-    _objects.push_back(newobj);
+AObject* newin::SceneMgr::addModel(const std::string& name, const std::string& identifier) {
+    newin::Mesh* tmp = newin::Loader().loadOBJ(name);
+    _objects.push_back(tmp);
+    tmp->setIdentifier(identifier);
+    std::cout << "shade added" << std::endl;
+    return tmp;
+}
+
+AObject* newin::SceneMgr::getModel(const std::string& id) {
+    std::list<AObject*>::iterator itb = _objects.begin();
+    for (; itb != _objects.end(); ++itb) {
+	if ((*itb)->getIdentifier() == id) {
+	    return *itb;
+	}
+    }
+    return NULL;
 }

@@ -2,16 +2,17 @@
 #include <cmath>
 #include "Light.hh"
 
-newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& r, const Vector3D<GLfloat>& c) : AObject(p,r), _changed(true), _color(c), _diff(40), _intensity(0.9), _prgm(prgm), _shad(NULL) {
+newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& r, const Vector3D<GLfloat>& c) : AObject(p,r,c), _changed(true), _diff(40), _intensity(0.9), _prgm(prgm), _shad(NULL) {
     if (_prgm) {
 	internalUpdate();
     }
+    _col = c;
 }
 
 void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& rot, const Vector3D<GLfloat>& c) {
     _pos = p;
     _rot = rot;
-    _color = c;
+    _col = c;
     _prgm = prgm;
     if (!_prgm) {
 	throw newin::ShaderException("cannot use light without shader");
@@ -19,9 +20,8 @@ void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, co
     internalUpdate();
     Shader v("shadowMap_vs.glsl", GL_VERTEX_SHADER);
     Shader f("shadowMap_fs.glsl", GL_FRAGMENT_SHADER);
-    Shader g("default_gs.glsl", GL_GEOMETRY_SHADER);
 
-    _shad = new ShadeProgram(v,f,g);
+    _shad = new ShadeProgram(v,f);
     _proj.setShader(_shad);
     _modv.setShader(_shad);
     _proj.setShader(_shad);
@@ -78,21 +78,9 @@ void newin::Light::update(/*gdl::GameClock const &, */gdl::Input & i) {
 
 inline void newin::Light::internalUpdate() {
     _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
-    _prgm->setVariable("lightColour", _color.getX(), _color.getY(), _color.getZ());
+    _prgm->setVariable("lightColour", _col.getX(), _col.getY(), _col.getZ());
     _prgm->setVariable("lightDiff", _diff);
     _prgm->setVariable("intensity", _intensity);
-}
-
-void newin::Light::setPos(const newin::Vector3D<GLfloat>& p) {
-    _pos = p;
-}
-
-void newin::Light::setRot(const newin::Vector3D<GLfloat>& r) {
-    (void) r;
-}
-
-void newin::Light::setColor(const newin::Vector3D<GLfloat>& c) {
-    _color = c;
 }
 
 void newin::Light::setDiff(const int d) {
@@ -104,18 +92,6 @@ void newin::Light::setIntensity(const float i) {
 	std::cout << "warning: intensity > 1 will probably make some shit" << std::endl;
     }
     _intensity = i;
-}
-
-newin::Vector3D<GLfloat> newin::Light::getPos() const {
-    return _pos;
-}
-
-newin::Vector3D<GLfloat> newin::Light::getRot() const {
-    return Vector3D<GLfloat>();
-}
-
-newin::Vector3D<GLfloat> newin::Light::getColor() const {
-    return _color;
 }
 
 float newin::Light::getIntensity() const {
@@ -140,6 +116,7 @@ void newin::Light::shadowMap() {
 	0.0, 0.0, 0.5, 0.0,
 	0.5, 0.5, 0.5, 1.0
     };
+    (void) biasMatrix;
     if (_shad) {
 	_shad->enable();
     } else {
@@ -172,8 +149,8 @@ void newin::Light::shadowMap() {
 	std::cout << "frame Buffer failed" << std::endl;
 	return ;
     }
-    _proj.loadProjectionMatrix();
-    _modv.genModelView(_pos, _rot);
+    //_proj.loadProjectionMatrix();
+    //_modv.genModelView(_pos, _rot);
     glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the lower left corner to the upper right
     //glBindFramebuffer(GL_FRAMEBUFFER, 0);
     //    if (_shad)

@@ -9,7 +9,7 @@ SRC	= main.cpp \
 
 NAME	=bomberman
 
-CXXFLAGS= -Wall -Wextra -W -g
+CXXFLAGS= -Wall -Wextra -W -g -D__DWIDTH=1024 -D__DHEIGHT=768
 
 LDFLAGS	= -Wl,-rpath -L./libgdl_gl-2012.4/lib -Wl,./libgdl_gl-2012.4/lib -lgdl_gl -lGLU -lGLEW
 

@@ -1,22 +1,23 @@
 #include <iostream>
 #include <exception>
 #include <cstdlib>
-
-//#include "libgdl_gl-2012.4/include/Clock.hpp"
-//#include "libgdl_gl-2012.4/include/Color.hpp"
-//#include "libgdl_gl-2012.4/include/Game.hpp"
-//#include "libgdl_gl-2012.4/include/GameClock.hpp"
-//#include "libgdl_gl-2012.4/include/Image.hpp"
-//#include "libgdl_gl-2012.4/include/Input.hpp"
-//#include "libgdl_gl-2012.4/include/Model.hpp"
-//#include "libgdl_gl-2012.4/include/Window.hpp"
-
+#include <list>
 #include "Scene.hh"
 
 int main() {
-    SceneMgr bbman;
+    newin::SceneMgr bbman;
 
     try {
+	AObject* tmp = bbman.addModel("plane.obj", "map");
+	tmp->setPos(newin::Vector3D<GLfloat>(0.1,0.1,0.1));
+
+	tmp = bbman.addModel("test.obj", "vesseau");
+	tmp->setPos(newin::Vector3D<GLfloat>(0.1, 1, 0.1));
+	tmp->setRot(newin::Vector3D<GLfloat>(0.1, 30, 0.1));
+
+	tmp = bbman.addModel("sphere.obj", "sphere");
+	tmp->setPos(newin::Vector3D<GLfloat>(3.1, 1.1, 0.1));
+
 	bbman.run();
     } catch (const std::exception& e) {
 	std::cerr << "\033[1;31m FATAL ERROR : " << std::endl << e.what() << std::endl;

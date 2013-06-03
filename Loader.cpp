@@ -13,15 +13,15 @@ newin::Loader::Loader() : _filename() {
 newin::Loader::~Loader() {
 }
 
-newin::Mesh* newin::Loader::genTri(ShadeProgram* p) {
+newin::Mesh* newin::Loader::genTri() {
     std::vector< Vector3D<GLfloat> >* l = new std::vector< Vector3D<GLfloat> >();
     l->push_back(Vector3D<GLfloat>(0.5, 0.5, 0, 0));
     l->push_back(Vector3D<GLfloat>(0.5, -0.5, 0, 0));
     l->push_back(Vector3D<GLfloat>(-0.5, -0.5, 0, 0));
-    return new Mesh(l, NULL, p);
+    return new Mesh(l, NULL);
 }
 
-newin::Mesh* newin::Loader::genQuad(ShadeProgram* p) {
+newin::Mesh* newin::Loader::genQuad() {
     std::vector< Vector3D<GLfloat> >* l = new std::vector< Vector3D<GLfloat> >();
     // v1
     l->push_back(Vector3D<GLfloat>(0.5, 0.5, 0, 0));
@@ -31,17 +31,24 @@ newin::Mesh* newin::Loader::genQuad(ShadeProgram* p) {
     l->push_back(Vector3D<GLfloat>(0.5, 0.5, 0, 0));
     l->push_back(Vector3D<GLfloat>(-0.5, 0.5, 0, 0));
     l->push_back(Vector3D<GLfloat>(-0.5, -0.5, 0, 0));
-    return new Mesh(l, NULL, p);
+    return new Mesh(l, NULL);
 }
 
 void newin::Loader::loadMTL(Mesh* m, const std::string& fName) {
     std::fstream f(("resources/" + fName).c_str());
-    m->setColor(Vector3D<GLfloat>(0.0, 0.1, 0.1, 1.0));
-    m->setTex("defaultTex.png");
+    m->setColor(Vector3D<GLfloat>(0.1, 0.1, 0.1, 1.0));
 }
 
-newin::Mesh* newin::Loader::loadOBJ(ShadeProgram* p, const std::string& fName) {
+newin::Mesh* newin::Loader::loadOBJ(const std::string& fName) {
     std::fstream f(("resources/" + fName).c_str());
+    {
+	std::map<std::string,Mesh*>::iterator tmp = _meshdb.find("fName");
+	if (tmp != _meshdb.end()) {
+	    Mesh* m = new Mesh(*(tmp->second));
+	    _meshdb[fName] = m;
+	    return m;
+	}
+    }
     std::vector< Vector3D<GLfloat> >* vertex= new std::vector< Vector3D<GLfloat> >();
     std::vector< Vector3D<GLfloat> >* pure = new std::vector< Vector3D<GLfloat> >();
     std::vector< Vector3D<GLfloat> >* n = new std::vector< Vector3D<GLfloat> >();
@@ -54,7 +61,7 @@ newin::Mesh* newin::Loader::loadOBJ(ShadeProgram* p, const std::string& fName) {
     std::cout << "objfile : " << fName << std::endl;
     if (!f.is_open()) {
 	std::cout << "failed to open file" << std::endl;
-	return new Mesh(NULL,NULL, p);
+	return new Mesh(NULL,NULL);
     }
     while (tmp != "mtllib")
 	f >> tmp;
@@ -81,7 +88,7 @@ newin::Mesh* newin::Loader::loadOBJ(ShadeProgram* p, const std::string& fName) {
     orderInFaceList(vertex, pure, normal, n, f);
     delete pure;
     f.close();
-    Mesh * m = new Mesh(vertex, normal, p);
+    Mesh* m = new Mesh(vertex, normal);
     loadMTL(m, mtlfile);
     delete vertex;
     delete n;

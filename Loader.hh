@@ -2,6 +2,7 @@
 # define LOADER_H_
 
 #include <string>
+#include <map>
 #include "Mesh.hh"
 #include "Vector3D.hh"
 
@@ -11,14 +12,15 @@ namespace newin {
 	    explicit Loader();
 	    explicit Loader(const std::string&);
 	    virtual ~Loader();
-	    Mesh* genTri(ShadeProgram*);
-	    Mesh* genQuad(ShadeProgram*);
-	    Mesh* loadOBJ(ShadeProgram*, const std::string&);
+	    Mesh* genTri();
+	    Mesh* genQuad();
+	    Mesh* loadOBJ(const std::string&);
 	    void loadMTL(Mesh*, const std::string&);
 	    Mesh* loadDAE(ShadeProgram* p, const std::string& fName);
 	private:
 	    void orderInFaceList(std::vector< Vector3D<GLfloat> >*,std::vector< Vector3D<GLfloat> >*,std::vector< Vector3D<GLfloat> >*,std::vector< Vector3D<GLfloat> >*, std::fstream&);
 	    std::string _filename;
+	    std::map<std::string, Mesh*> _meshdb;
     };
 }
 

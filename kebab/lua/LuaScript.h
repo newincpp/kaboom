@@ -3,6 +3,9 @@
 
 # include <iostream>
 # include <exception>
+# include <vector>
+# include <typeinfo>
+# include <utility>
 
 extern "C" {
 # include "lua.h"
@@ -20,34 +23,29 @@ class LuaScript {
         void callFun(const std::string&);
 
         template <typename T>
-        void callFunReal(const T& value)
-        {
-        }
+        void callFunReal(const T& value);
 
-        void callFunReal(int value)
-        {
-            lua_pushnumber(_L, value);
-        }
-
+        template <typename T>
+        void callFunReal(const std::vector<T>& value);
+        
         template <typename T, typename... U>
-        void callFunReal(const T& head, const U&... tail)
-        {
-            callFunReal(head);
-            callFunReal(tail...);
-        }
+        void callFunReal(const T& head, const U&... tail);
 
-        template <typename T, typename... U>
-        void callFun(const std::string& name, const T& head, const U&... tail)
-        {
-            lua_getglobal(_L, name.c_str());
-            
-            callFunReal(head, tail...);
+        template <typename Z, typename... T>
+        Z callFun(const std::string&, const T&...);
 
-            lua_call(_L, 3, 1);
-            std::cout << "Lua fun result: " << lua_tointeger(_L, -1) << std::endl;
-            lua_pop(_L, 1);
-        }
+        template <typename Z>
+        Z callFun(const std::string&);
 
+        template <typename... T>
+        void callFunVoidRet(const std::string&, const T&...);
+
+        template <typename Z, typename... T>
+        Z callFunNoVoid(const std::string&, const T&...);
+
+        template <typename T>
+        T returnType();
+ 
         // exception
         class Exception : public std::exception {
 
@@ -62,11 +60,11 @@ class LuaScript {
         };
 
     private:
-        lua_State *_L;
         bool limiter;
+        lua_State *_L;
 
 };
 
-/*# include "callFun.cpp"*/
+# include "callFun.cpp"
 
 #endif

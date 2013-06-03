@@ -34,35 +34,11 @@ namespace newin {
 			std::cout << "WARNING shader is not set, 'uniform modelViewMatrix' will not set" << std::endl;
 		    }
 		}
-		void loadProjectionMatrix(float fov = 1.5707963267949, float aspect = 1.875f, float znear = 0.5f, float zfar = 1000.f) {
-		    float xymax = znear * tan(fov/2);
-		    float ymin = -xymax;
-		    float xmin = -xymax;
-		    float width = xymax - xmin;
-		    float height = xymax - ymin;
-		    float depth = zfar - znear;
-		    float q = -(zfar + znear) / depth;
-		    float qn = -2 * (zfar * znear) / depth;
-		    float w = 2 * znear / width;
-		    w = w / aspect;
-		    float h = 2 * znear / height;
-
-		    _mat[0]  = w;
-		    _mat[1]  = 0;
-		    _mat[2]  = 0;
-		    _mat[3]  = 0;
-		    _mat[4]  = 0;
-		    _mat[5]  = h;
-		    _mat[6]  = 0;
-		    _mat[7]  = 0;
-		    _mat[8]  = 0;
-		    _mat[9]  = 0;
-		    _mat[10] = q;
-		    _mat[11] = -1;
-		    _mat[12] = 0;
-		    _mat[13] = 0;
-		    _mat[14] = qn;
-		    _mat[15] = 0;
+		void loadProjectionMatrix(T fov = 60, T width = __DWIDTH, T height = __DHEIGHT, T znear = 1, T zfar = 1000) {
+		    glMatrixMode(GL_PROJECTION);
+		    glLoadIdentity();
+		    gluPerspective (fov, width / height, znear, zfar);
+		    glGetFloatv(GL_PROJECTION_MATRIX, _mat);
 		    if (_prgm) {
 			_prgm->setVariable("projectionMatrix", _mat);
 		    } else {
