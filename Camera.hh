@@ -21,15 +21,15 @@ namespace newin {
 	    Vector3D<GLfloat> getRot() const;
 	    void setPos(const Vector3D<GLfloat>&);
 	    void setRot(const Vector3D<GLfloat>&);
-	    mat4<GLfloat> getModelViewMatrix();
-	    mat4<GLfloat> getProjectionMatrix();
+	    Mat4<GLfloat> getModelViewMatrix();
+	    Mat4<GLfloat> getProjectionMatrix();
 	private:
 	    bool _changed;
 	    Vector3D<GLfloat> _pos;
 	    Vector3D<GLfloat> _rot;
 	    ShadeProgram* _prgm;
-	    mat4<GLfloat> _modv;
-	    mat4<GLfloat> _projv;
+	    Mat4<GLfloat> _modv;
+	    Mat4<GLfloat> _projv;
     };
 }
 

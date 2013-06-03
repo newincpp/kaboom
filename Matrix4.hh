@@ -4,10 +4,10 @@
 
 namespace newin {
     template <typename T>
-	class mat4 {
+	class Mat4 {
 	    public:
-		explicit mat4(ShadeProgram* p = NULL) : _prgm(p) {}
-		virtual ~mat4() {}
+		explicit Mat4(ShadeProgram* p = NULL) : _prgm(p) {}
+		virtual ~Mat4() {}
 		void setIdentityMatrix() {
 		    glMatrixMode(GL_MODELVIEW);
 		    glLoadIdentity();

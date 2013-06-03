@@ -59,12 +59,14 @@ void newin::SceneMgr::draw(void) {
     glCullFace(GL_FRONT);
     glClearDepth(1.0f);
 
+    std::list<AObject*>::iterator itb = _objects.begin();
+    /*
     //render shadow
     _defaultLight.shadowMap();
-    std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb) {
 	(*itb)->draw();
     }
+    */
     //render object
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     _camera.renderMode();
