@@ -121,7 +121,7 @@ void newin::Loader::orderInFaceList(std::vector< Vector3D<GLfloat> >* vert, std:
     }
 }
 
-/*newin::Mesh* newin::Loader::loadDAE(ShadeProgram* p, const std::string& fName) {
+newin::Mesh* newin::Loader::loadDAE(ShadeProgram* p, const std::string& fName) {
   std::fstream f(("resources/" + fName).c_str());
   std::vector< Vector3D<GLfloat> >* l = new std::vector< Vector3D<GLfloat> >();
   std::vector< Vector3D<GLfloat> >* pure = new std::vector< Vector3D<GLfloat> >();
@@ -164,4 +164,4 @@ void newin::Loader::orderInFaceList(std::vector< Vector3D<GLfloat> >* vert, std:
   Mesh * m = new Mesh(l, p);
   //  loadMTL(m, mtfile);
   return (m);
-  }*/
+}
