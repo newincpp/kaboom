@@ -92,10 +92,10 @@ void newin::Camera::endRenderMode() {
     _prgm->disenable();
 }
 
-newin::mat4<GLfloat> newin::Camera::getModelViewMatrix() { // cannot be const because return non const pointer
+newin::Mat4<GLfloat> newin::Camera::getModelViewMatrix() { // cannot be const because return non const pointer
     return _modv;
 }
 
-newin::mat4<GLfloat> newin::Camera::getProjectionMatrix() { // cannot be const because return non const pointer
+newin::Mat4<GLfloat> newin::Camera::getProjectionMatrix() { // cannot be const because return non const pointer
     return _projv;
 }

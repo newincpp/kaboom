@@ -34,8 +34,8 @@ namespace newin {
 	    GLuint FramebufferName;
 	    GLuint depthTexture;
 	    ShadeProgram* _shad;
-	    mat4<GLfloat> _proj;
-	    mat4<GLfloat> _modv;
+	    Mat4<GLfloat> _proj;
+	    Mat4<GLfloat> _modv;
 
     };
 }
