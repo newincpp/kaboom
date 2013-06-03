@@ -44,7 +44,9 @@ newin::Mesh* newin::Loader::loadOBJ(const std::string& fName) {
     {
 	std::map<std::string,Mesh*>::iterator tmp = _meshdb.find("fName");
 	if (tmp != _meshdb.end()) {
-	    return new Mesh(*(tmp->second));
+	    Mesh* m = new Mesh(*(tmp->second));
+	    _meshdb[fName] = m;
+	    return m;
 	}
     }
     std::vector< Vector3D<GLfloat> >* vertex= new std::vector< Vector3D<GLfloat> >();
