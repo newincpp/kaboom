@@ -6,13 +6,6 @@ newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, std::vector<Vector3D<GLflo
     _vboID = 0;
     if (m) {
 	_verts = Vector3D<GLfloat>::toGLfloatArray(*m);
-	int j = 0;
-	for (int i = m->size() - 1; i != -1 ; --i) {
-	    _verts[j + 0] = m->at(i).getX();
-	    _verts[j + 1] = m->at(i).getY();
-	    _verts[j + 2] = m->at(i).getZ();
-	    j += 3;
-	}
 	_vertexCount = m->size();
     } else {
 	_verts = NULL;
@@ -20,13 +13,6 @@ newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, std::vector<Vector3D<GLflo
     }
     if (n) {
 	_normal = Vector3D<GLfloat>::toGLfloatArray(*n);
-	int j = 0;
-	for (int i = m->size() - 1; i != -1 ; --i) {
-	    _normal[j + 0] = n->at(i).getX();
-	    _normal[j + 1] = n->at(i).getY();
-	    _normal[j + 2] = n->at(i).getZ();
-	    j += 3;
-	}
 	_normalCount = n->size();
     } else {
 	_normal = NULL;
