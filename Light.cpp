@@ -2,7 +2,7 @@
 #include <cmath>
 #include "Light.hh"
 
-newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& r, const Vector3D<GLfloat>& c) : AObject(p,r,c), _changed(true), _diff(40), _intensity(0.9), _prgm(prgm), _shad(NULL) {
+newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& r, const Vector3D<GLfloat>& c) : AObject(p,r,c), _changed(true), _diff(5), _intensity(0.8), _prgm(prgm), _shad(NULL) {
     if (_prgm) {
 	internalUpdate();
     }
