@@ -29,6 +29,7 @@ class AObject
 	newin::Vector3D<GLfloat> _pos;
 	newin::Vector3D<GLfloat> _rot;
 	newin::Vector3D<GLfloat> _col;
+  //  _funcptr();
 };
 
 

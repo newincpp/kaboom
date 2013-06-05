@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Mon May 27 16:50:23 2013 Dorian Stroher
-// Last update Fri May 31 13:01:05 2013 Dorian Stroher
+// Last update Fri May 31 16:28:05 2013 Dorian Stroher
 //
 
 #ifndef __MAP_HH__
@@ -21,9 +21,9 @@ class Map
 public:
   Map(int row, int col, newin::SceneMgr bbman);
   ~Map();
-  std::map<std::pair<int, int>, IBonus *>  getMap();
+  std::map<std::pair<int, int>, IObject *>  *getMap();
 private:
-  std::map<std::pair<int, int>, IBonus *> _map;
+  std::map<std::pair<int, int>, IObject *> _map;
   int _row;
   int _col;
 };

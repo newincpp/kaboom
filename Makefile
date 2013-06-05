@@ -5,7 +5,9 @@ SRC	= main.cpp \
 	  Mesh.cpp \
 	  Loader.cpp \
 	  Light.cpp \
-	  Model.cpp
+	  Model.cpp \
+	  Map.cpp \
+	  Wall.cpp
 
 NAME	=bomberman
 
