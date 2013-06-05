@@ -4,8 +4,8 @@ uniform mat4 modelViewMatrix;
 uniform mat4 objTransform;
 uniform mat4 projectionMatrix;
 
-in vec3 vertexPosition;
-in vec3 vertexNormal;
+layout (location=0) in vec3 vertexPosition;
+layout (location=1) in vec3 vertexNormal;
 
 out struct vertex {
     vec4 TVertex;

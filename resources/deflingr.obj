@@ -1,0 +1,12 @@
+# Blender v2.66 (sub 1) OBJ File: 'consept.blend'
+# www.blender.org
+mtllib deflingr.mtl
+o Plane.002_Plane.003
+v 4.600000 0.800000 -2.400000
+v 4.400000 0.800000 -2.400000
+v 4.600000 0.800000 -2.600000
+v 4.400000 0.800000 -2.600000
+vn 0.000000 1.000000 -0.000000
+usemtl Material
+s off
+f 2//1 1//1 3//1 4//1
