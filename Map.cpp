@@ -5,10 +5,11 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Mon May 27 16:53:04 2013 Dorian Stroher
-// Last update Fri May 31 16:41:11 2013 Dorian Stroher
+// Last update Wed Jun  5 16:10:19 2013 Dorian Stroher
 //
 
 #include "Map.hh"
+#include "Player.hh"
 
 Map::Map(int row, int col, newin::SceneMgr bbman)
 {
@@ -34,6 +35,9 @@ Map::Map(int row, int col, newin::SceneMgr bbman)
       it.second = 0;
       it.first = it.first + 1;
     }
+  it.first = 3;
+  it.second = 7;
+  _map[it] = new Player(&bbman, it.second, it.first, this);
   bbman.run();
 }
 

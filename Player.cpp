@@ -5,19 +5,23 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Mon Jun  3 17:33:08 2013 Dorian Stroher
+// Last update Wed Jun  5 16:35:10 2013 Dorian Stroher
 //
 
+#include <unistd.h>
 #include "Player.hh"
 
-Player::Player(newin::SceneMgr *bbman, std::pair<int, int> pos, Map *map)
+Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map)
 {
-  _obj = bbman->addModel("test.obj", "Mur");/**Init le pointeur sur fonction**/
-  //  _obj->setPtr(&Player::Move); POUR PILOU
-  _obj->setPos(newin::Vector3D<GLfloat>(pos.first * SIZECASE, 0.1, pos.second * SIZECASE));
+  _obj = bbman->addModel("wall.obj", "Mur");
+  _obj->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, 0.1, row * SIZECASE));
+  _obj->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
   _map = map->getMap();
+  std::cout << "New player" << std::endl;
+  _obj->setPlayer(this);
   _life = 1;
-  _pos = pos;
+  _pos.second = col;
+  _pos.first = row;
 }
 
 void Player::moddifPos()
@@ -29,7 +33,6 @@ bool Player::moveRight()
 {
   std::pair<int, int> newPos;
 
- _map[]
  return (true);
 }
 
@@ -51,14 +54,36 @@ bool Player::moveDown()
   return (true);
 }
 
-/*bool Player::move(gdl::Input &i)
+void Player::move(gdl::Input &i)
 {
-
-POUR PILOU
-}*/
+  if (i.isKeyDown(gdl::Keys::W) == true)
+    {
+      _pos.first = _pos.first + 1;
+      _obj->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0.1,( _pos.first) * SIZECASE));
+      usleep(100000);
+    }
+  if (i.isKeyDown(gdl::Keys::S) == true)
+    {
+      _pos.first = _pos.first - 1;
+      _obj->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0.1,( _pos.first) * SIZECASE));
+      usleep(100000);
+    }
+  if (i.isKeyDown(gdl::Keys::A) == true)
+    {
+      _pos.second = _pos.second - 1;
+      _obj->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0.1,( _pos.first) * SIZECASE));
+      usleep(100000);
+    }
+  if (i.isKeyDown(gdl::Keys::D) == true)
+    {
+      _pos.second = _pos.second + 1;
+      _obj->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0.1,( _pos.first) * SIZECASE));
+      usleep(100000);
+    }
+  return;
+}
 
 bool getObj(IObject *)
 {
-
   return (true);
 }

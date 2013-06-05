@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Mesh.hh"
+#include "Player.hh"
 #define GLEW_STATIC
 
 newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, std::vector<Vector3D<GLfloat> >* n) : AObject(), _wireframe(false) {
@@ -113,34 +114,39 @@ void newin::Mesh::initialize() {
 }
 
 void newin::Mesh::update(/*gdl::GameClock const &, */ gdl::Input & i) {
-    if (i.isKeyDown(gdl::Keys::W) == true) {
-	_pos.setZ( _pos.getZ() - 0.01);
-    }
-    if (i.isKeyDown(gdl::Keys::S) == true) {
-	_pos.setZ( _pos.getZ() + 0.01);
-    }
-    if (i.isKeyDown(gdl::Keys::A) == true) {
-	_pos.setX( _pos.getX() - 0.01);
-    }
-    if (i.isKeyDown(gdl::Keys::D) == true) {
-	_pos.setX( _pos.getX() + 0.01);
-    }
-    if (i.isKeyDown(gdl::Keys::Q) == true) {
-	_rot.setY( _rot.getY() + 0.1);
-    }
-    if (i.isKeyDown(gdl::Keys::E) == true) {
-	_rot.setY( _rot.getY() - 0.1);
-    }
-    if (i.isKeyDown(gdl::Keys::C) == true) {
-	_pos.setY( _pos.getY() - 0.1);
-    }
-    if (i.isKeyDown(gdl::Keys::Space) == true) {
-	_pos.setY( _pos.getY() + 0.1);
-    }
-    if (i.isKeyDown(gdl::Keys::Z) == true) {
-	_wireframe = !_wireframe;
-    }
-    transform();
+       if (_play == NULL)
+	{
+	  /*	  if (i.isKeyDown(gdl::Keys::W) == true) {
+	    _pos.setZ( _pos.getZ() - 0.01);
+	  }
+	  if (i.isKeyDown(gdl::Keys::S) == true) {
+	    _pos.setZ( _pos.getZ() + 0.01);
+	  }
+	  if (i.isKeyDown(gdl::Keys::A) == true) {
+	    _pos.setX( _pos.getX() - 0.01);
+	  }
+	  if (i.isKeyDown(gdl::Keys::D) == true) {
+	    _pos.setX( _pos.getX() + 0.01);
+	  }
+	  if (i.isKeyDown(gdl::Keys::Q) == true) {
+	    _rot.setY( _rot.getY() + 0.1);
+	  }
+	  if (i.isKeyDown(gdl::Keys::E) == true) {
+	    _rot.setY( _rot.getY() - 0.1);
+	  }
+	  if (i.isKeyDown(gdl::Keys::C) == true) {
+	    _pos.setY( _pos.getY() - 0.1);
+	  }
+	  if (i.isKeyDown(gdl::Keys::Space) == true) {
+	    _pos.setY( _pos.getY() + 0.1);
+	  }
+	  if (i.isKeyDown(gdl::Keys::Z) == true) {
+	    _wireframe = !_wireframe;
+	    }*/
+	}
+       else
+	 _play->move(i);
+       transform();
 }
 
 void newin::Mesh::draw(void) {
