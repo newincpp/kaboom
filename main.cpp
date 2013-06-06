@@ -11,7 +11,7 @@
 
 int main() {
     newin::SceneMgr bbman;
-    Map map1(10, 10, bbman);
+    Map map1(100, 100, bbman);
 
     try {
       /*	AObject* tmp = bbman.addModel("plane.obj", "map");

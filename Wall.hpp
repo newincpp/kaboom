@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:52:54 2013 Dorian Stroher
-// Last update Fri May 31 16:49:45 2013 Dorian Stroher
+// Last update Thu Jun  6 15:43:01 2013 Dorian Stroher
 //
 
 #ifndef __WALL__HH__
@@ -19,6 +19,7 @@ class Wall : public IObject
 public:
   virtual void moddifPos();
   Wall(newin::SceneMgr *bbman, int col, int row);
+  virtual ObjectType getType() {return type__Wall;}
   virtual ~Wall();
 private:
   AObject *_obj;
