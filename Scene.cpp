@@ -91,6 +91,10 @@ newin::Camera* newin::SceneMgr::getCam() {
     return &_camera;
 }
 
+void newin::SceneMgr::setCamPos(const newin::Vector3D<GLfloat>& p) {
+    _camera.setPos(p);
+}
+
 AObject* newin::SceneMgr::getLight() {
     return &_defaultLight;
 }
