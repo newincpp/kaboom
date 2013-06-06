@@ -63,7 +63,7 @@ void newin::Loader::loadMTL(Mesh* m, const std::string& fName) {
 newin::Mesh* newin::Loader::loadOBJ(const std::string& fName) {
     std::fstream f(("resources/" + fName).c_str());
     {
-        std::map<std::string,Mesh*>::iterator tmp = _meshdb.find("fName");
+        std::map<std::string,Mesh*>::iterator tmp = _meshdb.find(fName);
         if (tmp != _meshdb.end()) {
             Mesh* m = new Mesh(*(tmp->second));
             _meshdb[fName] = m;
@@ -140,49 +140,4 @@ void newin::Loader::orderInFaceList(std::vector< Vector3D<GLfloat> >* vert, std:
             f >> tmp;
         }
     }
-}
-
-newin::Mesh* newin::Loader::loadDAE(ShadeProgram* p, const std::string& fName) {
-    /*std::fstream f(("resources/" + fName).c_str());
-      std::vector< Vector3D<GLfloat> >* l = new std::vector< Vector3D<GLfloat> >();
-      std::vector< Vector3D<GLfloat> >* pure = new std::vector< Vector3D<GLfloat> >();
-      std::string tmp;
-      std::string mtlfile;
-      std::string objectName;
-      struct GLvector3f value;
-      int index;
-
-      while (tmp != "<float_array")
-      f >> tmp;
-      f >> objectName;
-      std::cout << "object in loading : " << objectName << std::endl;
-      while (tmp != ">")
-      f >> tmp;
-      while (tmp != "</float_array>")
-      {
-      f >> value.x;
-      f >> value.y;
-      f >> value.z;
-      pure->push_back(Vector3D<GLfloat>(value.x, value.y, value.z));
-      }
-      while (tmp != "<float_array")
-      f >> tmp;
-      f >> objectName;
-      std::cout << "object in loading : " << objectName << std::endl;
-      while(tmp != ">")
-      f >> tmp;
-      while (tmp != "</float_array>")
-      {
-      f >> value.x;
-      f >> value.y;
-      f >> value.z;
-      l->push_back(Vector3D<GLfloat>(value.x, value.y, value.z));
-      }
-      while (tmp != "vcount")
-      {
-
-      }
-      Mesh * m = new Mesh(l, p);
-      loadMTL(m, mtfile);
-      return (m);*/
 }
