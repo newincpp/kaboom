@@ -33,6 +33,7 @@ private:
   std::pair<int, int> _pos;
   std::map<std::pair<int, int>, IObject *>  *_map;
   AObject *_obj;
+  AObject *_objARM;
 };
 
 #endif

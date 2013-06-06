@@ -5,20 +5,29 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Thu Jun  6 17:02:50 2013 Dorian Stroher
+// Last update Thu Jun  6 17:05:29 2013 Dorian Stroher
 //
 
 #include <unistd.h>
 #include "Player.hh"
+#include "Mesh.hh"
 
 Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map)
 {
-  _obj = bbman->addModel("wall.obj", "Mur");
+  _obj = bbman->addModel("player.obj", "player");
   _obj->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, 0.1, row * SIZECASE));
   bbman->setCamPos(newin::Vector3D<GLfloat>((col * SIZECASE )-2, 5, (row * SIZECASE) -2));
   //_obj->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
+  _obj->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
+
+  _objARM = bbman->addModel("playerARM.obj", "playerCT");
+  _objARM->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, 0.1, row * SIZECASE));
+  _objARM->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
+  ((newin::Mesh*)_objARM)->toogleWireframe();
+  _map = map->getMap();
   std::cout << "New player" << std::endl;
   _obj->setPlayer(this);
+  //_objARM->setPlayer(this);
   _life = 1;
   _pos.second = col;
   _pos.first = row;
@@ -47,6 +56,9 @@ void Player::move(gdl::Input &i)
 	_pos.first = _pos.first - 1;
 	(*_map)[_pos] = this;
 	}
+      _obj->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0.1,( _pos.first) * SIZECASE));
+      _objARM->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0.1,( _pos.first) * SIZECASE));
+      usleep(100000);
     }
   if (i.isKeyDown(gdl::Keys::S) == true)
     {
@@ -63,6 +75,9 @@ void Player::move(gdl::Input &i)
 	_pos.first = _pos.first + 1;
 	(*_map)[_pos] = this;
 	}
+      _obj->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0.1,( _pos.first) * SIZECASE));
+      _objARM->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0.1,( _pos.first) * SIZECASE));
+      usleep(100000);
     }
   if (i.isKeyDown(gdl::Keys::A) == true)
     {
@@ -79,6 +94,9 @@ void Player::move(gdl::Input &i)
 	_pos.second = _pos.second + 1;
 	(*_map)[_pos] = this;
 	}
+      _obj->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0.1,( _pos.first) * SIZECASE));
+      _objARM->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0.1,( _pos.first) * SIZECASE));
+      usleep(100000);
     }
   if (i.isKeyDown(gdl::Keys::D) == true)
     {
@@ -95,6 +113,9 @@ void Player::move(gdl::Input &i)
 	_pos.second = _pos.second - 1;
 	(*_map)[_pos] = this;
 	}
+      _obj->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0.1,( _pos.first) * SIZECASE));
+      _objARM->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0.1,( _pos.first) * SIZECASE));
+      usleep(100000);
     }
   return;
 }
