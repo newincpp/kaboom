@@ -2,6 +2,11 @@
 # define MATRIX4_H_
 #include <iostream>
 
+#ifndef __DWIDTH
+#define __DWIDTH 1920
+#define __DHEIGHT 1024
+#endif
+
 namespace newin {
     template <typename T>
 	class Mat4 {
