@@ -5,14 +5,15 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Fri Jun  7 15:43:02 2013 Dorian Stroher
+// Last update Fri Jun  7 15:57:04 2013 Dorian Stroher
 //
 
 #include <unistd.h>
 #include "Player.hh"
 #include "Mesh.hh"
 #define DISTANCE 9
-#define DISTANCELUM 1.5
+#define DISTANCELUM 2
+#define LUMINTENSITY 0.4
 
 Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map)
 {
@@ -21,6 +22,8 @@ Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map)
   _obj->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, 0.1, row * SIZECASE));
   _cam = bbman->getCam();
   _cam->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, DISTANCE, row * SIZECASE));
+  _light->setIntensity(LUMINTENSITY);
+  _light->setDiff(1);
   _light->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, DISTANCELUM, row * SIZECASE));
   _cam->setRot(newin::Vector3D<GLfloat>(90, 0.1, 0.1));
   //_obj->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));

@@ -5,11 +5,13 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Mon May 27 16:53:04 2013 Dorian Stroher
-// Last update Wed Jun  5 16:10:19 2013 Dorian Stroher
+// Last update Fri Jun  7 16:01:53 2013 Dorian Stroher
 //
 
 #include "Map.hh"
 #include "Player.hh"
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
 Map::Map(int row, int col, newin::SceneMgr bbman)
 {
@@ -17,6 +19,7 @@ Map::Map(int row, int col, newin::SceneMgr bbman)
 
   /*  AObject* tmp = bbman.addModel("plane.obj", "map");
       tmp->setPos(newin::Vector3D<GLfloat>(0.1,0.1,0.1));*/
+  srand (time(NULL));
   _row = row;
   _col = col;
   it.first = 0;
@@ -26,13 +29,15 @@ Map::Map(int row, int col, newin::SceneMgr bbman)
       while (it.second != col)
 	{
 	  _map[it] = NULL;
+	  if (rand()%5 == 0)
+	    _map[it] = new Wall(&bbman, it.second, it.first);
 	  if (it.second == 0 || it.first == 0)
 	    _map[it] = new Wall(&bbman, it.second, it.first);
 	  else if (it.first == (row -1) || it.second == (col - 1))
 	    _map[it] = new Wall(&bbman, it.second, it.first);
 	  it.second = it.second + 1;
 	}
-      it.second = 0;
+    it.second = 0;
       it.first = it.first + 1;
     }
   it.first = 3;
