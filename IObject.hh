@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Mon May 27 17:26:10 2013 Dorian Stroher
-// Last update Thu Jun  6 15:42:07 2013 Dorian Stroher
+// Last update Fri Jun  7 16:17:43 2013 Dorian Stroher
 //
 
 #ifndef __IObject__HH__

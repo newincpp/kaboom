@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:52:54 2013 Dorian Stroher
-// Last update Thu Jun  6 15:43:01 2013 Dorian Stroher
+// Last update Fri Jun  7 17:47:02 2013 Dorian Stroher
 //
 
 #ifndef __WALL__HH__

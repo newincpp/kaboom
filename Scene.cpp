@@ -87,6 +87,7 @@ std::list<AObject*> newin::SceneMgr::getObjectList() const {
     return _objects;
 }
 
+
 newin::Camera* newin::SceneMgr::getCam() {
     return &_camera;
 }

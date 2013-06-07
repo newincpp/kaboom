@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Fri Jun  7 15:57:04 2013 Dorian Stroher
+// Last update Fri Jun  7 17:10:24 2013 Dorian Stroher
 //
 
 #include <unistd.h>
@@ -26,6 +26,7 @@ Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map)
   _light->setDiff(1);
   _light->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, DISTANCELUM, row * SIZECASE));
   _cam->setRot(newin::Vector3D<GLfloat>(90, 0.1, 0.1));
+  _light->setRot(newin::Vector3D<GLfloat>(70, 0.1, 0.1));
   //_obj->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
   _obj->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
   _objARM = bbman->addModel("playerARM.obj", "playerCT");

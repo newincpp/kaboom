@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Mon May 27 16:53:04 2013 Dorian Stroher
-// Last update Fri Jun  7 16:01:53 2013 Dorian Stroher
+// Last update Fri Jun  7 17:26:22 2013 Dorian Stroher
 //
 
 #include "Map.hh"
@@ -42,6 +42,8 @@ Map::Map(int row, int col, newin::SceneMgr bbman)
     }
   it.first = 3;
   it.second = 7;
+  _map[it] = new Wall(&bbman, it.second, it.first);
+  delete (_map[it]);
   _map[it] = new Player(&bbman, it.second, it.first, this);
   bbman.run();
 }
