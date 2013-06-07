@@ -5,10 +5,11 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Mon May 27 16:53:04 2013 Dorian Stroher
-// Last update Fri Jun  7 17:26:22 2013 Dorian Stroher
+// Last update Fri Jun  7 18:21:55 2013 Dorian Stroher
 //
 
 #include "Map.hh"
+#include "Mesh.hh"
 #include "Player.hh"
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
@@ -20,6 +21,8 @@ Map::Map(int row, int col, newin::SceneMgr bbman)
   /*  AObject* tmp = bbman.addModel("plane.obj", "map");
       tmp->setPos(newin::Vector3D<GLfloat>(0.1,0.1,0.1));*/
   srand (time(NULL));
+  AObject *tmp;
+
   _row = row;
   _col = col;
   it.first = 0;
@@ -36,6 +39,9 @@ Map::Map(int row, int col, newin::SceneMgr bbman)
 	  else if (it.first == (row -1) || it.second == (col - 1))
 	    _map[it] = new Wall(&bbman, it.second, it.first);
 	  it.second = it.second + 1;
+	  tmp = bbman.addModel("grid.obj", "Grille");
+	  tmp->setPos(newin::Vector3D<GLfloat>(it.second, 0.1, it.first));
+	  ((newin::Mesh*)(tmp))->toogleWireframe();
 	}
     it.second = 0;
       it.first = it.first + 1;
@@ -43,7 +49,7 @@ Map::Map(int row, int col, newin::SceneMgr bbman)
   it.first = 3;
   it.second = 7;
   _map[it] = new Wall(&bbman, it.second, it.first);
-  delete (_map[it]);
+  delete(_map[it]);
   _map[it] = new Player(&bbman, it.second, it.first, this);
   bbman.run();
 }

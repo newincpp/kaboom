@@ -3,6 +3,7 @@
 
 #include "Vector3D.hh"
 #include "libgdl_gl-2012.4/include/Game.hpp"
+#include <stdlib.h>
 class Player;
 
 class AObject
@@ -22,7 +23,7 @@ class AObject
   virtual std::string getIdentifier() const {
     return _identifier;
   }
-  virtual void toogleRendering() { _willRendered = !_willRendered; }
+  virtual void toogleRendering() { _willRendered = !_willRendered;}
   virtual bool renderStatus() { return _willRendered; }
   virtual void setIdentifier(const std::string& i) {
     _identifier = i;

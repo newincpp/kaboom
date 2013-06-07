@@ -7,9 +7,9 @@
 
 int main() {
     newin::SceneMgr bbman;
-    Map map1(20, 20, bbman);
+    Map map1(40, 40, bbman);
 
-    try {
+    /*    try {
 	AObject* tmp = bbman.addModel("plane.obj", "map");
 	tmp->setPos(newin::Vector3D<GLfloat>(0.1,0.1,0.1));
 
@@ -23,9 +23,9 @@ int main() {
 	c->setPos(newin::Vector3D<GLfloat>(100,100,100));
 
 	bbman.run();
-    } catch (const std::exception& e) {
+	} catch (const std::exception& e) {
 	std::cerr << "\033[1;31m FATAL ERROR : " << std::endl << e.what() << std::endl;
-    }
+	}*/
     return EXIT_SUCCESS;
 
 }
