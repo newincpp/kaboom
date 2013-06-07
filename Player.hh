@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:53 2013 Dorian Stroher
-// Last update Thu Jun  6 17:39:09 2013 Dorian Stroher
+// Last update Fri Jun  7 15:25:56 2013 Dorian Stroher
 //
 #ifndef __PLAYER_HH__
 #define __PLAYER_HH__
@@ -29,6 +29,7 @@ public:
   virtual void moddifPos();
 private:
   newin::Camera* _cam;
+  newin::Light* _light;
   int _life;
   bool kaboom;
   std::pair<int, int> _pos;

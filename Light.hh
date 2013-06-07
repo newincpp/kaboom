@@ -21,6 +21,10 @@ namespace newin {
 	    void setIntensity(const float);
 	    float getIntensity() const;
 	    void shadowMap();
+	    Vector3D<GLfloat> getPos() const;
+	    Vector3D<GLfloat> getRot() const;
+	    void setPos(const Vector3D<GLfloat>& p);
+	    void setRot(const Vector3D<GLfloat>& r);
 	    virtual ~Light();
 	private:
 	    void internalUpdate();

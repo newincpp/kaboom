@@ -29,7 +29,7 @@ void newin::SceneMgr::initialize(void) {
 	std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
     }
     _camera.initialize(_defaultShader,  _camera.getPos(), _camera.getRot());
-    _defaultLight.initialize(_defaultShader, newin::Vector3D<GLfloat>(3, 1, 0), newin::Vector3D<GLfloat>(1,1,1), newin::Vector3D<GLfloat>(1, 1, 1));
+    _defaultLight.initialize(_defaultShader,  _defaultLight.getPos(), _defaultLight.getRot(), newin::Vector3D<GLfloat>(1, 1, 1));
 
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb) {
@@ -95,7 +95,7 @@ void newin::SceneMgr::setCamPos(const newin::Vector3D<GLfloat>& p) {
     _camera.setPos(p);
 }
 
-AObject* newin::SceneMgr::getLight() {
+newin::Light *newin::SceneMgr::getLight() {
     return &_defaultLight;
 }
 

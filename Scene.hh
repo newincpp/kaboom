@@ -15,7 +15,7 @@ namespace newin {
 	    std::list<AObject*> getObjectList() const ;
 	    newin::Camera* getCam(); // no constness because of pointer (return pointer for future modification from user like remote)
 	    void setCamPos(const Vector3D<GLfloat>&); // no constness because of pointer (return pointer for future modification from user like remote)
-	    AObject* getLight(); // like cam
+            newin::Light *getLight();
 	    AObject* addModel(const std::string&, const std::string&);
 	    AObject* getModel(const std::string&);
 	private:

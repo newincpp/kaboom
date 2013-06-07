@@ -28,6 +28,24 @@ void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, co
     initShadowTex();
 }
 
+newin::Vector3D<GLfloat> newin::Light::getPos() const {
+    return _pos;
+}
+
+newin::Vector3D<GLfloat> newin::Light::getRot() const {
+    return _rot;
+}
+
+void newin::Light::setPos(const Vector3D<GLfloat>& p) {
+    _changed = true;
+    _pos = p;
+}
+
+void newin::Light::setRot(const Vector3D<GLfloat>& r) {
+    _changed = true;
+    _rot = r;
+}
+
 void newin::Light::setShader(ShadeProgram* p) {
     _prgm = p;
     if (!_prgm) {
