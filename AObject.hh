@@ -8,7 +8,7 @@ class Player;
 class AObject
 {
   public:
-  AObject(const newin::Vector3D<GLfloat>& p = newin::Vector3D<GLfloat>(), const newin::Vector3D<GLfloat>& r = newin::Vector3D<GLfloat>(), const newin::Vector3D<GLfloat>& c = newin::Vector3D<GLfloat>(1,1,1)) : _pos(p), _rot(r), _col(c){  _play = NULL; }
+  AObject(const newin::Vector3D<GLfloat>& p = newin::Vector3D<GLfloat>(), const newin::Vector3D<GLfloat>& r = newin::Vector3D<GLfloat>(), const newin::Vector3D<GLfloat>& c = newin::Vector3D<GLfloat>(1,1,1)) : _pos(p), _rot(r), _col(c), _willRendered(true) {  _play = NULL; }
   virtual void initialize(void) = 0;
   virtual void update(/*gdl::GameClvirtual ock const &, */gdl::Input &) = 0;
   virtual void draw(void) = 0;
@@ -22,6 +22,8 @@ class AObject
   virtual std::string getIdentifier() const {
     return _identifier;
   }
+  virtual void toogleRendering() { _willRendered = !_willRendered; }
+  virtual bool renderStatus() { return _willRendered; }
   virtual void setIdentifier(const std::string& i) {
     _identifier = i;
   }
@@ -32,6 +34,7 @@ protected:
   newin::Vector3D<GLfloat> _rot;
   newin::Vector3D<GLfloat> _col;
   Player *_play;
+  bool _willRendered;
 };
 
 

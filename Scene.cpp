@@ -71,8 +71,10 @@ void newin::SceneMgr::draw(void) {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     _camera.renderMode();
     itb = _objects.begin();
-    for (; itb != _objects.end(); ++itb)
-	(*itb)->draw();
+    for (; itb != _objects.end(); ++itb) {
+	if ((*itb)->renderStatus())
+	    (*itb)->draw();
+    }
     _camera.endRenderMode();
     window_.display();
     if ((_old_time = (1666.666666 - ((gameClock_.getElapsedTime() - _old_time) * 100000))) > 0)
