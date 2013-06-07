@@ -28,7 +28,7 @@ void newin::SceneMgr::initialize(void) {
     } catch (newin::ShaderException& e) {
 	std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
     }
-    _camera.initialize(_defaultShader,  newin::Vector3D<GLfloat>(0, 1, 5), newin::Vector3D<GLfloat>(0, 0, 0));
+    _camera.initialize(_defaultShader,  _camera.getPos(), _camera.getRot());
     _defaultLight.initialize(_defaultShader, newin::Vector3D<GLfloat>(3, 1, 0), newin::Vector3D<GLfloat>(1,1,1), newin::Vector3D<GLfloat>(1, 1, 1));
 
     std::list<AObject*>::iterator itb = _objects.begin();

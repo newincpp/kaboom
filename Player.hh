@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:53 2013 Dorian Stroher
-// Last update Thu Jun  6 15:43:09 2013 Dorian Stroher
+// Last update Thu Jun  6 17:39:09 2013 Dorian Stroher
 //
 #ifndef __PLAYER_HH__
 #define __PLAYER_HH__
@@ -30,6 +30,7 @@ public:
 private:
   newin::Camera* _cam;
   int _life;
+  bool kaboom;
   std::pair<int, int> _pos;
   std::map<std::pair<int, int>, IObject *>  *_map;
   AObject *_obj;
