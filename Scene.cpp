@@ -6,7 +6,7 @@
 #include "Loader.hh"
 #include "Scene.hh"
 
-newin::SceneMgr::SceneMgr() :  _height(__DHEIGHT), _width(__DWIDTH), _camera() {
+newin::SceneMgr::SceneMgr() :  _height(__DHEIGHT), _width(__DWIDTH), _camera(), _alive(false) {
     newin::Light defaultLight;
     _lights.push_back(defaultLight);
 }
@@ -60,6 +60,9 @@ void newin::SceneMgr::update(void) {
 }
 
 void newin::SceneMgr::draw(void) {
+    if (!_alive) {
+	_alive = true;
+    }
     _old_time = gameClock_.getElapsedTime();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -130,10 +133,12 @@ unsigned int newin::SceneMgr::addLight(newin::Light lightModel) {
 
 AObject* newin::SceneMgr::addModel(const std::string& name, const std::string& identifier) {
     newin::Mesh* tmp = newin::Loader().loadOBJ(name);
+    if (_alive == true) {
+	tmp->initialize();
+    }
+    tmp->setShader(_defaultShader);
     _objects.push_back(tmp);
     tmp->setIdentifier(identifier);
-    tmp->initialize();
-    tmp->setShader(_defaultShader);
     std::cout << "shade added" << std::endl;
     return tmp;
 }

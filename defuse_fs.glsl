@@ -24,7 +24,7 @@ out vec4 outputColour;
 
 void main () {
     vec4 tmpOut;
-    for (int i = 0; i < 4 ; i++) {
+    for (int i = 0; i < numlight + 1 ; i++) {
 	float cosTheta = clamp(dot(V.TNormal, vec4(L[i].lightPos, 1)), 0, 1);
 	float dist = distance(vec4(L[i].lightPos, 0.0), V.TVertex);
 	vec4 tmpColour = inputColour + vec4(L[i].lightColour, 0) / 2;

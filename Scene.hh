@@ -32,6 +32,7 @@ namespace newin {
 	    std::vector<newin::Light> _lights;
 	    std::list<AObject*> _objects;
 	    newin::ShadeProgram* _defaultShader;
+	    bool _alive;
     };
 }
 
