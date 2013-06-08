@@ -53,11 +53,11 @@ void newin::SceneMgr::update(void) {
     }
     //_defaultLight.update(input_);
     for (unsigned int i = _lights.size() ; i != 0;--i)
-	_lights[i - 1].update(input_);
-    _camera.update(/*gameClock_,*/ input_);
+	_lights[i - 1].update(gameClock_, input_);
+    _camera.update(gameClock_, input_);
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
-	(*itb)->update(/*gameClock_,*/input_);
+	(*itb)->update(gameClock_,input_);
 }
 
 void newin::SceneMgr::draw(void) {

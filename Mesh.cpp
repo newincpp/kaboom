@@ -116,7 +116,8 @@ void newin::Mesh::initialize() {
     }
 }
 
-void newin::Mesh::update(/*gdl::GameClock const &, */ gdl::Input & i) {
+void newin::Mesh::update(gdl::GameClock const & c, gdl::Input & i) {
+    (void) c;
     std::vector<Player *>::iterator it;
     if (_play.size() == 0)
     {

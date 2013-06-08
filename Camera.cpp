@@ -27,7 +27,8 @@ void newin::Camera::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, c
     _projv.loadProjectionMatrix();
 }
 
-void newin::Camera::update(/*gdl::GameClock const & gameClock,*/ gdl::Input & i) {
+void newin::Camera::update(gdl::GameClock const & c, gdl::Input & i) {
+    (void) c;
     if (i.isKeyDown(gdl::Keys::Numpad4) == true) {
 	_pos.setX( _pos.getX() + 0.1);
 	_changed = true;

@@ -20,7 +20,7 @@ namespace newin {
 	    void update() const;
 	    // for gdl.......
 	    void initialize();
-	    void update(/*gdl::GameClock const &,*/ gdl::Input &);
+	    void update(gdl::GameClock const &, gdl::Input &);
 	    void draw(void);
 	private:
 	    explicit Mesh();

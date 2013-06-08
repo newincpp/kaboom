@@ -3,6 +3,7 @@
 
 #include "Vector3D.hh"
 #include "libgdl_gl-2012.4/include/Game.hpp"
+#include "libgdl_gl-2012.4/include/Clock.hpp"
 #include <stdlib.h>
 class Player;
 
@@ -11,7 +12,7 @@ class AObject
   public:
   AObject(const newin::Vector3D<GLfloat>& p = newin::Vector3D<GLfloat>(), const newin::Vector3D<GLfloat>& r = newin::Vector3D<GLfloat>(), const newin::Vector3D<GLfloat>& c = newin::Vector3D<GLfloat>(1,1,1)) : _pos(p), _rot(r), _col(c), _willRendered(true) { }
   virtual void initialize(void) = 0;
-  virtual void update(/*gdl::GameClvirtual ock const &, */gdl::Input &) = 0;
+  virtual void update(gdl::GameClock const &, gdl::Input &) = 0;
   virtual void draw(void) = 0;
   virtual void setPos(const newin::Vector3D<GLfloat>& p) { _pos = p; }
   virtual void setRot(const newin::Vector3D<GLfloat>& r) { _rot = r; }

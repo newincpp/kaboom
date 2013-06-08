@@ -15,7 +15,7 @@ namespace newin {
 	    void initialize();
 	    void initialize(ShadeProgram*, const Vector3D<GLfloat>&, const Vector3D<GLfloat>&, const Vector3D<GLfloat>&, unsigned int index);
 	    void setShader(ShadeProgram* p);
-	    void update(/*gdl::GameClock const &, */gdl::Input &);
+	    void update(gdl::GameClock const &, gdl::Input &);
 	    void draw();
 	    void setDiff(const int);
 	    void setIntensity(const float);

@@ -62,7 +62,8 @@ void newin::Light::initialize() {
 void newin::Light::draw() {
 }
 
-void newin::Light::update(/*gdl::GameClock const &, */gdl::Input & i) {
+void newin::Light::update(gdl::GameClock const & c, gdl::Input & i) {
+    (void) c;
     if (_sindex  == "1") {
     if (i.isKeyDown(gdl::Keys::I)) {
 	_pos.setZ(_pos.getZ() - 0.1);
