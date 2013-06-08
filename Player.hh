@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:53 2013 Dorian Stroher
-// Last update Fri Jun  7 15:25:56 2013 Dorian Stroher
+// Last update Sat Jun  8 02:38:22 2013 Dorian Stroher
 //
 #ifndef __PLAYER_HH__
 #define __PLAYER_HH__
@@ -28,6 +28,7 @@ public:
   void move(gdl::Input &i);
   virtual void moddifPos();
 private:
+  newin::SceneMgr *_bbman;
   newin::Camera* _cam;
   newin::Light* _light;
   int _life;

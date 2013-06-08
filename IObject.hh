@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Mon May 27 17:26:10 2013 Dorian Stroher
-// Last update Fri Jun  7 16:17:43 2013 Dorian Stroher
+// Last update Sat Jun  8 03:36:43 2013 Dorian Stroher
 //
 
 #ifndef __IObject__HH__
@@ -20,6 +20,7 @@
 enum ObjectType
   {
     type__Wall,
+    type__Wall2,
     type__Player
   };
 class IObject

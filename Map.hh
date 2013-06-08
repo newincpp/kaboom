@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Mon May 27 16:50:23 2013 Dorian Stroher
-// Last update Fri May 31 16:28:05 2013 Dorian Stroher
+// Last update Sat Jun  8 03:28:41 2013 Dorian Stroher
 //
 
 #ifndef __MAP_HH__
@@ -13,7 +13,7 @@
 
 #include <iostream>
 #include <map>
-#include "Wall.hpp"
+#include "Wall.hh"
 #include "Scene.hh"
 
 class Map

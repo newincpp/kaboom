@@ -15,15 +15,15 @@ namespace newin {
 	    std::list<AObject*> getObjectList() const ;
 	    newin::Camera* getCam(); // no constness because of pointer (return pointer for future modification from user like remote)
 	    void setCamPos(const Vector3D<GLfloat>&); // no constness because of pointer (return pointer for future modification from user like remote)
-            newin::Light *getLight();
 	    AObject* addModel(const std::string&, const std::string&);
+           newin::Light *getLight();
+	    virtual void	update(void);
 	    AObject* getModel(const std::string&);
 	private:
 	    virtual void	initialize(void);
-	    virtual void	update(void);
 	    virtual void	draw(void);
 	    virtual void	unload(void);
-	    int _height;
+ 	    int _height;
 	    int _width;
 	    float _old_time;
 	    newin::Camera _camera;

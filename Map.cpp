@@ -5,12 +5,13 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Mon May 27 16:53:04 2013 Dorian Stroher
-// Last update Fri Jun  7 18:21:55 2013 Dorian Stroher
+// Last update Sat Jun  8 03:41:23 2013 Dorian Stroher
 //
 
 #include "Map.hh"
 #include "Mesh.hh"
 #include "Player.hh"
+#include "Wall2.hh"
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 
@@ -32,8 +33,8 @@ Map::Map(int row, int col, newin::SceneMgr bbman)
       while (it.second != col)
 	{
 	  _map[it] = NULL;
-	  if (rand()%5 == 0)
-	    _map[it] = new Wall(&bbman, it.second, it.first);
+	  if (rand()%5 == 0 && it.second != 0 && it.first != 0 && it.second != (col - 1) && it.first != (row - 1) )
+	    _map[it] = new Wall2(&bbman, it.second, it.first);
 	  if (it.second == 0 || it.first == 0)
 	    _map[it] = new Wall(&bbman, it.second, it.first);
 	  else if (it.first == (row -1) || it.second == (col - 1))
@@ -48,7 +49,6 @@ Map::Map(int row, int col, newin::SceneMgr bbman)
     }
   it.first = 3;
   it.second = 7;
-  _map[it] = new Wall(&bbman, it.second, it.first);
   delete(_map[it]);
   _map[it] = new Player(&bbman, it.second, it.first, this);
   bbman.run();

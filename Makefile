@@ -8,7 +8,8 @@ SRC	= main.cpp \
 	  Model.cpp \
 	  Map.cpp \
 	  Player.cpp \
-	  Wall.cpp
+	  Wall.cpp \
+	  Wall2.cpp
 
 NAME	=bomberman
 
