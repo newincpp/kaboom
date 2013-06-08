@@ -17,6 +17,10 @@ class AObject
   virtual void setPos(const newin::Vector3D<GLfloat>& p) { _pos = p; }
   virtual void setRot(const newin::Vector3D<GLfloat>& r) { _rot = r; }
   void setPlayer(Player *play) {_play.push_back(play); }
+  void unsetPlayer()
+  {
+    _play.pop_back();
+  }
   virtual void setColor(const newin::Vector3D<GLfloat>& c) { _col = c; }
   virtual newin::Vector3D<GLfloat> getPos() const { return _pos; }
   virtual newin::Vector3D<GLfloat> getRot() const { return _rot; }

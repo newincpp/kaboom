@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:53 2013 Dorian Stroher
-// Last update Sat Jun  8 22:47:31 2013 Dorian Stroher
+// Last update Sat Jun  8 23:24:05 2013 Dorian Stroher
 //
 #ifndef __PLAYER_HH__
 #define __PLAYER_HH__
@@ -28,6 +28,8 @@ public:
   {
     _obj->toogleRendering();
     _objARM->toogleRendering();
+    (*_map)[_pos] = NULL;
+    _obj->unsetPlayer();
   }
   bool checkMove(IObject *toto);
   void move(gdl::Input &i, gdl::GameClock const &c);

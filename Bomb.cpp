@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:51:26 2013 Dorian Stroher
-// Last update Sat Jun  8 22:45:01 2013 Dorian Stroher
+// Last update Sat Jun  8 23:25:11 2013 Dorian Stroher
 //
 
 #include "Bomb.hh"
@@ -59,7 +59,7 @@ bool Bomb::explode(std::map<std::pair<int, int>, IObject *>  *_map)
       while (it.second < _col + _power)
 	{
 	  if ((*_map)[it] != NULL)
-	    if (((*_map)[it])->getType() == type__Wall2)
+	    if (((*_map)[it])->getType() == type__Wall2 || ((*_map)[it])->getType() == type__Player)
 	      {
 		delete((*_map)[it]);
 		(*_map)[it] = NULL;
