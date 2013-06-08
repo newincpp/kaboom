@@ -1,8 +1,9 @@
+#include <string>
 #include <iostream>
 #include <cmath>
 #include "Light.hh"
 
-newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& r, const Vector3D<GLfloat>& c) : AObject(p,r,c), _changed(true), _diff(5), _intensity(0.8), _prgm(prgm), _shad(NULL) {
+newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& r, const Vector3D<GLfloat>& c, unsigned int index) : AObject(p,r,c), _changed(true), _diff(5), _intensity(0.8), _prgm(prgm), _sindex(std::to_string(index)), _shad(NULL) {
     if (_prgm) {
 	internalUpdate();
     }
@@ -62,27 +63,27 @@ void newin::Light::draw() {
 
 void newin::Light::update(/*gdl::GameClock const &, */gdl::Input & i) {
     if (i.isKeyDown(gdl::Keys::I)) {
-	_pos.setZ(_pos.getZ() - 0.01);
+	_pos.setZ(_pos.getZ() - 0.1);
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::K)) {
-	_pos.setZ(_pos.getZ() + 0.01);
+	_pos.setZ(_pos.getZ() + 0.1);
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::J)) {
-	_pos.setX(_pos.getX() - 0.01);
+	_pos.setX(_pos.getX() - 0.1);
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::L)) {
-	_pos.setX(_pos.getX() + 0.01);
+	_pos.setX(_pos.getX() + 0.1);
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::U)) {
-	_pos.setY(_pos.getY() - 0.01);
+	_pos.setY(_pos.getY() - 0.1);
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::O)) {
-	_pos.setY(_pos.getY() + 0.01);
+	_pos.setY(_pos.getY() + 0.1);
 	_changed = true;
     }
     if (!_prgm) {
@@ -90,15 +91,15 @@ void newin::Light::update(/*gdl::GameClock const &, */gdl::Input & i) {
     }
     if (_changed){
 	_changed = false;
-	_prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
+	_prgm->setVariable("L[" + _sindex + "].lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
     }
 }
 
 inline void newin::Light::internalUpdate() {
-    _prgm->setVariable("lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
-    _prgm->setVariable("lightColour", _col.getX(), _col.getY(), _col.getZ());
-    _prgm->setVariable("lightDiff", _diff);
-    _prgm->setVariable("intensity", _intensity);
+    _prgm->setVariable("L[" + _sindex + "].lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
+    _prgm->setVariable("L[" + _sindex + "].lightColour", _col.getX(), _col.getY(), _col.getZ());
+    _prgm->setVariable("L[" + _sindex + "].lightDiff", _diff);
+    _prgm->setVariable("L[" + _sindex + "].intensity", _intensity);
 }
 
 void newin::Light::setDiff(const int d) {
@@ -114,6 +115,10 @@ void newin::Light::setIntensity(const float i) {
 
 float newin::Light::getIntensity() const {
     return _intensity;
+}
+
+int newin::Light::getDiff() const {
+    return _diff;
 }
 
 void newin::Light::initShadowTex() {

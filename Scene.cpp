@@ -6,7 +6,9 @@
 #include "Loader.hh"
 #include "Scene.hh"
 
-newin::SceneMgr::SceneMgr() :  _height(__DHEIGHT), _width(__DWIDTH), _camera(), _defaultLight() {
+newin::SceneMgr::SceneMgr() :  _height(__DHEIGHT), _width(__DWIDTH), _camera() {
+    newin::Light defaultLight;
+    _lights.push_back(defaultLight);
 }
 
 newin::SceneMgr::~SceneMgr() {
@@ -26,10 +28,11 @@ void newin::SceneMgr::initialize(void) {
 	newin::Shader f("defuse_fs.glsl", GL_FRAGMENT_SHADER);
 	_defaultShader = new newin::ShadeProgram(v, f);
     } catch (newin::ShaderException& e) {
-	std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
+        std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
     }
     _camera.initialize(_defaultShader,  _camera.getPos(), _camera.getRot());
-    _defaultLight.initialize(_defaultShader,  _defaultLight.getPos(), _defaultLight.getRot(), newin::Vector3D<GLfloat>(1, 1, 1));
+
+    _lights[0].initialize(_defaultShader, _lights.begin()->getPos(), _lights.begin()->getRot(), newin::Vector3D<GLfloat>(1, 1, 1));
 
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb) {
@@ -42,7 +45,9 @@ void newin::SceneMgr::update(void) {
     if (input_.isKeyDown(gdl::Keys::Escape)) {
 	window_.close();
     }
-    _defaultLight.update(input_);
+    //_defaultLight.update(input_);
+    for (unsigned int i = _lights.size() ; i != 0;--i)
+	_lights[i - 1].update(input_);
     _camera.update(/*gameClock_,*/ input_);
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
@@ -94,12 +99,28 @@ newin::Camera* newin::SceneMgr::getCam() {
     return &_camera;
 }
 
+
 void newin::SceneMgr::setCamPos(const newin::Vector3D<GLfloat>& p) {
     _camera.setPos(p);
 }
 
-newin::Light *newin::SceneMgr::getLight() {
-    return &_defaultLight;
+std::vector<newin::Light> newin::SceneMgr::getLights() {
+    return _lights;
+}
+
+newin::Light* newin::SceneMgr::getLight(unsigned int index) {
+    return &_lights[index];
+}
+
+unsigned int newin::SceneMgr::addLight(newin::Light lightModel) {
+    int len = _lights.size();
+    _defaultShader->setVariable("numlight", len);
+    newin::Light nlight(_defaultShader, lightModel.getPos(), lightModel.getRot(), lightModel.getColor(), len);
+
+    nlight.setDiff(lightModel.getDiff());
+    nlight.setIntensity(lightModel.getIntensity());
+    _lights.push_back(nlight);
+    return len;
 }
 
 AObject* newin::SceneMgr::addModel(const std::string& name, const std::string& identifier) {

@@ -25,7 +25,6 @@ void newin::Camera::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, c
     _projv.setShader(_prgm);
     _modv.genModelView(_pos, _rot);
     _projv.loadProjectionMatrix();
-    std::cout << " ========== > init" << std::endl;
 }
 
 void newin::Camera::update(/*gdl::GameClock const & gameClock,*/ gdl::Input & i) {
@@ -59,6 +58,14 @@ void newin::Camera::update(/*gdl::GameClock const & gameClock,*/ gdl::Input & i)
     }
     if (i.isKeyDown(gdl::Keys::Numpad9) == true) {
 	_rot.setY(_rot.getY() - 0.1);
+	_changed = true;
+    }
+    if (i.isKeyDown(gdl::Keys::Numpad1) == true) {
+	_rot.setX(_rot.getX() - 0.1);
+	_changed = true;
+    }
+    if (i.isKeyDown(gdl::Keys::Numpad2) == true) {
+	_rot.setX(_rot.getX() + 0.1);
 	_changed = true;
     }
     if (_changed){

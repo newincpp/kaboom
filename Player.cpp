@@ -18,7 +18,7 @@
 Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map)
 {
   _bbman = bbman;
-  _light = bbman->getLight();
+  _light = bbman->getLight(0);
   _obj = bbman->addModel("player.obj", "player");
   _obj->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, 0.1, row * SIZECASE));
   _cam = bbman->getCam();

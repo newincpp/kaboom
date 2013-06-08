@@ -11,7 +11,7 @@
 namespace newin {
     class Light : public ::AObject {
 	public:
-	    explicit Light(ShadeProgram* prgm = NULL, const Vector3D<GLfloat>& p = Vector3D<GLfloat>(), const Vector3D<GLfloat>& r = Vector3D<GLfloat>(), const Vector3D<GLfloat>& c = Vector3D<GLfloat>());
+	    explicit Light(ShadeProgram* prgm = NULL, const Vector3D<GLfloat>& p = Vector3D<GLfloat>(), const Vector3D<GLfloat>& r = Vector3D<GLfloat>(), const Vector3D<GLfloat>& c = Vector3D<GLfloat>(), unsigned int index = 0);
 	    void initialize();
 	    void initialize(ShadeProgram*, const Vector3D<GLfloat>&, const Vector3D<GLfloat>&, const Vector3D<GLfloat>&);
 	    void setShader(ShadeProgram* p);
@@ -20,6 +20,7 @@ namespace newin {
 	    void setDiff(const int);
 	    void setIntensity(const float);
 	    float getIntensity() const;
+	    int getDiff() const;
 	    void shadowMap();
 	    Vector3D<GLfloat> getPos() const;
 	    Vector3D<GLfloat> getRot() const;
@@ -33,6 +34,7 @@ namespace newin {
 	    float _intensity;
 	    ShadeProgram* _prgm;
 	    std::list<AObject*>* _shadowModelList;
+	    std::string _sindex;
 
 	    void initShadowTex();
 	    GLuint FramebufferName;
