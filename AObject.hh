@@ -19,7 +19,7 @@ class AObject
   void setPlayer(Player *play) {_play.push_back(play); }
   void unsetPlayer()
   {
-    _play.pop_back();
+   _play.pop_back();
   }
   virtual void setColor(const newin::Vector3D<GLfloat>& c) { _col = c; }
   virtual newin::Vector3D<GLfloat> getPos() const { return _pos; }

@@ -119,9 +119,16 @@ void newin::Mesh::initialize() {
 void newin::Mesh::update(gdl::GameClock const & c, gdl::Input & i) {
     (void) c;
     std::vector<Player *>::iterator it;
+
     if (_play.size() != 0)
+      {
       for (it = _play.begin(); it != _play.end(); it++)
+	{
+	  if (_play.size() == 0)
+	    break;
 	(*it)->move(i, c);
+	}
+      }
     transform();
 }
 

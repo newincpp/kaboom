@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:52:54 2013 Dorian Stroher
-// Last update Sat Jun  8 22:05:34 2013 Dorian Stroher
+// Last update Sun Jun  9 00:49:06 2013 Dorian Stroher
 //
 
 #ifndef __Bpmb__HH__
@@ -21,6 +21,7 @@ public:
   Bomb(newin::SceneMgr *bbman, int col, int row, int power);
   bool    explode(std::map<std::pair<int, int>, IObject *>  *_map);
   virtual ObjectType getType() {return type__Bomb;}
+  virtual void deleteOBJ();
   virtual ~Bomb();
 private:
   AObject *_obj;

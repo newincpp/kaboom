@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:51:26 2013 Dorian Stroher
-// Last update Sat Jun  8 15:52:24 2013 Dorian Stroher
+// Last update Sun Jun  9 00:46:34 2013 Dorian Stroher
 //
 
 #include "Wall2.hh"
@@ -23,6 +23,11 @@ Wall2::Wall2(newin::SceneMgr *bbman, int col, int row)
   _objARM->setColor(newin::Vector3D<GLfloat>(0.1, 0.1, 180));
   ((newin::Mesh*)_objARM)->toogleWireframe();
  }
+
+void    Wall2::deleteOBJ()
+{
+  delete(this);
+}
 
 void	Wall2::moddifPos()
 {

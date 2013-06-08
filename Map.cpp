@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Mon May 27 16:53:04 2013 Dorian Stroher
-// Last update Sat Jun  8 23:40:49 2013 Dorian Stroher
+// Last update Sun Jun  9 01:06:53 2013 Dorian Stroher
 //
 
 #include "Map.hh"

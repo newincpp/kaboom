@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:52:54 2013 Dorian Stroher
-// Last update Sat Jun  8 03:36:35 2013 Dorian Stroher
+// Last update Sun Jun  9 00:48:47 2013 Dorian Stroher
 //
 
 #ifndef __WALL2__HH__
@@ -20,6 +20,7 @@ public:
   virtual void moddifPos();
   Wall2(newin::SceneMgr *bbman, int col, int row);
   virtual ObjectType getType() {return type__Wall2;}
+  virtual void deleteOBJ();
   virtual ~Wall2();
 private:
   AObject *_obj;

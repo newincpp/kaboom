@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:51:26 2013 Dorian Stroher
-// Last update Sat Jun  8 20:02:23 2013 Dorian Stroher
+// Last update Sun Jun  9 00:46:25 2013 Dorian Stroher
 //
 
 #include "Wall.hh"
@@ -21,6 +21,11 @@ Wall::Wall(newin::SceneMgr *bbman, int col, int row)
   _objARM->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
   ((newin::Mesh*)_objARM)->toogleWireframe();
  }
+
+void    Wall::deleteOBJ()
+{
+  delete(this);
+}
 
 void	Wall::moddifPos()
 {

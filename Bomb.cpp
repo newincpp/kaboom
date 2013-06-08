@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:51:26 2013 Dorian Stroher
-// Last update Sat Jun  8 23:25:11 2013 Dorian Stroher
+// Last update Sun Jun  9 01:05:58 2013 Dorian Stroher
 //
 
 #include "Bomb.hh"
@@ -31,6 +31,11 @@ void	Bomb::moddifPos()
 
 }
 
+void	Bomb::deleteOBJ()
+{
+  delete(this);
+}
+
 bool Bomb::explode(std::map<std::pair<int, int>, IObject *>  *_map)
 {
   std::pair<int, int> it;
@@ -38,6 +43,7 @@ bool Bomb::explode(std::map<std::pair<int, int>, IObject *>  *_map)
   _myClock.update();
   if (_myClock.getTotalElapsedTime() >= 2)
     {
+      delete(this);
       it.first = _row;
       it.second = _col;
       while (it.first < _row + _power)
@@ -61,7 +67,7 @@ bool Bomb::explode(std::map<std::pair<int, int>, IObject *>  *_map)
 	  if ((*_map)[it] != NULL)
 	    if (((*_map)[it])->getType() == type__Wall2 || ((*_map)[it])->getType() == type__Player)
 	      {
-		delete((*_map)[it]);
+		((*_map)[it])->deleteOBJ();
 		(*_map)[it] = NULL;
 		break;
 	      }
@@ -72,7 +78,6 @@ bool Bomb::explode(std::map<std::pair<int, int>, IObject *>  *_map)
 	}
       it.first = _row;
       it.second = _col;
-      delete(this);
       return (true);
     }
   /*  if ((*_map)[it] != NULL)
