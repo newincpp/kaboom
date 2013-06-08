@@ -132,6 +132,7 @@ AObject* newin::SceneMgr::addModel(const std::string& name, const std::string& i
     newin::Mesh* tmp = newin::Loader().loadOBJ(name);
     _objects.push_back(tmp);
     tmp->setIdentifier(identifier);
+    tmp->setShader(_defaultShader);
     std::cout << "shade added" << std::endl;
     return tmp;
 }
