@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Sun Jun  9 01:09:03 2013 Dorian Stroher
+// Last update Sun Jun  9 01:10:33 2013 Dorian Stroher
 //
 
 #include <unistd.h>
@@ -36,7 +36,7 @@ Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map, bool versus)
     }
   else
     {
-      _light = bbman->getLight(bbman->addLight(newin::Light()));
+      _light = bbman->getLight(bbman->addLight(*(bbman->getLight(0))));
       _obj->setColor(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
     }
   _light = bbman->getLight(0);
