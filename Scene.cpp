@@ -28,11 +28,13 @@ void newin::SceneMgr::initialize(void) {
 	newin::Shader f("defuse_fs.glsl", GL_FRAGMENT_SHADER);
 	_defaultShader = new newin::ShadeProgram(v, f);
     } catch (newin::ShaderException& e) {
-        std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
+	std::cerr << "\033[1;31m" << e.what() << "\033[0m" << std::endl;
     }
     _camera.initialize(_defaultShader,  _camera.getPos(), _camera.getRot());
 
-    _lights[0].initialize(_defaultShader, _lights.begin()->getPos(), _lights.begin()->getRot(), newin::Vector3D<GLfloat>(1, 1, 1));
+    for (unsigned int i = _lights.size() ; i != 0; --i) {
+	_lights[i - 1].initialize(_defaultShader, _lights[i - 1].getPos(), _lights[i - 1].getRot(), newin::Vector3D<GLfloat>(1, 1, 1));
+    }
     _defaultShader->setVariable("numlight", 1);
 
     std::list<AObject*>::iterator itb = _objects.begin();
@@ -70,7 +72,7 @@ void newin::SceneMgr::draw(void) {
     //render shadow
     _defaultLight.shadowMap();
     for (; itb != _objects.end(); ++itb) {
-	(*itb)->draw();
+    (*itb)->draw();
     }
     */
     //render object
@@ -116,8 +118,7 @@ newin::Light* newin::SceneMgr::getLight(unsigned int index) {
 unsigned int newin::SceneMgr::addLight(newin::Light lightModel) {
     int len = _lights.size();
     std::cout << "len" << len << std::endl;
-    _defaultShader->setVariable("numlight", len);
-    newin::Light nlight(_defaultShader, lightModel.getPos(), lightModel.getRot(), lightModel.getColor(), len);
+    newin::Light nlight(NULL, lightModel.getPos(), lightModel.getRot(), lightModel.getColor(), len);
 
     nlight.setDiff(lightModel.getDiff());
     nlight.setIntensity(lightModel.getIntensity());
