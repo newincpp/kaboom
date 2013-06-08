@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:51:26 2013 Dorian Stroher
-// Last update Sat Jun  8 03:39:24 2013 Dorian Stroher
+// Last update Sat Jun  8 15:52:24 2013 Dorian Stroher
 //
 
 #include "Wall2.hh"
@@ -20,6 +20,7 @@ Wall2::Wall2(newin::SceneMgr *bbman, int col, int row)
   _obj->setColor(newin::Vector3D<GLfloat>(0.1, 0.1, 180));
   _objARM->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, 0.1, row * SIZECASE));
   _objARM->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
+  _objARM->setColor(newin::Vector3D<GLfloat>(0.1, 0.1, 180));
   ((newin::Mesh*)_objARM)->toogleWireframe();
  }
 

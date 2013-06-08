@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Sat Jun  8 03:49:58 2013 Dorian Stroher
+// Last update Sat Jun  8 18:34:37 2013 Dorian Stroher
 //
 
 #include <unistd.h>
@@ -15,18 +15,24 @@
 #define DISTANCELUM 2
 #define LUMINTENSITY 0.4
 
-Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map)
+Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map, bool versus)
 {
+  _versus = versus;
   _bbman = bbman;
-  _light = bbman->getLight(0);
+  if (_versus == false)
+    {
+    _light = bbman->getLight(0);
+    _cam = bbman->getCam();
+    _cam->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, DISTANCE, row * SIZECASE));
+    _cam->setRot(newin::Vector3D<GLfloat>(90, 0.1, 0.1));
+    }
+  else
+    _light = bbman->getLight(bbman->addLight(newin::Light()));
   _obj = bbman->addModel("player.obj", "player");
   _obj->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, 0.1, row * SIZECASE));
-  _cam = bbman->getCam();
-  _cam->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, DISTANCE, row * SIZECASE));
   _light->setIntensity(LUMINTENSITY);
   _light->setDiff(1);
   _light->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, DISTANCELUM, row * SIZECASE));
-  _cam->setRot(newin::Vector3D<GLfloat>(90, 0.1, 0.1));
   _light->setRot(newin::Vector3D<GLfloat>(60, 0.1, 0.1));
   //_obj->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
   _obj->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
@@ -51,40 +57,61 @@ void Player::moddifPos()
 void Player::move(gdl::Input &i)
 {
   std::pair<int, int> prevpos;
-  float x;
-  newin::Mesh *test;
 
   prevpos = _pos;
-  if (i.isKeyDown(gdl::Keys::S) == true)
+  if (_versus == false)
     {
-      (*_map)[_pos] = NULL;
-      _pos.first = _pos.first + 1;
+      if (i.isKeyDown(gdl::Keys::S) == true)
+	{
+	  (*_map)[_pos] = NULL;
+	  _pos.first = _pos.first + 1;
         }
-  else if (i.isKeyDown(gdl::Keys::W) == true)
-    {
-      (*_map)[_pos] = NULL;
-      _pos.first = _pos.first - 1;
+      else if (i.isKeyDown(gdl::Keys::W) == true)
+	{
+	  (*_map)[_pos] = NULL;
+	  _pos.first = _pos.first - 1;
         }
-  else if (i.isKeyDown(gdl::Keys::A) == true)
-    {
-      (*_map)[_pos] = NULL;
-      _pos.second = _pos.second - 1;
+      else if (i.isKeyDown(gdl::Keys::A) == true)
+	{
+	  (*_map)[_pos] = NULL;
+	  _pos.second = _pos.second - 1;
+	}
+      else if (i.isKeyDown(gdl::Keys::D) == true)
+	{
+	  (*_map)[_pos] = NULL;
+	  _pos.second = _pos.second + 1;
+	}
     }
-  else if (i.isKeyDown(gdl::Keys::D) == true)
+  else
     {
-      (*_map)[_pos] = NULL;
-      _pos.second = _pos.second + 1;
+      if (i.isKeyDown(gdl::Keys::Down) == true)
+	{
+	  (*_map)[_pos] = NULL;
+	  _pos.first = _pos.first + 1;
+        }
+      else if (i.isKeyDown(gdl::Keys::Up) == true)
+	{
+	  (*_map)[_pos] = NULL;
+	  _pos.first = _pos.first - 1;
+        }
+      else if (i.isKeyDown(gdl::Keys::Left) == true)
+	{
+	  (*_map)[_pos] = NULL;
+	  _pos.second = _pos.second - 1;
+	}
+      else if (i.isKeyDown(gdl::Keys::Right) == true)
+	{
+	  (*_map)[_pos] = NULL;
+	  _pos.second = _pos.second + 1;
+	}
     }
   if (checkMove((*_map)[_pos]) == true)
     {
-      /*      for (x = _pos.first -1; x < _pos.first; x = x + 0.1)
-	{
-	usleep(1000000);
-	  }*/
       _obj->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0,(_pos.first) * SIZECASE));
-      _objARM->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0,(_pos.first) * SIZECASE));
-      _cam->setPos(newin::Vector3D<GLfloat>((_pos.second) * SIZECASE, DISTANCE,(_pos.first) * SIZECASE));
       _light->setPos(newin::Vector3D<GLfloat>((_pos.second) * SIZECASE, DISTANCELUM,(_pos.first) * SIZECASE));
+      _objARM->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0,(_pos.first) * SIZECASE));
+      if (_versus == false)
+	_cam->setPos(newin::Vector3D<GLfloat>((_pos.second) * SIZECASE,_cam->getPos().getY(),(_pos.first) * SIZECASE));
       (*_map)[_pos] = this;
       usleep(75000);
     }

@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:53 2013 Dorian Stroher
-// Last update Sat Jun  8 02:38:22 2013 Dorian Stroher
+// Last update Sat Jun  8 16:17:40 2013 Dorian Stroher
 //
 #ifndef __PLAYER_HH__
 #define __PLAYER_HH__
@@ -20,7 +20,7 @@
 class Player:public IObject
 {
 public:
-  Player(newin::SceneMgr *bbman, int col, int row, Map *map);
+  Player(newin::SceneMgr *bbman, int col, int row, Map *map, bool versus);
   virtual ObjectType getType() {return type__Player;}
   bool getObj(IObject *);
   virtual ~Player() {}
@@ -28,6 +28,7 @@ public:
   void move(gdl::Input &i);
   virtual void moddifPos();
 private:
+  bool _versus;
   newin::SceneMgr *_bbman;
   newin::Camera* _cam;
   newin::Light* _light;

@@ -114,7 +114,8 @@ void newin::Mesh::initialize() {
 }
 
 void newin::Mesh::update(/*gdl::GameClock const &, */ gdl::Input & i) {
-       if (_play == NULL)
+  std::vector<Player *>::iterator it;
+  if (_play.size() == 0)
 	{
 	  /*	  if (i.isKeyDown(gdl::Keys::W) == true) {
 	    _pos.setZ( _pos.getZ() - 0.01);
@@ -145,7 +146,10 @@ void newin::Mesh::update(/*gdl::GameClock const &, */ gdl::Input & i) {
 	    }*/
 	}
        else
-	 _play->move(i);
+	 {
+	   for (it = _play.begin(); it != _play.end(); it++)
+	     (*it)->move(i);
+	 }
        transform();
 }
 
