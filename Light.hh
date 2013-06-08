@@ -13,7 +13,7 @@ namespace newin {
 	public:
 	    explicit Light(ShadeProgram* prgm = NULL, const Vector3D<GLfloat>& p = Vector3D<GLfloat>(), const Vector3D<GLfloat>& r = Vector3D<GLfloat>(), const Vector3D<GLfloat>& c = Vector3D<GLfloat>(), unsigned int index = 0);
 	    void initialize();
-	    void initialize(ShadeProgram*, const Vector3D<GLfloat>&, const Vector3D<GLfloat>&, const Vector3D<GLfloat>&);
+	    void initialize(ShadeProgram*, const Vector3D<GLfloat>&, const Vector3D<GLfloat>&, const Vector3D<GLfloat>&, unsigned int index);
 	    void setShader(ShadeProgram* p);
 	    void update(/*gdl::GameClock const &, */gdl::Input &);
 	    void draw();

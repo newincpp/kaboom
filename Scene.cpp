@@ -32,8 +32,10 @@ void newin::SceneMgr::initialize(void) {
     }
     _camera.initialize(_defaultShader,  _camera.getPos(), _camera.getRot());
 
-    for (unsigned int i = _lights.size() ; i != 0; --i) {
-	_lights[i - 1].initialize(_defaultShader, _lights[i - 1].getPos(), _lights[i - 1].getRot(), newin::Vector3D<GLfloat>(1, 1, 1));
+    unsigned int len = _lights.size();
+    for (unsigned int i = 0; i < len ; ++i) {
+	std::cout << "lol " << i << std::endl;
+	_lights[i].initialize(_defaultShader, _lights[i].getPos(), _lights[i].getRot(), newin::Vector3D<GLfloat>(1, 1, 1), i);
     }
     _defaultShader->setVariable("numlight", 1);
 

@@ -10,11 +10,12 @@ newin::Light::Light(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector
     _col = c;
 }
 
-void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& rot, const Vector3D<GLfloat>& c) {
+void newin::Light::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, const Vector3D<GLfloat>& rot, const Vector3D<GLfloat>& c, unsigned int index) {
     _pos = p;
     _rot = rot;
     _col = c;
     _prgm = prgm;
+    _sindex = std::to_string(index);
     if (!_prgm) {
 	throw newin::ShaderException("cannot use light without shader");
     }
