@@ -1,0 +1,12 @@
+# Blender v2.66 (sub 1) OBJ File: 'consept.blend'
+# www.blender.org
+mtllib bonus.mtl
+o ground.002_Grid.001
+v 0.800000 0.090507 -0.200000
+v 0.200000 0.090507 -0.200000
+v 0.800000 0.090507 -0.800000
+v 0.200000 0.090507 -0.800000
+vn 0.000000 1.000000 -0.000000
+usemtl Material.007
+s off
+f 2//1 1//1 3//1 4//1
