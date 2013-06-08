@@ -64,7 +64,6 @@ void newin::Light::draw() {
 
 void newin::Light::update(gdl::GameClock const & c, gdl::Input & i) {
     (void) c;
-    if (_sindex  == "1") {
     if (i.isKeyDown(gdl::Keys::I)) {
 	_pos.setZ(_pos.getZ() - 0.1);
 	_changed = true;
@@ -88,7 +87,6 @@ void newin::Light::update(gdl::GameClock const & c, gdl::Input & i) {
     if (i.isKeyDown(gdl::Keys::O)) {
 	_pos.setY(_pos.getY() + 0.1);
 	_changed = true;
-    }
     }
     if (!_prgm) {
 	throw newin::ShaderException("cannot use light without shader");
