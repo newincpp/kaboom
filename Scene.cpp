@@ -33,6 +33,7 @@ void newin::SceneMgr::initialize(void) {
     _camera.initialize(_defaultShader,  _camera.getPos(), _camera.getRot());
 
     _lights[0].initialize(_defaultShader, _lights.begin()->getPos(), _lights.begin()->getRot(), newin::Vector3D<GLfloat>(1, 1, 1));
+    _defaultShader->setVariable("numlight", 1);
 
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb) {
@@ -114,6 +115,7 @@ newin::Light* newin::SceneMgr::getLight(unsigned int index) {
 
 unsigned int newin::SceneMgr::addLight(newin::Light lightModel) {
     int len = _lights.size();
+    std::cout << "len" << len << std::endl;
     _defaultShader->setVariable("numlight", len);
     newin::Light nlight(_defaultShader, lightModel.getPos(), lightModel.getRot(), lightModel.getColor(), len);
 

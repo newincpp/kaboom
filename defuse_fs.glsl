@@ -23,8 +23,12 @@ in struct vertex {
 out vec4 outputColour;
 
 void main () {
-    float cosTheta = clamp(dot(V.TNormal, vec4(L[0].lightPos, 1)), 0, 1);
-    float dist = distance(vec4(L[0].lightPos, 0.0), V.TVertex);
-    vec4 tmpColour = inputColour + vec4(L[0].lightColour, 0) / 2;
-    outputColour = tmpColour * L[0].intensity * cosTheta / (max(((dist * dist) / L[0].lightDiff), .1));
+    vec4 tmpOut;
+    for (int i = 0; i < numlight + 1 ; i++) {
+	float cosTheta = clamp(dot(V.TNormal, vec4(L[i].lightPos, 1)), 0, 1);
+	float dist = distance(vec4(L[0].lightPos, 0.0), V.TVertex);
+	vec4 tmpColour = inputColour + vec4(L[0].lightColour, 0) / 2;
+	tmpOut += tmpColour * L[0].intensity * cosTheta / (max(((dist * dist) / L[0].lightDiff), .1));
+    }
+    outputColour = tmpOut;
 }
