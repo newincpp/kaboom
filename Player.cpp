@@ -5,11 +5,12 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Sat Jun  8 18:34:37 2013 Dorian Stroher
+// Last update Sat Jun  8 19:41:59 2013 Dorian Stroher
 //
 
 #include <unistd.h>
 #include "Player.hh"
+#include "Bomb.hh"
 #include "Mesh.hh"
 #define DISTANCE 9
 #define DISTANCELUM 2
@@ -122,6 +123,7 @@ void Player::move(gdl::Input &i)
     }
   if (i.isKeyDown(gdl::Keys::Space) == true)
     {
+      new Bomb(_bbman, _pos.second, _pos.first, 2);
       std::cout << "Je pose une bombe" << std::endl;
       usleep(500000);
     }

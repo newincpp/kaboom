@@ -9,6 +9,7 @@ SRC	= main.cpp \
 	  Map.cpp \
 	  Player.cpp \
 	  Wall.cpp \
+	  Bomb.cpp \
 	  Wall2.cpp
 
 NAME	=bomberman
