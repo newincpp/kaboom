@@ -92,17 +92,17 @@ void newin::Light::update(gdl::GameClock const & c, gdl::Input & i) {
 	throw newin::ShaderException("cannot use light without shader");
     }
     if (_changed){
-	std::cout << "changing light n" << _sindex << " at :" << _pos.getX() << " " << _pos.getY() <<" " << _pos.getZ() <<  std::endl;
+//	std::cout << "changing light n" << _sindex << " at :" << _pos.getX() << " " << _pos.getY() <<" " << _pos.getZ() <<  std::endl;
 	_changed = false;
-	_prgm->setVariable("L[" + _sindex + "].lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
+	_prgm->setVariable("L" + _sindex + ".lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
     }
 }
 
 inline void newin::Light::internalUpdate() {
-    _prgm->setVariable("L[" + _sindex + "].lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
-    _prgm->setVariable("L[" + _sindex + "].lightColour", _col.getX(), _col.getY(), _col.getZ());
-    _prgm->setVariable("L[" + _sindex + "].lightDiff", _diff);
-    _prgm->setVariable("L[" + _sindex + "].intensity", _intensity);
+    _prgm->setVariable("L" + _sindex + ".lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
+    _prgm->setVariable("L" + _sindex + ".lightColour", _col.getX(), _col.getY(), _col.getZ());
+    _prgm->setVariable("L" + _sindex + ".lightDiff", _diff);
+    _prgm->setVariable("L" + _sindex + ".intensity", _intensity);
 }
 
 void newin::Light::setDiff(const int d) {
