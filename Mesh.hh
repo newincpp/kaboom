@@ -36,6 +36,7 @@ namespace newin {
 	    // matrix
 	    GLfloat _matrixTransform[16];
 	    void transform();
+	    bool _buffered;
     };
 }
 
