@@ -29,27 +29,27 @@ void newin::Camera::initialize(ShadeProgram* prgm, const Vector3D<GLfloat>& p, c
 
 void newin::Camera::update(/*gdl::GameClock const & gameClock,*/ gdl::Input & i) {
     if (i.isKeyDown(gdl::Keys::Numpad4) == true) {
-	_pos.setX( _pos.getX() + 0.01);
+	_pos.setX( _pos.getX() + 0.1);
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::Numpad6) == true) {
-	_pos.setX( _pos.getX() - 0.01);
+	_pos.setX( _pos.getX() - 0.1);
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::Numpad8) == true) {
-	_pos.setZ( _pos.getZ() - 0.01);
+	_pos.setZ( _pos.getZ() - 0.1);
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::Numpad5) == true) {
-	_pos.setZ( _pos.getZ() + 0.01);
+	_pos.setZ( _pos.getZ() + 0.1);
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::Add) == true) {
-	_pos.setY( _pos.getY() + 0.01);
+	_pos.setY( _pos.getY() + 0.1);
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::Subtract) == true) {
-	_pos.setY( _pos.getY() - 0.01);
+	_pos.setY( _pos.getY() - 0.1);
 	_changed = true;
     }
     if (i.isKeyDown(gdl::Keys::Numpad7) == true) {
