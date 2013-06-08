@@ -8,7 +8,7 @@ struct Light {
 };
 
 uniform int numlight;
-#define MAXLIGHT
+#define MAXLIGHT 20
 uniform Light L[MAXLIGHT];
 
 uniform vec4 inputColour;
@@ -26,9 +26,9 @@ void main () {
     vec4 tmpOut;
     for (int i = 0; i < numlight + 1 ; i++) {
 	float cosTheta = clamp(dot(V.TNormal, vec4(L[i].lightPos, 1)), 0, 1);
-	float dist = distance(vec4(L[0].lightPos, 0.0), V.TVertex);
-	vec4 tmpColour = inputColour + vec4(L[0].lightColour, 0) / 2;
-	tmpOut += tmpColour * L[0].intensity * cosTheta / (max(((dist * dist) / L[0].lightDiff), .1));
+	float dist = distance(vec4(L[i].lightPos, 0.0), V.TVertex);
+	vec4 tmpColour = inputColour + vec4(L[i].lightColour, 0) / 2;
+	tmpOut += tmpColour * L[i].intensity * cosTheta / (max(((dist * dist) / L[i].lightDiff), .1));
     }
     outputColour = tmpOut;
 }
