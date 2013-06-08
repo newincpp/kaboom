@@ -33,12 +33,10 @@ void newin::SceneMgr::initialize(void) {
     _contextEnabed = true;
     _camera.initialize(_defaultShader,  _camera.getPos(), _camera.getRot());
 
-    int len = _lights.size();
-    for (int i = 0; i < len ; ++i) {
-	std::cout << "lol " << i << std::endl;
+    for (unsigned int i = 0; i != _lights.size(); ++i) {
 	_lights[i].initialize(_defaultShader, _lights[i].getPos(), _lights[i].getRot(), newin::Vector3D<GLfloat>(1, 1, 1), i);
     }
-    _defaultShader->setVariable("numlight", len);
+    _defaultShader->setVariable("numlight", (int)_lights.size());
 
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb) {
@@ -51,9 +49,8 @@ void newin::SceneMgr::update(void) {
     if (input_.isKeyDown(gdl::Keys::Escape)) {
 	window_.close();
     }
-    //_defaultLight.update(input_);
-    for (unsigned int i = _lights.size() ; i != 0;--i)
-	_lights[i - 1].update(gameClock_, input_);
+    for (unsigned int i = 0; i != _lights.size() - 1; ++i)
+	_lights[i].update(gameClock_, input_);
     _camera.update(gameClock_, input_);
     std::list<AObject*>::iterator itb = _objects.begin();
     for (; itb != _objects.end(); ++itb)
@@ -149,4 +146,13 @@ AObject* newin::SceneMgr::getModel(const std::string& id) {
 	}
     }
     return NULL;
+}
+
+void newin::SceneMgr::delModel(const std::string& id) {
+    std::list<AObject*>::iterator itb = _objects.begin();
+    for (; itb != _objects.end(); ++itb) {
+	if ((*itb)->getIdentifier() == id) {
+	    delete (*itb);
+	}
+    }
 }

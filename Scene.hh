@@ -16,10 +16,11 @@ namespace newin {
 	    newin::Camera* getCam(); // no constness because of pointer (return pointer for future modification from user like remote)
 	    void setCamPos(const Vector3D<GLfloat>&); // no constness because of pointer (return pointer for future modification from user like remote)
 	    AObject* addModel(const std::string&, const std::string&);
+	    void delModel(const std::string&);
 	    std::vector<newin::Light> getLights();
 	    newin::Light *getLight(unsigned int);
 	    unsigned int addLight(newin::Light);
-	    virtual void	update(void);
+	    virtual void update(void);
 	    AObject* getModel(const std::string&);
 	private:
 	    virtual void	initialize(void);

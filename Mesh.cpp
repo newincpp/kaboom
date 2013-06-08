@@ -119,41 +119,9 @@ void newin::Mesh::initialize() {
 void newin::Mesh::update(gdl::GameClock const & c, gdl::Input & i) {
     (void) c;
     std::vector<Player *>::iterator it;
-    if (_play.size() == 0)
-    {
-	/*	  if (i.isKeyDown(gdl::Keys::W) == true) {
-		  _pos.setZ( _pos.getZ() - 0.01);
-		  }
-		  if (i.isKeyDown(gdl::Keys::S) == true) {
-		  _pos.setZ( _pos.getZ() + 0.01);
-		  }
-		  if (i.isKeyDown(gdl::Keys::A) == true) {
-		  _pos.setX( _pos.getX() - 0.01);
-		  }
-		  if (i.isKeyDown(gdl::Keys::D) == true) {
-		  _pos.setX( _pos.getX() + 0.01);
-		  }
-		  if (i.isKeyDown(gdl::Keys::Q) == true) {
-		  _rot.setY( _rot.getY() + 0.1);
-		  }
-		  if (i.isKeyDown(gdl::Keys::E) == true) {
-		  _rot.setY( _rot.getY() - 0.1);
-		  }
-		  if (i.isKeyDown(gdl::Keys::C) == true) {
-		  _pos.setY( _pos.getY() - 0.1);
-		  }
-		  if (i.isKeyDown(gdl::Keys::Space) == true) {
-		  _pos.setY( _pos.getY() + 0.1);
-		  }
-		  if (i.isKeyDown(gdl::Keys::Z) == true) {
-		  _wireframe = !_wireframe;
-		  }*/
-    }
-    else
-    {
+    if (_play.size() != 0)
       for (it = _play.begin(); it != _play.end(); it++)
 	(*it)->move(i, c);
-    }
     transform();
 }
 

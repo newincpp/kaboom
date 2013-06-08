@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Sat Jun  8 23:28:12 2013 Dorian Stroher
+// Last update Sat Jun  8 23:40:35 2013 Dorian Stroher
 //
 
 #include <unistd.h>
@@ -21,13 +21,17 @@ Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map, bool versus)
   _bbman = bbman;
   if (_versus == false)
     {
-    _light = bbman->getLight(0);
-    _cam = bbman->getCam();
-    _cam->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, DISTANCE, row * SIZECASE));
-    _cam->setRot(newin::Vector3D<GLfloat>(90, 0.1, 0.1));
+      _obj->setColor(newin::Vector3D<GLfloat>(90, 0.1, 0.1));
+      _light = bbman->getLight(0);
+      _cam = bbman->getCam();
+      _cam->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, DISTANCE, row * SIZECASE));
+      _cam->setRot(newin::Vector3D<GLfloat>(90, 0.1, 0.1));
     }
   else
+    {
     _light = bbman->getLight(bbman->addLight(newin::Light()));
+    _obj->setColor(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
+    }
   _obj = bbman->addModel("player.obj", "player");
   _obj->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, 0.1, row * SIZECASE));
   _light->setIntensity(LUMINTENSITY);
