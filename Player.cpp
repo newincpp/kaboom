@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Sat Jun  8 19:41:59 2013 Dorian Stroher
+// Last update Sat Jun  8 20:45:20 2013 Dorian Stroher
 //
 
 #include <unistd.h>
@@ -58,7 +58,7 @@ void Player::moddifPos()
 void Player::move(gdl::Input &i)
 {
   std::pair<int, int> prevpos;
-
+  Bomb *bomb;
   prevpos = _pos;
   if (_versus == false)
     {
@@ -123,9 +123,12 @@ void Player::move(gdl::Input &i)
     }
   if (i.isKeyDown(gdl::Keys::Space) == true)
     {
-      new Bomb(_bbman, _pos.second, _pos.first, 2);
-      std::cout << "Je pose une bombe" << std::endl;
-      usleep(500000);
+      std::cout << "Je pose une bombe1" << std::endl;
+      bomb =  new Bomb(_bbman, _pos.second, _pos.first, 3);
+      bomb->explode(_map);
+      //      new Wall(_bbman, _pos.second, _pos.first);
+      std::cout << "Je pose une bombe2" << std::endl;
+      usleep(1000000);
     }
   return;
 }
