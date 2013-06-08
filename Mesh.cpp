@@ -3,7 +3,7 @@
 #include "Player.hh"
 #define GLEW_STATIC
 
-newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, std::vector<Vector3D<GLfloat> >* n) : AObject(), _wireframe(false) {
+newin::Mesh::Mesh(std::vector<Vector3D<GLfloat> >* m, std::vector<Vector3D<GLfloat> >* n) : AObject(), _wireframe(false), _buffered(false) {
     _vboID = 0;
     if (m) {
 	_verts = Vector3D<GLfloat>::toGLfloatArray(*m);
@@ -108,49 +108,52 @@ void newin::Mesh::transform() {
 //for gdl.....
 
 void newin::Mesh::initialize() {
-    glGenBuffers(1, &_vboID);
-    glGenBuffers(1, &_nboID);
-    update();
+    if (!_buffered) {
+	glGenBuffers(1, &_vboID);
+	glGenBuffers(1, &_nboID);
+	update();
+	_buffered = true;
+    }
 }
 
 void newin::Mesh::update(/*gdl::GameClock const &, */ gdl::Input & i) {
-  std::vector<Player *>::iterator it;
-  if (_play.size() == 0)
-	{
-	  /*	  if (i.isKeyDown(gdl::Keys::W) == true) {
-	    _pos.setZ( _pos.getZ() - 0.01);
-	  }
-	  if (i.isKeyDown(gdl::Keys::S) == true) {
-	    _pos.setZ( _pos.getZ() + 0.01);
-	  }
-	  if (i.isKeyDown(gdl::Keys::A) == true) {
-	    _pos.setX( _pos.getX() - 0.01);
-	  }
-	  if (i.isKeyDown(gdl::Keys::D) == true) {
-	    _pos.setX( _pos.getX() + 0.01);
-	  }
-	  if (i.isKeyDown(gdl::Keys::Q) == true) {
-	    _rot.setY( _rot.getY() + 0.1);
-	  }
-	  if (i.isKeyDown(gdl::Keys::E) == true) {
-	    _rot.setY( _rot.getY() - 0.1);
-	  }
-	  if (i.isKeyDown(gdl::Keys::C) == true) {
-	    _pos.setY( _pos.getY() - 0.1);
-	  }
-	  if (i.isKeyDown(gdl::Keys::Space) == true) {
-	    _pos.setY( _pos.getY() + 0.1);
-	  }
-	  if (i.isKeyDown(gdl::Keys::Z) == true) {
-	    _wireframe = !_wireframe;
-	    }*/
-	}
-       else
-	 {
-	   for (it = _play.begin(); it != _play.end(); it++)
-	     (*it)->move(i);
-	 }
-       transform();
+    std::vector<Player *>::iterator it;
+    if (_play.size() == 0)
+    {
+	/*	  if (i.isKeyDown(gdl::Keys::W) == true) {
+		  _pos.setZ( _pos.getZ() - 0.01);
+		  }
+		  if (i.isKeyDown(gdl::Keys::S) == true) {
+		  _pos.setZ( _pos.getZ() + 0.01);
+		  }
+		  if (i.isKeyDown(gdl::Keys::A) == true) {
+		  _pos.setX( _pos.getX() - 0.01);
+		  }
+		  if (i.isKeyDown(gdl::Keys::D) == true) {
+		  _pos.setX( _pos.getX() + 0.01);
+		  }
+		  if (i.isKeyDown(gdl::Keys::Q) == true) {
+		  _rot.setY( _rot.getY() + 0.1);
+		  }
+		  if (i.isKeyDown(gdl::Keys::E) == true) {
+		  _rot.setY( _rot.getY() - 0.1);
+		  }
+		  if (i.isKeyDown(gdl::Keys::C) == true) {
+		  _pos.setY( _pos.getY() - 0.1);
+		  }
+		  if (i.isKeyDown(gdl::Keys::Space) == true) {
+		  _pos.setY( _pos.getY() + 0.1);
+		  }
+		  if (i.isKeyDown(gdl::Keys::Z) == true) {
+		  _wireframe = !_wireframe;
+		  }*/
+    }
+    else
+    {
+	for (it = _play.begin(); it != _play.end(); it++)
+	    (*it)->move(i);
+    }
+    transform();
 }
 
 void newin::Mesh::draw(void) {
