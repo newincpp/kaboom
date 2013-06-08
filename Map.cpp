@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Mon May 27 16:53:04 2013 Dorian Stroher
-// Last update Sat Jun  8 18:57:51 2013 Dorian Stroher
+// Last update Sat Jun  8 23:05:15 2013 Dorian Stroher
 //
 
 #include "Map.hh"
@@ -50,13 +50,19 @@ Map::Map(int row, int col, newin::SceneMgr bbman)
   it.first = 3;
   it.second = 7;
   if (_map[it] != NULL)
-  delete(_map[it]);
+    {
+    delete(_map[it]);
+    _map[it] = NULL;
+    }
   _map[it] = new Player(&bbman, it.second, it.first, this, false);
   it.first = 5;
   it.second = 7;
   if (_map[it] != NULL)
-    delete(_map[it]);
-  //  _map[it] = new Player(&bbman, it.second, it.first, this, true);
+    {
+      delete(_map[it]);
+_map[it] = NULL;
+    }
+  //    _map[it] = new Player(&bbman, it.second, it.first, this, true);
   bbman.run();
 }
 

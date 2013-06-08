@@ -184,5 +184,5 @@ void newin::Light::shadowMap() {
 }
 
 newin::Light::~Light() {
-    delete _shad;
+  // delete _shad;
 }
