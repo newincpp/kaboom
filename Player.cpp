@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Sat Jun  8 23:40:35 2013 Dorian Stroher
+// Last update Sat Jun  8 23:42:18 2013 Dorian Stroher
 //
 
 #include <unistd.h>
@@ -18,6 +18,7 @@
 Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map, bool versus)
 {
   _versus = versus;
+  _obj = bbman->addModel("player.obj", "player");
   _bbman = bbman;
   if (_versus == false)
     {
@@ -32,7 +33,6 @@ Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map, bool versus)
     _light = bbman->getLight(bbman->addLight(newin::Light()));
     _obj->setColor(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
     }
-  _obj = bbman->addModel("player.obj", "player");
   _obj->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, 0.1, row * SIZECASE));
   _light->setIntensity(LUMINTENSITY);
   _light->setDiff(1);
