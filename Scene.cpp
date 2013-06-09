@@ -118,11 +118,20 @@ newin::Light* newin::SceneMgr::getLight(unsigned int index) {
 unsigned int newin::SceneMgr::addLight(newin::Light lightModel) {
     int len = _lights.size();
     std::cout << "len" << len << std::endl;
-    newin::Light nlight(NULL, lightModel.getPos(), lightModel.getRot(), lightModel.getColor(), len);
-
-    nlight.setDiff(lightModel.getDiff());
-    nlight.setIntensity(lightModel.getIntensity());
-    _lights.push_back(nlight);
+    
+    if (_contextEnabed) {
+	newin::Light nlight;
+	nlight.initialize(_defaultShader, lightModel.getPos(), nlight.getRot(), newin::Vector3D<GLfloat>(1, 1, 1), len);
+	nlight.setShader(_defaultShader);
+	nlight.setDiff(lightModel.getDiff());
+	nlight.setIntensity(lightModel.getIntensity());
+	_lights.push_back(nlight);
+    } else {
+	newin::Light nlight(NULL, lightModel.getPos(), lightModel.getRot(), lightModel.getColor(), len);
+	nlight.setDiff(lightModel.getDiff());
+	nlight.setIntensity(lightModel.getIntensity());
+	_lights.push_back(nlight);
+    }
     return len;
 }
 

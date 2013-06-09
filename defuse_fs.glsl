@@ -8,8 +8,8 @@ struct Light {
 };
 
 uniform int numlight;
-uniform Light L0;
-uniform Light L1;
+#define MAXLIGHT 2
+uniform Light L[MAXLIGHT];
 
 uniform vec4 inputColour;
 
@@ -24,15 +24,17 @@ out vec4 outputColour;
 
 void main () {
 
-    float cosTheta = clamp(dot(V.TNormal, vec4(L1.lightPos, 1)), 0, 1);
-    float dist = distance(vec4(L1.lightPos, 0.0), V.TVertex);
-    vec4 tmpColour = inputColour + vec4(L1.lightColour, 0) / 2;
-    vec4 tmpOut = tmpColour * L1.intensity * cosTheta / (max(((dist * dist) / L1.lightDiff), .1));
+    float cosTheta = clamp(dot(V.TNormal, vec4(L[1].lightPos, 1)), 0, 1);
+    float dist = distance(vec4(L[1].lightPos, 0.0), V.TVertex);
+    vec4 tmpColour = inputColour + vec4(L[1].lightColour, 0) / 2;
+    vec4 tmpOut = tmpColour * L[1].intensity * cosTheta / (max(((dist * dist) / L[1].lightDiff), .1));
 
 
-    cosTheta = clamp(dot(V.TNormal, vec4(L0.lightPos, 1)), 0, 1);
-    dist = distance(vec4(L0.lightPos, 0.0), V.TVertex);
-    tmpColour = inputColour + vec4(L0.lightColour, 0) / 2;
-    tmpOut += tmpColour * L0.intensity * cosTheta / (max(((dist * dist) / L0.lightDiff), .1));
+    cosTheta = clamp(dot(V.TNormal, vec4(L[0].lightPos, 1)), 0, 1);
+    dist = distance(vec4(L[0].lightPos, 0.0), V.TVertex);
+    tmpColour = inputColour + vec4(L[0].lightColour, 0) / 2;
+    tmpOut += tmpColour * L[0].intensity * cosTheta / (max(((dist * dist) / L[0].lightDiff), .1));
+
+    //outputColour = vec4(L[0].lightDiff, L[0].lightDiff, L[0].lightDiff, L[0].lightDiff);
     outputColour = tmpOut;
 }

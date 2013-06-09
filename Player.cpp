@@ -30,7 +30,7 @@ Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map, bool versus)
     }
   else
     {
-    _light = bbman->getLight(bbman->addLight(newin::Light()));
+    _light = bbman->getLight(bbman->addLight(*(bbman->getLight(0))));
     _obj->setColor(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
     }
   _obj->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, 0.1, row * SIZECASE));
