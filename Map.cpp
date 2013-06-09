@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Mon May 27 16:53:04 2013 Dorian Stroher
-// Last update Sun Jun  9 03:01:23 2013 Dorian Stroher
+// Last update Sun Jun  9 03:24:48 2013 Dorian Stroher
 //
 
 #include "Map.hh"
@@ -35,6 +35,8 @@ Map::Map(int row, int col, newin::SceneMgr bbman)
 	  _map[it] = NULL;
 	  if (rand()%5 == 0 && it.second != 0 && it.first != 0 && it.second != (col - 1) && it.first != (row - 1) )
 	    _map[it] = new Wall2(&bbman, it.second, it.first);
+	  /*	  if (rand()%5 == 0 && it.second != 0 && it.first != 0 && it.second != (col - 1) && it.first != (row - 1) )
+		  _map[it] = new BonusBomb(&bbman, it.second, it.first);*/
 	  if (it.second == 0 || it.first == 0)
 	    _map[it] = new Wall(&bbman, it.second, it.first);
 	  else if (it.first == (row -1) || it.second == (col - 1))
@@ -64,7 +66,7 @@ _map[it] = new Player(&bbman, it.second, it.first, this, false);
       delete(_map[it]);
       _map[it] = NULL;
     }
-  //  _map[it] = new Player(&bbman, it.second, it.first, this, true);
+  _map[it] = new Player(&bbman, it.second, it.first, this, true);
   bbman.run();
 }
 

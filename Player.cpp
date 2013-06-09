@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Sun Jun  9 03:01:39 2013 Dorian Stroher
+// Last update Sun Jun  9 03:24:19 2013 Dorian Stroher
 //
 
 #include <unistd.h>
@@ -39,9 +39,9 @@ Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map, bool versus)
     }
   else
     {
-	int i = bbman->addLight(newin::Light());
-	_light = bbman->getLight(i);
-	_obj->setColor(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
+      int i = bbman->addLight(newin::Light());
+      _light = bbman->getLight(i);
+      _obj->setColor(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
     }
   _light->setIntensity(LUMINTENSITY);
   _light->setDiff(1);
@@ -104,20 +104,33 @@ void Player::move(gdl::Input &i, gdl::GameClock const &clock)
 	}
       (*_map)[prevpos] = NULL;
       (*_map)[_pos] = this;
-      usleep(750000);
+      usleep(75000);
     }
   else
     _pos = prevpos;
-  if (i.isKeyDown(gdl::Keys::Space) == true)
+  if (_versus == false)
     {
-          usleep(100000);
+      if (i.isKeyDown(gdl::Keys::Space) == true)
+	{
+	  usleep(100000);
 	  if (_nbBomb > 0)
 	    {
 	      std::cout << "ICI" << std::endl;
 	      _listBomb.push_back(new Bomb(_bbman, _pos.second, _pos.first, _bombPower));
 	      _nbBomb--;
 	    }
+      }
     }
+  else
+    if (i.isKeyDown(gdl::Keys::Return) == true)
+      {
+	usleep(100000);
+	if (_nbBomb > 0)
+	  {
+	    _listBomb.push_back(new Bomb(_bbman, _pos.second, _pos.first, _bombPower));
+	    _nbBomb--;
+	  }
+      }
     }
   std::vector<Bomb *>::iterator it;
   if (_listBomb.size() > 0)
