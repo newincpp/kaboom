@@ -90,10 +90,6 @@ void newin::SceneMgr::draw(void) {
 }
 
 void newin::SceneMgr::unload(void) {
-    std::list<AObject*>::iterator itb = _objects.begin();
-    for (; itb != _objects.end(); ++itb) {
-	delete *itb;
-    }
     delete _defaultShader;
 }
 
@@ -150,4 +146,13 @@ AObject* newin::SceneMgr::getModel(const std::string& id) {
 	}
     }
     return NULL;
+}
+
+void newin::SceneMgr::delModel(const std::string& id) {
+    std::list<AObject*>::iterator itb = _objects.begin();
+    for (; itb != _objects.end(); ++itb) {
+	if ((*itb)->getIdentifier() == id) {
+	    delete (*itb);
+	}
+    }
 }
