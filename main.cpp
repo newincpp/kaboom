@@ -11,6 +11,7 @@ static pthread_t t;
 static void *EntryPoint(void * music)
 {
  static_cast<AudioPlayer*>(music)->play();
+ return NULL;
 }
 
 int main() {

@@ -70,6 +70,7 @@ void Player::moddifPos()
 
 void Player::move(gdl::Input &i, gdl::GameClock const &clock)
 {
+    (void) clock;
     std::pair<int, int> prevpos;
 
     prevpos = _pos;
