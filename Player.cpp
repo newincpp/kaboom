@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Sun Jun  9 02:37:53 2013 Dorian Stroher
+// Last update Sun Jun  9 02:42:25 2013 Dorian Stroher
 //
 
 #include <unistd.h>
@@ -52,8 +52,9 @@ Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map, bool versus)
   std::cout << "New player" << std::endl;
   _obj->setPlayer(this);
   _life = 1;
-  _nbBomb = 2;
+  _nbBomb = 1;
   _pos.second = col;
+  _bombPower = 2;
   _pos.first = row;
   _map = map->getMap();
   _Clock.play();
@@ -113,7 +114,7 @@ void Player::move(gdl::Input &i, gdl::GameClock const &clock)
 	  if (_nbBomb > 0)
 	    {
 	      std::cout << "ICI" << std::endl;
-	      _listBomb.push_back(new Bomb(_bbman, _pos.second, _pos.first, 2));
+	      _listBomb.push_back(new Bomb(_bbman, _pos.second, _pos.first, _bombPower));
 	      _nbBomb--;
 	    }
     }
