@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:51:26 2013 Dorian Stroher
-// Last update Sun Jun  9 07:03:09 2013 Dorian Stroher
+// Last update Sun Jun  9 20:50:23 2013 Dorian Stroher
 //
 
 #include "Bomb.hh"
@@ -112,6 +112,7 @@ bool Bomb::explode(std::map<std::pair<int, int>, IObject *>  *_map)
 	  break;
       it.second--;
 	}
+      delete (this);
       return (true);
     }
   return (false);

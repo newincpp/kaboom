@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Sun Jun  9 06:56:45 2013 Dorian Stroher
+// Last update Sun Jun  9 20:50:07 2013 Dorian Stroher
 //
 
 #include <unistd.h>
@@ -142,7 +142,7 @@ void Player::move(gdl::Input &i, gdl::GameClock const &clock)
 		  if ((*it)->explode(_map) == true)
 		    {
 		      _listBomb.erase(it);
-		      delete(*it);
+		      //   delete(*it);
 		      break;
 		    }
 		}
