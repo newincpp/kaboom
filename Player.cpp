@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Sun Jun  9 06:08:26 2013 Dorian Stroher
+// Last update Sun Jun  9 06:25:43 2013 Dorian Stroher
 //
 
 #include <unistd.h>
@@ -156,11 +156,18 @@ bool Player::checkMove(IObject *toto)
       {
 	if (toto->getType() == type__Wall || toto->getType() == type__Player || toto->getType() == type__Wall2 )
 	  return (false);
-	if (toto->getType() == type__BonusBomb)
+	else if (toto->getType() == type__BonusBomb)
 	  {
 	    (*_map)[_pos] = NULL;
 	    delete(toto);
 	    _nbBomb++;
+	  }
+	else if (toto->getType() == type__BonusMouv)
+	  {
+	    (*_map)[_pos] = NULL;
+	    delete(toto);
+	    if (_time > 0.07)
+	      _time = _time - 0.055;
 	  }
       }
     return (true);
