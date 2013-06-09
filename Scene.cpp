@@ -7,8 +7,8 @@
 #include "Scene.hh"
 
 newin::SceneMgr::SceneMgr() :  _height(__DHEIGHT), _width(__DWIDTH), _camera(), _contextEnabed(false) {
-    newin::Light defaultLight;
-    _lights.push_back(&defaultLight);
+    newin::Light* defaultLight = new newin::Light();
+    _lights.push_back(defaultLight);
 //    _lights.push_back(defaultLight);
 }
 
@@ -113,6 +113,7 @@ std::vector<newin::Light*> newin::SceneMgr::getLights() {
 }
 
 newin::Light* newin::SceneMgr::getLight(unsigned int index) {
+    std::cout << "index : " << index << "size " << _lights.size() << std::endl;
     return _lights[index];
 }
 
@@ -133,7 +134,7 @@ unsigned int newin::SceneMgr::addLight(newin::Light lightModel) {
     std::cout << "len after " << _lights.size() << std::endl;
     std::cout << "len returned " << _lights.size() - 1 << std::endl;
     //return _lights.size() - 1;
-    return 1;
+    return 0;
 }
 
 AObject* newin::SceneMgr::addModel(const std::string& name, const std::string& identifier) {
