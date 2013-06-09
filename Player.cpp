@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Sun Jun  9 01:20:26 2013 Dorian Stroher
+// Last update Sun Jun  9 02:37:53 2013 Dorian Stroher
 //
 
 #include <unistd.h>
@@ -20,10 +20,7 @@ void    Player::deleteOBJ()
   _life = _life - 1;
   std::cout << "Player is dead" << std::endl;
   if (_life == 0)
-    {
       _obj->toogleRendering();
-      _objARM->toogleRendering();
-    }
   //  _obj->unsetPlayer();
 }
 
@@ -51,14 +48,11 @@ Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map, bool versus)
   _light->setRot(newin::Vector3D<GLfloat>(60, 0.1, 0.1));
   _obj->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, 0.1, row * SIZECASE));
   _obj->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
-  _objARM = bbman->addModel("playerARM.obj", "player");
-  _objARM->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, 0.1, row * SIZECASE));
-  _objARM->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
-  ((newin::Mesh*)_objARM)->toogleWireframe();
   _map = map->getMap();
   std::cout << "New player" << std::endl;
   _obj->setPlayer(this);
-  _life = 4;
+  _life = 1;
+  _nbBomb = 2;
   _pos.second = col;
   _pos.first = row;
   _map = map->getMap();
@@ -102,7 +96,6 @@ void Player::move(gdl::Input &i, gdl::GameClock const &clock)
   if (checkMove((*_map)[_pos]) == true)
     {
       _obj->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0,(_pos.first) * SIZECASE));
-      _objARM->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0,(_pos.first) * SIZECASE));
       _light->setPos(newin::Vector3D<GLfloat>((_pos.second) * SIZECASE, DISTANCELUM,(_pos.first) * SIZECASE));
       if (_versus == false)
 	{
@@ -115,7 +108,15 @@ void Player::move(gdl::Input &i, gdl::GameClock const &clock)
   else
     _pos = prevpos;
   if (i.isKeyDown(gdl::Keys::Space) == true)
-    _listBomb.push_back(new Bomb(_bbman, _pos.second, _pos.first, 2));
+    {
+          usleep(100000);
+	  if (_nbBomb > 0)
+	    {
+	      std::cout << "ICI" << std::endl;
+	      _listBomb.push_back(new Bomb(_bbman, _pos.second, _pos.first, 2));
+	      _nbBomb--;
+	    }
+    }
     }
   std::vector<Bomb *>::iterator it;
   if (_listBomb.size() > 0)
