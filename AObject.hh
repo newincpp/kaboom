@@ -11,6 +11,7 @@ class AObject
 {
   public:
   AObject(const newin::Vector3D<GLfloat>& p = newin::Vector3D<GLfloat>(), const newin::Vector3D<GLfloat>& r = newin::Vector3D<GLfloat>(), const newin::Vector3D<GLfloat>& c = newin::Vector3D<GLfloat>(1,1,1)) : _pos(p), _rot(r), _col(c), _willRendered(true) { }
+  virtual AObject& operator=(const AObject& o) { _pos = o._pos; _rot = o._rot; _col = o._col; _willRendered = o._willRendered; return *this; }
   virtual void initialize(void) = 0;
   virtual void update(gdl::GameClock const &, gdl::Input &) = 0;
   virtual void draw(void) = 0;

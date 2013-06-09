@@ -18,6 +18,7 @@ namespace newin {
 	    public:
 		explicit Vector3D(const T& x = 0, const T& y = 0, const T& z = 0, const T& w = 0) : _x(x), _y(y), _z(z), _w(w) {}
 		virtual ~Vector3D() {}
+		Vector3D& operator=(const Vector3D& in) {_x = in._x; _y = in._y; _z = in._z; _w = in._w; return *this; }
 		Vector3D& operator+(const Vector3D& in) {_x += in._x; _y += in._y; _z += in._z; _w += in._w; return *this; }
 		Vector3D& operator-(const Vector3D& in) {_x -= in._x; _y -= in._y; _z -= in._z; _w -= in._w; return *this; }
 		Vector3D& operator*(const Vector3D& in) {_x *= in._x; _y *= in._y; _z *= in._z; _w *= in._w; return *this; }
