@@ -152,7 +152,7 @@ void newin::Mesh::update(gdl::GameClock const & c, gdl::Input & i) {
     else
     {
 	for (it = _play.begin(); it != _play.end(); it++)
-	    (*it)->move(i);
+	  (*it)->move(i, c);
     }
     transform();
 }

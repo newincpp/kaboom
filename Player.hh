@@ -5,11 +5,12 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:53 2013 Dorian Stroher
-// Last update Sat Jun  8 20:42:13 2013 Dorian Stroher
+// Last update Sat Jun  8 22:47:31 2013 Dorian Stroher
 //
 #ifndef __PLAYER_HH__
 #define __PLAYER_HH__
 
+#include "Bomb.hh"
 #include "IObject.hh"
 #include "Scene.hh"
 #include "Camera.hh"
@@ -29,9 +30,11 @@ public:
     _objARM->toogleRendering();
   }
   bool checkMove(IObject *toto);
-  void move(gdl::Input &i);
+  void move(gdl::Input &i, gdl::GameClock const &c);
   virtual void moddifPos();
 private:
+  gdl::Clock _Clock;
+  std::vector<Bomb *> _listBomb;
   bool _versus;
   newin::SceneMgr *_bbman;
   newin::Camera* _cam;

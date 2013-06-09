@@ -5,12 +5,11 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Sat Jun  8 20:45:20 2013 Dorian Stroher
+// Last update Sat Jun  8 22:57:04 2013 Dorian Stroher
 //
 
 #include <unistd.h>
 #include "Player.hh"
-#include "Bomb.hh"
 #include "Mesh.hh"
 #define DISTANCE 9
 #define DISTANCELUM 2
@@ -48,6 +47,7 @@ Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map, bool versus)
   _pos.second = col;
   _pos.first = row;
   _map = map->getMap();
+  _Clock.play();
 }
 
 void Player::moddifPos()
@@ -55,56 +55,32 @@ void Player::moddifPos()
 
 }
 
-void Player::move(gdl::Input &i)
+void Player::move(gdl::Input &i, gdl::GameClock const &clock)
 {
   std::pair<int, int> prevpos;
-  Bomb *bomb;
+
   prevpos = _pos;
   if (_versus == false)
     {
       if (i.isKeyDown(gdl::Keys::S) == true)
-	{
-	  (*_map)[_pos] = NULL;
 	  _pos.first = _pos.first + 1;
-        }
       else if (i.isKeyDown(gdl::Keys::W) == true)
-	{
-	  (*_map)[_pos] = NULL;
-	  _pos.first = _pos.first - 1;
-        }
+	_pos.first = _pos.first - 1;
       else if (i.isKeyDown(gdl::Keys::A) == true)
-	{
-	  (*_map)[_pos] = NULL;
-	  _pos.second = _pos.second - 1;
-	}
+	_pos.second = _pos.second - 1;
       else if (i.isKeyDown(gdl::Keys::D) == true)
-	{
-	  (*_map)[_pos] = NULL;
 	  _pos.second = _pos.second + 1;
-	}
     }
   else
     {
       if (i.isKeyDown(gdl::Keys::Down) == true)
-	{
-	  (*_map)[_pos] = NULL;
 	  _pos.first = _pos.first + 1;
-        }
       else if (i.isKeyDown(gdl::Keys::Up) == true)
-	{
-	  (*_map)[_pos] = NULL;
 	  _pos.first = _pos.first - 1;
-        }
       else if (i.isKeyDown(gdl::Keys::Left) == true)
-	{
-	  (*_map)[_pos] = NULL;
 	  _pos.second = _pos.second - 1;
-	}
       else if (i.isKeyDown(gdl::Keys::Right) == true)
-	{
-	  (*_map)[_pos] = NULL;
 	  _pos.second = _pos.second + 1;
-	}
     }
   if (checkMove((*_map)[_pos]) == true)
     {
@@ -113,23 +89,24 @@ void Player::move(gdl::Input &i)
       _objARM->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0,(_pos.first) * SIZECASE));
       if (_versus == false)
 	_cam->setPos(newin::Vector3D<GLfloat>((_pos.second) * SIZECASE,_cam->getPos().getY(),(_pos.first) * SIZECASE));
+      (*_map)[prevpos] = NULL;
       (*_map)[_pos] = this;
       usleep(75000);
     }
   else
-    {
-      _pos = prevpos;
-    (*_map)[prevpos] = this;
-    }
+    _pos = prevpos;
   if (i.isKeyDown(gdl::Keys::Space) == true)
-    {
-      std::cout << "Je pose une bombe1" << std::endl;
-      bomb =  new Bomb(_bbman, _pos.second, _pos.first, 3);
-      bomb->explode(_map);
-      //      new Wall(_bbman, _pos.second, _pos.first);
-      std::cout << "Je pose une bombe2" << std::endl;
-      usleep(1000000);
-    }
+    _listBomb.push_back(new Bomb(_bbman, _pos.second, _pos.first, 2));
+  std::vector<Bomb *>::iterator it;
+  if (_listBomb.size() > 0)
+    for (it = _listBomb.begin(); it != _listBomb.end(); it++)
+      {
+	if ((*it)->explode(_map) == true)
+	  {
+	  _listBomb.erase(it);
+	  break;
+	  }
+      }
   return;
 }
 

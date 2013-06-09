@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:51:26 2013 Dorian Stroher
-// Last update Sat Jun  8 20:49:33 2013 Dorian Stroher
+// Last update Sat Jun  8 22:45:01 2013 Dorian Stroher
 //
 
 #include "Bomb.hh"
@@ -16,13 +16,14 @@ Bomb::Bomb(newin::SceneMgr *bbman, int col, int row, int power)
   _row = row;
   _col = col;
   _power = power;
-  _obj = bbman->addModel("wall.obj", "Mur");
-  _objARM = bbman->addModel("wallARM.obj", "Mur");
+  _obj = bbman->addModel("bomb.obj", "Mur");
+  _objARM = bbman->addModel("bombARM.obj", "Mur");
   _obj->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, 0.1, row * SIZECASE));
   _obj->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
   _objARM->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, 0.1, row * SIZECASE));
   _objARM->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
   ((newin::Mesh*)_objARM)->toogleWireframe();
+  _myClock.play();
  }
 
 void	Bomb::moddifPos()
@@ -30,36 +31,56 @@ void	Bomb::moddifPos()
 
 }
 
-void	Bomb::explode(std::map<std::pair<int, int>, IObject *>  *_map)
+bool Bomb::explode(std::map<std::pair<int, int>, IObject *>  *_map)
 {
   std::pair<int, int> it;
 
-  it.first = _row;
-  it.second = _col;
-  while (it.first < _row + _power)
+  _myClock.update();
+  if (_myClock.getTotalElapsedTime() >= 2)
     {
-      if ((*_map)[it] != NULL)
-	if (((*_map)[it])->getType() == type__Wall2)
-	  {
-	    delete((*_map)[it]);
-	    (*_map)[it] = NULL;
+      it.first = _row;
+      it.second = _col;
+      while (it.first < _row + _power)
+	{
+	  if ((*_map)[it] != NULL)
+	    if (((*_map)[it])->getType() == type__Wall2)
+	      {
+		delete((*_map)[it]);
+		(*_map)[it] = NULL;
 	    break;
-	  }
+	      }
       if ((*_map)[it] != NULL)
 	if (((*_map)[it])->getType() == type__Wall)
 	  break;
       it.first++;
+	}
+      it.first = _row;
+      it.second = _col;
+      while (it.second < _col + _power)
+	{
+	  if ((*_map)[it] != NULL)
+	    if (((*_map)[it])->getType() == type__Wall2)
+	      {
+		delete((*_map)[it]);
+		(*_map)[it] = NULL;
+		break;
+	      }
+	  if ((*_map)[it] != NULL)
+	    if (((*_map)[it])->getType() == type__Wall)
+	      break;
+	  it.second++;
+	}
+      it.first = _row;
+      it.second = _col;
+      delete(this);
+      return (true);
     }
-  it.first = _row;
-  it.second = _col;
-  std::cout << "LOLOLOL" << std::endl;
-  delete(this);
   /*  if ((*_map)[it] != NULL)
     {
     delete((*_map)[it]);
     (*_map)[it] = NULL;
     }*/
-  std::cout << "LOLOLOL" << std::endl;
+  return (false);
 }
 
 Bomb::~Bomb()
