@@ -8,7 +8,6 @@
 int main() {
     newin::SceneMgr bbman;
     try {
-	bbman.addLight(newin::Light(NULL,newin::Vector3D<GLfloat>(10, 0, 10)));
 	Map map1(20, 20, bbman);
     } catch (const std::exception& e) {
 	std::cerr << "\033[1;31m FATAL ERROR : " << std::endl << e.what() << std::endl;
