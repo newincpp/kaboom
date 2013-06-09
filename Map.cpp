@@ -54,7 +54,7 @@ Map::Map(int row, int col, newin::SceneMgr bbman)
     delete(_map[it]);
     _map[it] = NULL;
     }
-  _map[it] = new Player(&bbman, it.second, it.first, this, false);
+  //_map[it] = new Player(&bbman, it.second, it.first, this, false);
   /*  delete (_map[it]);
       _map[it] = NULL;*/
    it.first = 5;
@@ -64,7 +64,7 @@ Map::Map(int row, int col, newin::SceneMgr bbman)
       delete(_map[it]);
       _map[it] = NULL;
     }
-  //  _map[it] = new Player(&bbman, it.second, it.first, this, true);
+  _map[it] = new Player(&bbman, it.second, it.first, this, true);
   bbman.run();
 }
 

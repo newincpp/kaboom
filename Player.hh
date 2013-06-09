@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:53 2013 Dorian Stroher
-// Last update Sun Jun  9 02:36:19 2013 Dorian Stroher
+// Last update Sun Jun  9 02:42:42 2013 Dorian Stroher
 //
 #ifndef __PLAYER_HH__
 #define __PLAYER_HH__
@@ -37,6 +37,7 @@ public:
 private:
   gdl::Clock _Clock;
   std::vector<Bomb *> _listBomb;
+  int _bombPower;
   bool _versus;
   newin::SceneMgr *_bbman;
   newin::Camera* _cam;

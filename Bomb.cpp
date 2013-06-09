@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:51:26 2013 Dorian Stroher
-// Last update Sun Jun  9 01:19:59 2013 Dorian Stroher
+// Last update Sun Jun  9 02:40:01 2013 Dorian Stroher
 //
 
 #include "Bomb.hh"
@@ -77,6 +77,36 @@ bool Bomb::explode(std::map<std::pair<int, int>, IObject *>  *_map)
 	}
       it.first = _row;
       it.second = _col;
+      while (it.first > _row - _power)
+	{
+	  if ((*_map)[it] != NULL)
+	    if (((*_map)[it])->getType() == type__Wall2)
+	      {
+		delete((*_map)[it]);
+		(*_map)[it] = NULL;
+	    break;
+	      }
+      if ((*_map)[it] != NULL)
+	if (((*_map)[it])->getType() == type__Wall)
+	  break;
+      it.first--;
+	}
+      it.first = _row;
+      it.second = _col;
+      while (it.second > _col - _power)
+	{
+	  if ((*_map)[it] != NULL)
+	    if (((*_map)[it])->getType() == type__Wall2)
+	      {
+		delete((*_map)[it]);
+		(*_map)[it] = NULL;
+	    break;
+	      }
+      if ((*_map)[it] != NULL)
+	if (((*_map)[it])->getType() == type__Wall)
+	  break;
+      it.second--;
+	}
       //      delete(this);
       return (true);
     }

@@ -5,10 +5,10 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:52:54 2013 Dorian Stroher
-// Last update Sun Jun  9 00:49:06 2013 Dorian Stroher
+// Last update Sun Jun  9 02:43:41 2013 Dorian Stroher
 //
 
-#ifndef __Bpmb__HH__
+#ifndef __Bomb__HH__
 #define __Bomb__HH__
 
 #include "IObject.hh"

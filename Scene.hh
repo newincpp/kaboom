@@ -17,7 +17,7 @@ namespace newin {
 	    void setCamPos(const Vector3D<GLfloat>&); // no constness because of pointer (return pointer for future modification from user like remote)
 	    AObject* addModel(const std::string&, const std::string&);
 	    void delModel(const std::string&);
-	    std::vector<newin::Light> getLights();
+	    std::vector<newin::Light*> getLights();
 	    newin::Light *getLight(unsigned int);
 	    unsigned int addLight(newin::Light);
 	    virtual void update(void);
@@ -30,7 +30,7 @@ namespace newin {
 	    int _width;
 	    float _old_time;
 	    newin::Camera _camera;
-	    std::vector<newin::Light> _lights;
+	    std::vector<newin::Light*> _lights;
 	    std::list<AObject*> _objects;
 	    newin::ShadeProgram* _defaultShader;
 	    bool _contextEnabed;

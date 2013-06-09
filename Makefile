@@ -10,6 +10,7 @@ SRC	= main.cpp \
 	  Player.cpp \
 	  Wall.cpp \
 	  Bomb.cpp \
+	  BonusBomb.cpp \
 	  AudioPlayer.cpp \
 	  Wall2.cpp
 
