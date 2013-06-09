@@ -21,7 +21,7 @@ NAME	=bomberman
 
 CXXFLAGS= -Wall -Wextra -W -g -D__DWIDTH=1024 -D__DHEIGHT=768 -std=c++0x -Wfatal-errors -I/usr/include/AL
 
-LDFLAGS	= -Wl,-rpath -L./libgdl_gl-2012.4/lib -Wl,./libgdl_gl-2012.4/lib -lgdl_gl -lGLU -lGLEW -lopenal -lsndfile
+LDFLAGS	= -Wl,-rpath -L./libgdl_gl-2012.4/lib -Wl,./libgdl_gl-2012.4/lib -lgdl_gl -lGLU -lGLEW -lopenal -lsndfile -lpthread
 
 OBJ	= $(SRC:.cpp=.o)
 
