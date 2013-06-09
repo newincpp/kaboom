@@ -92,7 +92,7 @@ void newin::Light::update(gdl::GameClock const & c, gdl::Input & i) {
 	throw newin::ShaderException("cannot use light without shader");
     }
     if (_changed){
-//	std::cout << "changing light n" << _sindex << " at :" << _pos.getX() << " " << _pos.getY() <<" " << _pos.getZ() <<  std::endl;
+	//	std::cout << "changing light n" << _sindex << " at :" << _pos.getX() << " " << _pos.getY() <<" " << _pos.getZ() <<  std::endl;
 	_changed = false;
 	_prgm->setVariable("L" + _sindex + ".lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
     }
