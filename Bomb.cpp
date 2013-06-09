@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:51:26 2013 Dorian Stroher
-// Last update Sun Jun  9 01:05:58 2013 Dorian Stroher
+// Last update Sun Jun  9 01:19:59 2013 Dorian Stroher
 //
 
 #include "Bomb.hh"
@@ -43,7 +43,6 @@ bool Bomb::explode(std::map<std::pair<int, int>, IObject *>  *_map)
   _myClock.update();
   if (_myClock.getTotalElapsedTime() >= 2)
     {
-      delete(this);
       it.first = _row;
       it.second = _col;
       while (it.first < _row + _power)
@@ -78,13 +77,9 @@ bool Bomb::explode(std::map<std::pair<int, int>, IObject *>  *_map)
 	}
       it.first = _row;
       it.second = _col;
+      //      delete(this);
       return (true);
     }
-  /*  if ((*_map)[it] != NULL)
-    {
-    delete((*_map)[it]);
-    (*_map)[it] = NULL;
-    }*/
   return (false);
 }
 

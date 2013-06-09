@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Mon May 27 16:53:04 2013 Dorian Stroher
-// Last update Sun Jun  9 01:06:53 2013 Dorian Stroher
+// Last update Sun Jun  9 01:12:45 2013 Dorian Stroher
 //
 
 #include "Map.hh"
@@ -44,7 +44,7 @@ Map::Map(int row, int col, newin::SceneMgr bbman)
 	  tmp->setPos(newin::Vector3D<GLfloat>(it.second, 0.1, it.first));
 	  ((newin::Mesh*)(tmp))->toogleWireframe();
 	}
-    it.second = 0;
+      it.second = 0;
       it.first = it.first + 1;
     }
   it.first = 3;
@@ -64,7 +64,7 @@ Map::Map(int row, int col, newin::SceneMgr bbman)
       delete(_map[it]);
       _map[it] = NULL;
     }
-  _map[it] = new Player(&bbman, it.second, it.first, this, true);
+  //  _map[it] = new Player(&bbman, it.second, it.first, this, true);
   bbman.run();
 }
 

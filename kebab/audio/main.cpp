@@ -16,10 +16,10 @@ int main(int ac, char **av)
             p.destroySource();
         }
         catch (const AudioPlayer::Exception& e) {
-            std::cout << "AudioPlayer error: " << e.what() << std::endl; 
+            std::cout << "AudioPlayer error: " << e.what() << std::endl;
             p.cleanUp();
         }
     }
     else
-        std::cout << "./audio FILE FILE" << std::endl;
+      std::cout << "./audio FILE FILE" << std::endl;
 }
