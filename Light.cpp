@@ -40,8 +40,14 @@ newin::Vector3D<GLfloat> newin::Light::getRot() const {
 
 void newin::Light::setPos(const Vector3D<GLfloat>& p) {
     _changed = true;
-    std::cout << "changing light n" << _sindex << " at :" << _pos.getX() << " " << _pos.getY() <<" " << _pos.getZ() <<  std::endl;
     _pos = p;
+}
+
+void newin::Light::setColor(const Vector3D<GLfloat>& c) {
+    _col = c;
+    if (_prgm) {
+	_prgm->setVariable("L[" + _sindex + "].lightColour", _col.getX(), _col.getY(), _col.getZ());
+    }
 }
 
 void newin::Light::setRot(const Vector3D<GLfloat>& r) {
@@ -65,7 +71,7 @@ void newin::Light::draw() {
 
 void newin::Light::update(gdl::GameClock const & c, gdl::Input & i) {
     (void) c;
-    if (_sindex == "0") {
+    if (_sindex == "1") {
 	if (i.isKeyDown(gdl::Keys::I)) {
 	    _pos.setZ(_pos.getZ() - 0.1);
 	    _changed = true;
@@ -95,16 +101,15 @@ void newin::Light::update(gdl::GameClock const & c, gdl::Input & i) {
 	throw newin::ShaderException("cannot use light without shader");
     }
     if (_changed){
-	std::cout << "changing light n" << _sindex << " at :" << _pos.getX() << " " << _pos.getY() <<" " << _pos.getZ() <<  std::endl;
 	_changed = false;
-	_prgm->setVariable("L[" + _sindex + "].lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
+	_prgm->setVariable("L[" + _sindex + "].Pos", _pos.getX(), _pos.getY(), _pos.getZ());
     }
 }
 
 inline void newin::Light::internalUpdate() {
-    _prgm->setVariable("L[" + _sindex + "].lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
-    _prgm->setVariable("L[" + _sindex + "].lightColour", _col.getX(), _col.getY(), _col.getZ());
-    _prgm->setVariable("L[" + _sindex + "].lightDiff", _diff);
+    _prgm->setVariable("L[" + _sindex + "].Pos", _pos.getX(), _pos.getY(), _pos.getZ());
+    _prgm->setVariable("L[" + _sindex + "].Colour", _col.getX(), _col.getY(), _col.getZ());
+    _prgm->setVariable("L[" + _sindex + "].Diff", _diff);
     _prgm->setVariable("L[" + _sindex + "].intensity", _intensity);
 }
 

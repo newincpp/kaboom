@@ -4,11 +4,16 @@
 #include <list>
 #include "Scene.hh"
 #include "Map.hh"
+#include "AudioPlayer.hh"
 
 int main() {
     newin::SceneMgr bbman;
+    AudioPlayer music;
     try {
+	music.loadFile("resources/music/tron.flac");
+	music.play();
 	Map map1(20, 20, bbman);
+	music.destroySource();
     } catch (const std::exception& e) {
 	std::cerr << "\033[1;31m FATAL ERROR : " << std::endl << e.what() << std::endl;
     }

@@ -6,7 +6,7 @@
 #include "Loader.hh"
 #include "Scene.hh"
 
-newin::SceneMgr::SceneMgr() :  _height(__DHEIGHT), _width(__DWIDTH), _camera(), _contextEnabed(false) {
+newin::SceneMgr::SceneMgr() :  _height(__DHEIGHT), _width(__DWIDTH), _camera(),  _defaultShader(NULL), _contextEnabed(false) {
     newin::Light* defaultLight = new newin::Light();
     _lights.push_back(defaultLight);
 //    _lights.push_back(defaultLight);
@@ -50,7 +50,7 @@ void newin::SceneMgr::update(void) {
     if (input_.isKeyDown(gdl::Keys::Escape)) {
 	window_.close();
     }
-    for (unsigned int i = 0; i != _lights.size() - 1; ++i)
+    for (unsigned int i = 0; i != _lights.size(); ++i)
 	_lights[i]->update(gameClock_, input_);
     _camera.update(gameClock_, input_);
     std::list<AObject*>::iterator itb = _objects.begin();
@@ -118,13 +118,13 @@ newin::Light* newin::SceneMgr::getLight(unsigned int index) {
 }
 
 unsigned int newin::SceneMgr::addLight(newin::Light lightModel) {
-    //std::cout << "len before " << _lights.size() << std::endl;
     newin::Light* nlight;
     if (_contextEnabed) {
 	nlight = new newin::Light(_defaultShader, lightModel.getPos(), lightModel.getRot(), lightModel.getColor(), _lights.size());
 	nlight->initialize(_defaultShader, lightModel.getPos(), lightModel.getRot(), lightModel.getColor(), _lights.size());
 	nlight->setDiff(lightModel.getDiff());
 	nlight->setIntensity(lightModel.getIntensity());
+	_defaultShader->setVariable("numlight", (int)_lights.size());
     } else {
 	nlight = new newin::Light(NULL, lightModel.getPos(), lightModel.getRot(), lightModel.getColor(), _lights.size());
 	nlight->setDiff(lightModel.getDiff());
@@ -134,7 +134,6 @@ unsigned int newin::SceneMgr::addLight(newin::Light lightModel) {
     std::cout << "len after " << _lights.size() << std::endl;
     std::cout << "len returned " << _lights.size() - 1 << std::endl;
     return _lights.size() - 1;
-    //return 0;
 }
 
 AObject* newin::SceneMgr::addModel(const std::string& name, const std::string& identifier) {

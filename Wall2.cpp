@@ -17,10 +17,10 @@ Wall2::Wall2(newin::SceneMgr *bbman, int col, int row)
   _obj = bbman->addModel("wall.obj", "Mur");
   _obj->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, 0.1, row * SIZECASE));
   _obj->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
-  _obj->setColor(newin::Vector3D<GLfloat>(0.1, 0.1, 180));
+  _obj->setColor(newin::Vector3D<GLfloat>(0.1, 0.1, 5));
   _objARM->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, 0.1, row * SIZECASE));
   _objARM->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
-  _objARM->setColor(newin::Vector3D<GLfloat>(0.1, 0.1, 180));
+  _objARM->setColor(newin::Vector3D<GLfloat>(0.1, 0.1, 10));
   ((newin::Mesh*)_objARM)->toogleWireframe();
  }
 

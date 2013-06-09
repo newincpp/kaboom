@@ -11,7 +11,7 @@
 namespace newin {
     class Light : public ::AObject {
 	public:
-	    explicit Light(ShadeProgram* prgm = NULL, const Vector3D<GLfloat>& p = Vector3D<GLfloat>(), const Vector3D<GLfloat>& r = Vector3D<GLfloat>(), const Vector3D<GLfloat>& c = Vector3D<GLfloat>(), unsigned int index = 0);
+	    explicit Light(ShadeProgram* prgm = NULL, const Vector3D<GLfloat>& p = Vector3D<GLfloat>(), const Vector3D<GLfloat>& r = Vector3D<GLfloat>(), const Vector3D<GLfloat>& c = Vector3D<GLfloat>(1,0,0), unsigned int index = 0);
 	    void initialize();
 	    void initialize(ShadeProgram*, const Vector3D<GLfloat>&, const Vector3D<GLfloat>&, const Vector3D<GLfloat>&, unsigned int index);
 	    void setShader(ShadeProgram* p);
@@ -24,8 +24,9 @@ namespace newin {
 	    void shadowMap();
 	    Vector3D<GLfloat> getPos() const;
 	    Vector3D<GLfloat> getRot() const;
-	    void setPos(const Vector3D<GLfloat>& p);
-	    void setRot(const Vector3D<GLfloat>& r);
+	    void setPos(const Vector3D<GLfloat>&);
+	    void setRot(const Vector3D<GLfloat>&);
+	    void setColor(const Vector3D<GLfloat>&);
 	    virtual ~Light();
 	private:
 	    void internalUpdate();
