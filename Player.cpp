@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Sun Jun  9 02:42:25 2013 Dorian Stroher
+// Last update Sun Jun  9 03:01:39 2013 Dorian Stroher
 //
 
 #include <unistd.h>
@@ -57,7 +57,6 @@ Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map, bool versus)
   _bombPower = 2;
   _pos.first = row;
   _map = map->getMap();
-  _Clock.play();
 }
 
 void Player::moddifPos()
@@ -104,7 +103,7 @@ void Player::move(gdl::Input &i, gdl::GameClock const &clock)
 	}
       (*_map)[prevpos] = NULL;
       (*_map)[_pos] = this;
-      usleep(75000);
+      usleep(750000);
     }
   else
     _pos = prevpos;

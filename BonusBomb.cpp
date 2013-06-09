@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Wed May 22 15:51:26 2013 Dorian Stroher
-// Last update Sun Jun  9 02:51:45 2013 Dorian Stroher
+// Last update Sun Jun  9 03:08:52 2013 Dorian Stroher
 //
 
 #include "BonusBomb.hh"
@@ -13,7 +13,10 @@
 
 BonusBomb::BonusBomb(newin::SceneMgr *bbman, int col, int row)
 {
-
+  _obj = bbman->addModel("wall.obj", "Bomb");
+  _obj->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, 0.1, row * SIZECASE));
+  _obj->setColor(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
+  _obj->setRot(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
 }
 
 void	BonusBomb::moddifPos()
