@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Mon May 27 16:53:04 2013 Dorian Stroher
-// Last update Sun Jun  9 06:27:15 2013 Dorian Stroher
+// Last update Sun Jun  9 06:43:03 2013 Dorian Stroher
 //
 
 #include "Map.hh"
@@ -13,6 +13,8 @@
 #include "Player.hh"
 #include "BonusBomb.hh"
 #include "BonusMouv.hh"
+#include "BonusLife.hh"
+#include "BonusRange.hh"
 #include "Wall2.hh"
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
@@ -42,10 +44,20 @@ Map::Map(int row, int col, newin::SceneMgr bbman)
 	      delete (_map[it]);
 	    _map[it] = new BonusBomb(&bbman, it.second, it.first);
 	    }
+	  if (rand()%20 == 0 && it.second != 0 && it.first != 0 && it.second != (col - 1) && it.first != (row - 1) )
+	    {
+	      delete (_map[it]);
+	      _map[it] = new BonusRange(&bbman, it.second, it.first);
+	    }
 	  if (rand()%15 == 0 && it.second != 0 && it.first != 0 && it.second != (col - 1) && it.first != (row - 1) )
 	    {
 	      delete (_map[it]);
 	    _map[it] = new BonusMouv(&bbman, it.second, it.first);
+	    }
+	  if (it.second == col/2 && it.first == row/2)
+	    {
+	      delete (_map[it]);
+	      _map[it] = new BonusLife(&bbman, it.second, it.first);
 	    }
 	  if (it.second == 0 || it.first == 0)
 	    _map[it] = new Wall(&bbman, it.second, it.first);

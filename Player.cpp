@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Sun Jun  9 06:25:43 2013 Dorian Stroher
+// Last update Sun Jun  9 06:56:45 2013 Dorian Stroher
 //
 
 #include <unistd.h>
@@ -20,7 +20,7 @@ void    Player::deleteOBJ()
     _life = _life - 1;
     std::cout << "Player is dead" << std::endl;
     if (_life == 0)
-	_obj->toogleRendering();
+      _obj->toogleRendering();
     //  _obj->unsetPlayer();
 }
 
@@ -74,7 +74,6 @@ void Player::move(gdl::Input &i, gdl::GameClock const &clock)
     if (_life != 0)
       {
 	_Clock.update();
-	std::cout << _Clock.getTotalElapsedTime() << std::endl;
 	if (_Clock.getTotalElapsedTime() >= _time)
 	  {
 	    if (_versus == false)
@@ -108,7 +107,6 @@ void Player::move(gdl::Input &i, gdl::GameClock const &clock)
 		  _cam->setPos(newin::Vector3D<GLfloat>((_pos.second) * SIZECASE,_cam->getPos().getY(),(_pos.first) * SIZECASE));
 		(*_map)[prevpos] = NULL;
 		(*_map)[_pos] = this;
-		//  usleep(75000);
 	      }
 	    else
 	      _pos = prevpos;
@@ -140,8 +138,8 @@ void Player::move(gdl::Input &i, gdl::GameClock const &clock)
 		{
 		  if ((*it)->explode(_map) == true)
 		    {
-		      delete(*it);
 		      _listBomb.erase(it);
+		      delete(*it);
 		      break;
 		    }
 		}
@@ -168,6 +166,18 @@ bool Player::checkMove(IObject *toto)
 	    delete(toto);
 	    if (_time > 0.07)
 	      _time = _time - 0.055;
+	  }
+	else if (toto->getType() == type__BonusRange)
+	  {
+	    (*_map)[_pos] = NULL;
+	    delete(toto);
+	    _bombPower = _bombPower + 1;
+	  }
+	else if (toto->getType() == type__BonusLife)
+	  {
+	    (*_map)[_pos] = NULL;
+	    delete(toto);
+	    _life++;
 	  }
       }
     return (true);

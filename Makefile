@@ -12,6 +12,8 @@ SRC	= main.cpp \
 	  Bomb.cpp \
 	  BonusBomb.cpp \
 	  BonusMouv.cpp \
+	  BonusLife.cpp \
+	  BonusRange.cpp \
 	  AudioPlayer.cpp \
 	  Wall2.cpp
 
