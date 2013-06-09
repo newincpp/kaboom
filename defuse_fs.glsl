@@ -1,9 +1,9 @@
 #version 330
 
 struct Light {
-    vec3 lightPos;
-    vec3 lightColour;
-    int lightDiff;
+    vec3 Pos;
+    vec3 Colour;
+    int Diff;
     float intensity;
 };
 
@@ -25,12 +25,12 @@ out vec4 outputColour;
 void main () {
     vec4 tmpOut = vec4(0,0,0,0);
 
-    for (int i = 0; i <= numlight; ++i) {
-	float cosTheta = clamp(dot(V.TNormal, vec4(L[i].lightPos, 1)), 0, 1);
-	float dist = distance(vec4(L[i].lightPos, 0.0), V.TVertex);
-	vec4 tmpColour = inputColour + vec4(L[i].lightColour, 0) / 2;
-	tmpOut += tmpColour * L[i].intensity * cosTheta / (max(((dist * dist) / L[i].lightDiff), .1));
+    for (int i = 0; i <= numlight + 1; ++i) {
+	float cosTheta = clamp(dot(V.TNormal, vec4(L[i].Pos, 1)), 0, 1);
+	float dist = distance(vec4(L[i].Pos, 0.0), V.TVertex);
+	vec4 tmpColour = inputColour + vec4(L[i].Colour, 0) / 2;
+	tmpOut += tmpColour * L[i].intensity * cosTheta / (max(((dist * dist) / L[i].Diff), .1));
     }
-    //outputColour = vec4(L[0].lightDiff, L[0].lightDiff, L[0].lightDiff, L[0].lightDiff);
+    //outputColour = inputColour + vec4(L[1].lightColour, 0) / 2;
     outputColour = tmpOut;
 }

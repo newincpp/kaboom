@@ -36,10 +36,12 @@ Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map, bool versus)
 	_cam->setPos(newin::Vector3D<GLfloat>(col * SIZECASE, DISTANCE, row * SIZECASE));
 	_cam->setRot(newin::Vector3D<GLfloat>(90, 0.1, 0.1));
 	_light = bbman->getLight(0);
+	_light->setColor(newin::Vector3D<GLfloat>(0,1,0));
     }
     else
     {
       _light = bbman->getLight(bbman->addLight(newin::Light()));
+      _light->setColor(newin::Vector3D<GLfloat>(1,0,0));
       _obj->setColor(newin::Vector3D<GLfloat>(0.1, 90, 0.1));
     }
     _light->setIntensity(LUMINTENSITY);
