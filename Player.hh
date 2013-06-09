@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:53 2013 Dorian Stroher
-// Last update Sun Jun  9 02:42:42 2013 Dorian Stroher
+// Last update Sun Jun  9 06:08:13 2013 Dorian Stroher
 //
 #ifndef __PLAYER_HH__
 #define __PLAYER_HH__
@@ -42,6 +42,7 @@ private:
   newin::SceneMgr *_bbman;
   newin::Camera* _cam;
   newin::Light* _light;
+  float _time;
   int _life;
   int _nbBomb;
   bool kaboom;

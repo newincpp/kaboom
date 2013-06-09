@@ -5,7 +5,7 @@
 // Login   <strohe_d@epitech.net>
 // 
 // Started on  Fri May 31 14:46:39 2013 Dorian Stroher
-// Last update Sun Jun  9 05:22:46 2013 Dorian Stroher
+// Last update Sun Jun  9 06:25:43 2013 Dorian Stroher
 //
 
 #include <unistd.h>
@@ -60,6 +60,7 @@ Player::Player(newin::SceneMgr *bbman, int col, int row, Map *map, bool versus)
     _pos.first = row;
     _map = map->getMap();
     _Clock.play();
+    _time = 0.5;
 }
 
 void Player::moddifPos()
@@ -73,82 +74,103 @@ void Player::move(gdl::Input &i, gdl::GameClock const &clock)
 
     prevpos = _pos;
     if (_life != 0)
-    {
-      if (_versus == false)
-	{
-	  if (i.isKeyDown(gdl::Keys::S) == true)
-		_pos.first = _pos.first + 1;
-	    else if (i.isKeyDown(gdl::Keys::W) == true)
+      {
+	_Clock.update();
+	std::cout << _Clock.getTotalElapsedTime() << std::endl;
+	if (_Clock.getTotalElapsedTime() >= _time)
+	  {
+	    if (_versus == false)
+	      {
+		if (i.isKeyDown(gdl::Keys::S) == true)
+		  _pos.first = _pos.first + 1;
+	      else if (i.isKeyDown(gdl::Keys::W) == true)
 		_pos.first = _pos.first - 1;
-	    else if (i.isKeyDown(gdl::Keys::A) == true)
+	      else if (i.isKeyDown(gdl::Keys::A) == true)
 		_pos.second = _pos.second - 1;
-	    else if (i.isKeyDown(gdl::Keys::D) == true)
-	      _pos.second = _pos.second + 1;
-	}
-      else
-	{
-	  if (i.isKeyDown(gdl::Keys::Down) == true)
-	    _pos.first = _pos.first + 1;
-	  else if (i.isKeyDown(gdl::Keys::Up) == true)
-	    _pos.first = _pos.first - 1;
-	  else if (i.isKeyDown(gdl::Keys::Left) == true)
-	    _pos.second = _pos.second - 1;
-	  else if (i.isKeyDown(gdl::Keys::Right) == true)
-	    _pos.second = _pos.second + 1;
-	}
-      if (checkMove((*_map)[_pos]) == true)
-	{
-	  _obj->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0,(_pos.first) * SIZECASE));
-	  _light->setPos(newin::Vector3D<GLfloat>((_pos.second) * SIZECASE, DISTANCELUM,(_pos.first) * SIZECASE));
-	  if (_versus == false)
-	    _cam->setPos(newin::Vector3D<GLfloat>((_pos.second) * SIZECASE,_cam->getPos().getY(),(_pos.first) * SIZECASE));
-	  (*_map)[prevpos] = NULL;
-	  (*_map)[_pos] = this;
-	  usleep(75000);
-	}
-  else
-    _pos = prevpos;
-  if (_versus == false)
-    {
-      if (i.isKeyDown(gdl::Keys::Space) == true)
-	{
-	  usleep(100000);
-	  if (_nbBomb > 0)
+	      else if (i.isKeyDown(gdl::Keys::D) == true)
+		_pos.second = _pos.second + 1;
+	      }
+	    else
 	    {
-	      _listBomb.push_back(new Bomb(_bbman, _pos.second, _pos.first, _bombPower));
-	      _nbBomb--;
+	      if (i.isKeyDown(gdl::Keys::Down) == true)
+		_pos.first = _pos.first + 1;
+	      else if (i.isKeyDown(gdl::Keys::Up) == true)
+		_pos.first = _pos.first - 1;
+	      else if (i.isKeyDown(gdl::Keys::Left) == true)
+		_pos.second = _pos.second - 1;
+	      else if (i.isKeyDown(gdl::Keys::Right) == true)
+		_pos.second = _pos.second + 1;
 	    }
-	}
-    }
-  else
-    if (i.isKeyDown(gdl::Keys::Return) == true)
-      {
-	usleep(100000);
-	if (_nbBomb > 0)
-	  {
-	      _listBomb.push_back(new Bomb(_bbman, _pos.second, _pos.first, _bombPower));
-	      _nbBomb--;
+	    if (checkMove((*_map)[_pos]) == true)
+	      {
+		_Clock.reset();
+		_obj->setPos(newin::Vector3D<GLfloat>( (_pos.second) * SIZECASE, 0,(_pos.first) * SIZECASE));
+		_light->setPos(newin::Vector3D<GLfloat>((_pos.second) * SIZECASE, DISTANCELUM,(_pos.first) * SIZECASE));
+		if (_versus == false)
+		  _cam->setPos(newin::Vector3D<GLfloat>((_pos.second) * SIZECASE,_cam->getPos().getY(),(_pos.first) * SIZECASE));
+		(*_map)[prevpos] = NULL;
+		(*_map)[_pos] = this;
+		//  usleep(75000);
+	      }
+	    else
+	      _pos = prevpos;
+	    if (_versus == false)
+	      {
+		if (i.isKeyDown(gdl::Keys::Space) == true)
+		  {
+		    usleep(100000);
+		    if (_nbBomb > 0)
+		      {
+			_listBomb.push_back(new Bomb(_bbman, _pos.second, _pos.first, _bombPower));
+			_nbBomb--;
+		      }
+		  }
+	      }
+	    else
+	      if (i.isKeyDown(gdl::Keys::Return) == true)
+		{
+		  usleep(100000);
+		  if (_nbBomb > 0)
+		    {
+		      _listBomb.push_back(new Bomb(_bbman, _pos.second, _pos.first, _bombPower));
+		      _nbBomb--;
+		    }
+		}
+	    std::vector<Bomb *>::iterator it;
+	    if (_listBomb.size() > 0)
+	      for (it = _listBomb.begin(); it != _listBomb.end(); it++)
+		{
+		  if ((*it)->explode(_map) == true)
+		    {
+		      delete(*it);
+		      _listBomb.erase(it);
+		      break;
+		    }
+		}
 	  }
       }
-  std::vector<Bomb *>::iterator it;
-  if (_listBomb.size() > 0)
-    for (it = _listBomb.begin(); it != _listBomb.end(); it++)
-      {
-	if ((*it)->explode(_map) == true)
-	  {
-	    delete(*it);
-	    _listBomb.erase(it);
-	    break;
-	  }
-      }
-    }
     return;
 }
 
 bool Player::checkMove(IObject *toto)
 {
     if (toto != NULL)
+      {
 	if (toto->getType() == type__Wall || toto->getType() == type__Player || toto->getType() == type__Wall2 )
-	    return (false);
+	  return (false);
+	else if (toto->getType() == type__BonusBomb)
+	  {
+	    (*_map)[_pos] = NULL;
+	    delete(toto);
+	    _nbBomb++;
+	  }
+	else if (toto->getType() == type__BonusMouv)
+	  {
+	    (*_map)[_pos] = NULL;
+	    delete(toto);
+	    if (_time > 0.07)
+	      _time = _time - 0.055;
+	  }
+      }
     return (true);
 }
