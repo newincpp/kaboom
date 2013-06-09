@@ -133,8 +133,8 @@ unsigned int newin::SceneMgr::addLight(newin::Light lightModel) {
     _lights.push_back(nlight);
     std::cout << "len after " << _lights.size() << std::endl;
     std::cout << "len returned " << _lights.size() - 1 << std::endl;
-    //return _lights.size() - 1;
-    return 0;
+    return _lights.size() - 1;
+    //return 0;
 }
 
 AObject* newin::SceneMgr::addModel(const std::string& name, const std::string& identifier) {

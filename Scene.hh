@@ -26,7 +26,7 @@ namespace newin {
 	    virtual void	initialize(void);
 	    virtual void	draw(void);
 	    virtual void	unload(void);
- 	    int _height;
+	    int _height;
 	    int _width;
 	    float _old_time;
 	    newin::Camera _camera;

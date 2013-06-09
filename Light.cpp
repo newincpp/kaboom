@@ -64,35 +64,37 @@ void newin::Light::draw() {
 
 void newin::Light::update(gdl::GameClock const & c, gdl::Input & i) {
     (void) c;
-    if (i.isKeyDown(gdl::Keys::I)) {
-	_pos.setZ(_pos.getZ() - 0.1);
-	_changed = true;
-    }
-    if (i.isKeyDown(gdl::Keys::K)) {
-	_pos.setZ(_pos.getZ() + 0.1);
-	_changed = true;
-    }
-    if (i.isKeyDown(gdl::Keys::J)) {
-	_pos.setX(_pos.getX() - 0.1);
-	_changed = true;
-    }
-    if (i.isKeyDown(gdl::Keys::L)) {
-	_pos.setX(_pos.getX() + 0.1);
-	_changed = true;
-    }
-    if (i.isKeyDown(gdl::Keys::U)) {
-	_pos.setY(_pos.getY() - 0.1);
-	_changed = true;
-    }
-    if (i.isKeyDown(gdl::Keys::O)) {
-	_pos.setY(_pos.getY() + 0.1);
-	_changed = true;
+    if (_sindex == "0") {
+	if (i.isKeyDown(gdl::Keys::I)) {
+	    _pos.setZ(_pos.getZ() - 0.1);
+	    _changed = true;
+	}
+	if (i.isKeyDown(gdl::Keys::K)) {
+	    _pos.setZ(_pos.getZ() + 0.1);
+	    _changed = true;
+	}
+	if (i.isKeyDown(gdl::Keys::J)) {
+	    _pos.setX(_pos.getX() - 0.1);
+	    _changed = true;
+	}
+	if (i.isKeyDown(gdl::Keys::L)) {
+	    _pos.setX(_pos.getX() + 0.1);
+	    _changed = true;
+	}
+	if (i.isKeyDown(gdl::Keys::U)) {
+	    _pos.setY(_pos.getY() - 0.1);
+	    _changed = true;
+	}
+	if (i.isKeyDown(gdl::Keys::O)) {
+	    _pos.setY(_pos.getY() + 0.1);
+	    _changed = true;
+	}
     }
     if (!_prgm) {
 	throw newin::ShaderException("cannot use light without shader");
     }
     if (_changed){
-	//	std::cout << "changing light n" << _sindex << " at :" << _pos.getX() << " " << _pos.getY() <<" " << _pos.getZ() <<  std::endl;
+	std::cout << "changing light n" << _sindex << " at :" << _pos.getX() << " " << _pos.getY() <<" " << _pos.getZ() <<  std::endl;
 	_changed = false;
 	_prgm->setVariable("L[" + _sindex + "].lightPos", _pos.getX(), _pos.getY(), _pos.getZ());
     }
